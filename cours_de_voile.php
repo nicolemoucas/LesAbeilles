@@ -3,20 +3,19 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Club Nautique</title
+        <title>Cours de Voile</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
                 padding: 0;
-                background-color: #f0f8ff; 
+                background-color: #f0f8ff;
                 color: #333;
             }
 
             header {
                 background-color: #0066cc; 
                 padding: 10px;
-                margin: 0 10px;
                 text-align: center;
                 color: #fff; 
             }
@@ -33,7 +32,7 @@
                 padding: 10px;
                 margin: 0 10px;
                 border-radius: 5px;
-                background-color: #fff; 
+                background-color: #fff;
             }
 
             nav a:hover {
@@ -50,7 +49,7 @@
             }
 
             footer {
-                background-color: #0066cc; 
+                background-color: #0066cc;
                 padding: 10px;
                 text-align: center;
                 color: #fff;
@@ -66,20 +65,19 @@
                 text-align: center;
                 text-decoration: none;
                 background-color: #0066cc; 
-                color: #fff; 
+                color: #fff;
                 border-radius: 5px;
                 cursor: pointer;
-                margin: 10px; 
             }
 
             .button:hover {
-                background-color: #004080; 
+                background-color: #004080;
             }
         </style>
     </head>
     <body>
         <header>
-            <h1>Club Nautique</h1>
+            <h1>Cours de Voile</h1>
         </header>
         
         <nav>
@@ -89,14 +87,7 @@
         </nav>
 
         <div class="container">
-    
-            <h2>Bienvenue au Club Nautique</h2>
-            <p>Ce n'est qu'une proposition car je stress :D ...</p>
-
-            <a href="#" class="button">Créer un employé</a>
-            <a href="#" class="button">Créer un profil Client</a>
-            <a href="#" class="button">Rechercher Client</a>
-            <a href="#" class="button">Rechercher Cours</a>
+            <h2>Page Cours de Voile</h2>
         </div>
 
         <footer>
