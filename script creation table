@@ -7,7 +7,7 @@ CREATE TYPE ETailleFlotteur AS ENUM ('150l', '170l', '190l', '205l');
 
 CREATE TYPE ETailleVoile AS ENUM ('3m2', '4m2', '4.5m2', '4.9m2', '5.4m2');
 
-CREATE TYPE ECamping AS ENUM ('Jolibois', 'Grand Plage', 'Marande');
+CREATE TYPE ECamping AS ENUM ('Jolibois', 'Grand Plage', 'Marande', 'Autre');
 
 CREATE TYPE EPreferenceContact AS ENUM ('Mail', 'Téléphone');
 
@@ -18,10 +18,11 @@ CREATE TYPE EStatutMateriel AS ENUM ('Reçu', 'Fonctionnel', 'Hors service', 'Mi
 CREATE TYPE EEtatCours AS ENUM ('Prévu', 'En cours', 'Réalisé', 'Annulé');
 
 CREATE TABLE Personne(
-Idpersonne Int PRIMARY KEY NOT NULL UNIQUE,
+Idpersonne SERIAL PRIMARY KEY NOT NULL UNIQUE,
 Nom Varchar(30),
 Prenom Varchar(30),
 DateNaissance Date,
+NumTelephone Varchar(10)
 Mail Varchar(50)
 );
 

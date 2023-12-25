@@ -94,7 +94,7 @@
             <p>Ce n'est qu'une proposition car je stress :D ...</p>
 
             <a href="#" class="button">Créer un employé</a>
-            <a href="#" class="button">Créer un profil Client</a>
+            <a href="inscriptionClient.php" class="button">Créer un profil Client</a>
             <a href="#" class="button">Rechercher Client</a>
             <a href="#" class="button">Rechercher Cours</a>
         </div>
