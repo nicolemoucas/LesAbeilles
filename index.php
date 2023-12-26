@@ -16,17 +16,19 @@
         <div class="corps">
             <h2>Bienvenue au Club Nautique Les Abeilles</h2>
             <div class="fonctionnalites">
-                <a href="#" class="button">Créer un employé</a>
-                <a href="inscriptionClient.php" class="button">Créer un profil Client</a>
-                <a href="rechercherClient.php" class="button">Rechercher un Client</a>
-                <a href="#" class="button">Rechercher un Cours</a>
+                <a href="#" class="button">Créer un profil propriétaire</a>
+                <a href="creationProfilMoniteur.php" class="button">Créer un profil moniteur</a>
+                <a href="#" class="button">Créer un profil garçon de plage</a>
+                <a href="inscriptionClient.php" class="button">Créer un profil client</a>
+                <a href="rechercherClient.php" class="button">Rechercher un client</a>
+                <a href="#" class="button">Rechercher un cours</a>
             </div>
 
             <br><br>
 
             <img id="photoSurf" src="images/surf.jpg" alt="Personne qui fait du surf">
 
-            <p>vsdfvsdffvsdfvsdf</p>
+            <p></p>
         </div>
 
         <footer>

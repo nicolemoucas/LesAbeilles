@@ -2,14 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300&display=swap');
 
 body {
-    background-color: #f0f8ff;
-    color: #333;
-    font-family: 'Barlow', sans-serif;
-    height: 100%;
-    margin: 0;
-    overflow-x: hidden;
-    padding: 0;
-    width: 100%;
+  background-color: #f0f8ff;
+  color: #333;
+  font-family: 'Barlow', sans-serif;
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  padding: 0;
+  width: 100%;
 }
 
 .corps {
@@ -49,4 +49,8 @@ body {
   margin-right: auto;
   max-width: 800px;
   width: 100%;
+}
+
+input {
+  width: 100px;
 }
