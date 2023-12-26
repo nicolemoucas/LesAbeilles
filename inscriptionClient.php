@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" type="text/css" href="inscriptionClient.css" />
+    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> Création d'un profil client </title>
     </head>
     <body>
     <?php
         // débogage, mettre en 1 pour afficher les erreurs, 0 pour les cacher
         header('Access-Control-Allow-Origin: *');
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
+        ini_set('display_errors', 0);
+        ini_set('display_startup_errors', 0);
         session_start(); 
         $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
         
@@ -95,7 +99,7 @@
                     <div id="statutError" class="error"></div><br>
                 </div>
                 <div>
-                    <button>Créer le client</button>
+                    <button class = "button">Créer le client</button>
                 </div>
             </form>
         </div>

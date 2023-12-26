@@ -53,7 +53,7 @@
                     $tailleClient, 
                     $prefContactClient
                 )); 
-                header("Location : http://localhost/LesAbeilles");
+                header('Location: http://localhost/LesAbeilles');
             }
         ?>
     </body>
