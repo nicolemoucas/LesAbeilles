@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="css/inscriptionClient.css" />
+        <link rel="stylesheet" type="text/css" href="css/inscription.css" />
         <link rel="stylesheet" href="css/styles.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
         <meta charset="UTF-8">
@@ -20,7 +20,6 @@
         </header>
         
         <?php
-            
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             session_start(); 
@@ -76,7 +75,7 @@
             <div>
                 <a href="index.php" class="button">Retour</a>
                 <button class="button" formaction="#">Modifier le profil</button>
-                <button class= "button" formaction="javascript:confimerSuppression()">Supprimer le profil</button>
+                <button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>
             </div>
             
             <label for="NomClient" class="label">NOM</label><br>
@@ -139,7 +138,7 @@
     </body>
 </html>
 <script>
-    function confimerSuppression() {
+    function confirmerSuppression() {
         const formulaire = document.formulaire;
         if(confirm("Voulez-vous vraiment supprimer le profil de ce client ?")) {
             const url = 'supprimerProfilClient.php?nom=' + formulaire.NomClient.value + '&prenom=' + formulaire.PrenomClient.value  + '&dateNaiss=' + formulaire.DateNaissanceClient.value ;
