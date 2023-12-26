@@ -15,9 +15,7 @@
         </script>
     </head>
     <body>
-    <div>
-        <h1>Profil client : </h1>
-    </div>
+    
         <?php
             
             ini_set('display_errors', 1);
@@ -67,15 +65,17 @@
                 $statut_combobox_php .= '<option value="' . $option->estatut . '"' .$selected . '>' . $option->estatut . '</option>';
             }
         ?>
-
+    <div>
+        <h1>Profil client : <?php echo $row->prenomcl . ' ' .$row->nomcl?></h1>
+    </div>
         <div>
-        <form method="post" name="formulaire" novalidate="" class="form" action="creationProfilClient.php">
+        <form method="post" name="formulaire" novalidate="" class="form">
             <div>
                 <a href="index.php" class="button">Retour</a>
-                <a href="#" class="button">Modifier le profil</a>
-                <a href="#" class="button">Supprimer le client</a>
-               
+                <button class="button" formaction="#">Modifier le profil</button>
+                <button class= "button" formaction="javascript:confimerSuppression()">Supprimer le profil</button>
             </div>
+            
             <label for="NomClient" class="label">NOM</label><br>
             <input type="text" id="NomClient" name="NomClient" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomcl ?>" required/>
             <div id="nomError" class="error"></div><br>
@@ -131,3 +131,12 @@
         </div>
     </body>
 </html>
+<script>
+    function confimerSuppression() {
+        const formulaire = document.formulaire;
+        if(confirm("Voulez-vous vraiment supprimer le profil de ce client ?")) {
+            const url = 'supprimerProfilClient.php?nom=' + formulaire.NomClient.value + '&prenom=' + formulaire.PrenomClient.value  + '&dateNaiss=' + formulaire.DateNaissanceClient.value ;
+            document.location= url;
+        }
+    }
+</script>
