@@ -33,4 +33,4 @@ BEGIN
 	
 END;
 $BODY$
-LANGUAGE PlpgSQL;      
+LANGUAGE PlpgSQL;

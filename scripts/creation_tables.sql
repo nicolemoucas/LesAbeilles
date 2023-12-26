@@ -168,7 +168,8 @@ DROP TABLE IF EXISTS Compte CASCADE;
 CREATE TABLE Compte (
 IdCompte SERIAL PRIMARY KEY,
 NomUtilisateur varchar(30),
-MotDePase varchar(20)
+MotDePasse varchar(20),
+IdPersonne int -- FK ajoutée après l'insertion des données
 );
 
 DROP TABLE IF EXISTS PermisBateau CASCADE;

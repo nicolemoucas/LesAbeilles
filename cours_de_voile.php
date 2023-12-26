@@ -13,8 +13,6 @@
             <?php include('header.php')?>
         </header>
         
-    
-
         <div class="container">
             <h2>Page Cours de Voile</h2>
         </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <link rel="stylesheet" type="text/css" href="inscriptionClient.css" />
+        <link rel="stylesheet" type="text/css" href="css/inscription.css" />
         <link rel="stylesheet" href="css/styles.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
         <meta charset="UTF-8">
@@ -15,7 +15,10 @@
         </script>
     </head>
     <body>
-    
+        <header>
+            <?php include('header.php')?>
+        </header>
+        
         <?php
             
             ini_set('display_errors', 1);
@@ -129,6 +132,10 @@
             
             </form>
         </div>
+
+        <footer>
+            <?php include('footer.php')?>
+        </footer>
     </body>
 </html>
 <script>

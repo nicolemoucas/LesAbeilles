@@ -14,13 +14,12 @@
         <h1>Formulaire de création du profil client :</h1>
     </div>
         <?php
-            
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             session_start(); 
             
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
-    
+
             $nomClient = $_POST["NomClient"];
             $prenomClient = $_POST["PrenomClient"];
             $dateNaissClient = $_POST["DateNaissanceClient"];
@@ -32,7 +31,6 @@
             $tailleClient = $_POST["TailleClient"];
             $prefContactClient = $_POST["PrefContactClient"];
 
-    
             $verifClient = pg_prepare($connexion, "my_verif", 'SELECT recherche_client($1,$2,$3)');
             $verifClient = pg_execute($connexion, "my_verif", array($nomClient, $prenomClient, $dateNaissClient)); 
             

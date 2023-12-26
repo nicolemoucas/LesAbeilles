@@ -2,57 +2,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300&display=swap');
 
 header {
-    background-color: rgba(0, 102, 204, 1);
-    height: 150px;
-    padding: 10px;
-    /* max-width: 1200px; */
-    text-align: center;
-    color: #fff;
-    /* width: 100vw; */
+  background-color: rgba(0, 102, 204, 1);
+  height: 200px;
+  padding: 10px;
+  /* max-width: 1200px; */
+  text-align: center;
+  color: #fff;
+  /* width: 100vw; */
 }
 
   /* Style the header with a background and some padding */
-  .header {
-    overflow: hidden;
-    padding: 20px 30px; /* vert hor */
-  }
+.header {
+  overflow: hidden;
+  padding: 20px 30px; /* vert hor */
+}
 
 .header li {
-    display: inline;
-    float: left;
-    padding: 0px 10px;
+  display: inline;
+  float: left;
+  padding: 0px 10px;
 }
 
   /* Style the header links */
-  .header a {
-    /* position: absolute; */
-    /* background-color: rgba(246, 232, 213, 0.258); */
-    color: rgb(229, 230, 250);
-    text-align: center;
-    padding: 12px;
-    text-decoration: none;
-    font-size: 18px;
-    line-height: 25px;
-    border-radius: 4px;
-  }
+.header a {
+  /* position: absolute; */
+  /* background-color: rgba(246, 232, 213, 0.258); */
+  color: rgb(229, 230, 250);
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 4px;
+}
 
   /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
-  .header a.logo {
-    font-size: 25px;
-    font-weight: bold;
-  }
-
+.header a.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
 
   /* Change the background color on mouse-over */
-  .header a:hover {
-    background-color: rgba(246, 232, 213, 1);
-    color: rgba(121, 71, 13, 0.8);
-  }
+.header a:hover {
+  background-color: rgba(246, 232, 213, 1);
+  color: rgba(121, 71, 13, 0.8);
+}
 
   /* Style the active/current link*/
 .header a.active {
-    background-color: rgba(121, 71, 13, 1);
-    color: white;
+  background-color: rgba(121, 71, 13, 1);
+  color: white;
 }
 
 .header-links {
@@ -60,6 +59,6 @@ header {
 }
 
 .current a {
-    background-color: rgba(246, 232, 213, 0.831);
-    color: rgba(8, 54, 170, 0.831);
-  }
+  background-color: rgba(246, 232, 213, 0.831);
+  color: rgba(8, 54, 170, 0.831);
+}

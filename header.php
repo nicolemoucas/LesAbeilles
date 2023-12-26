@@ -17,13 +17,13 @@
                         <a href="index.php" class="logo-home"><i class="fa fa-home"></i>&nbsp; Les Abeilles</a>
                     </li>
                     <li <?php if($current_url == 'planning.php'){ echo 'class="current"';}?>>
-                        <a href="planning.php">Planning</a>
+                        <a href="#.php">Planning</a>
                     </li>
                     <li <?php if($current_url == 'cours_de_voile.php'){ echo 'class="current"';}?>>
                         <a href="cours_de_voile.php">Cours de Voile</a>
                     </li>
                     <li <?php if($current_url == 'gestion_materiel.php'){ echo 'class="current"';}?>>
-                        <a href="gestion_materiel.php">Gestion du Matériel</a>
+                        <a href="#.php">Gestion du Matériel</a>
                     </li>
                 </ul>
             </div>
