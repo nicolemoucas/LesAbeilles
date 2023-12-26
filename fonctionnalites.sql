@@ -8,11 +8,7 @@ RETURNS TABLE (idpers INTEGER, nomCl VARCHAR, prenomCl VARCHAR, dateNaissanceCl 
 campingCl ECamping, statutCl EStatutClient, poidsCl FLOAT, tailleCl FLOAT, preferenceContactCl EPreferenceContact, numTelephoneCl VARCHAR) AS $$
 
 BEGIN
-    IF EXISTS(SELECT * FROM client WHERE lower(Nom) = lower($1) AND lower(Prenom) = lower($2) AND DateNaissance = $3) THEN 
-        RETURN QUERY SELECT * FROM client WHERE lower(Nom) = lower($1) AND lower(Prenom) = lower($2) AND DateNaissance = $3;
-    ELSE 
-        RAISE EXCEPTION 'Ce client n''existe pas.';
-    END IF;
+    RETURN QUERY SELECT * FROM client WHERE lower(Nom) = lower($1) AND lower(Prenom) = lower($2) AND DateNaissance = $3;
 END;
 $$ Language PlpgSQL;
 
