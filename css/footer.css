@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300&display=swap');
+
+.footer {
+    background-color: #758af7;
+    bottom: 0;
+    color: white;
+    display: block;
+    height: 200px;
+    left: 0;
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+    right: 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  .footer a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .footer ul {
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer li {
+    display: inline-block;
+    margin: 10px;
+  }

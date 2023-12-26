@@ -3,104 +3,34 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Club Nautique</title
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f0f8ff; 
-                color: #333;
-            }
-
-            header {
-                background-color: #0066cc; 
-                padding: 10px;
-                margin: 0 10px;
-                text-align: center;
-                color: #fff; 
-            }
-
-            nav {
-                background-color: #87ceeb; 
-                padding: 10px;
-                text-align: center;
-            }
-
-            nav a {
-                text-decoration: none;
-                color: #333;
-                padding: 10px;
-                margin: 0 10px;
-                border-radius: 5px;
-                background-color: #fff; 
-            }
-
-            nav a:hover {
-                background-color: #add8e6; 
-            }
-
-            .container {
-                max-width: 1200px;
-                margin: 20px auto;
-                padding: 20px;
-                background-color: #fff; 
-                border-radius: 10px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-            }
-
-            footer {
-                background-color: #0066cc; 
-                padding: 10px;
-                text-align: center;
-                color: #fff;
-                position: fixed;
-                bottom: 0;
-                width: 100%;
-            }
-
-            .button {
-                display: inline-block;
-                padding: 10px 20px;
-                font-size: 16px;
-                text-align: center;
-                text-decoration: none;
-                background-color: #0066cc; 
-                color: #fff; 
-                border-radius: 5px;
-                cursor: pointer;
-                margin: 10px; 
-            }
-
-            .button:hover {
-                background-color: #004080; 
-            }
-        </style>
+        <title>Les Abeilles</title>
+        <link rel="stylesheet" href="css/styles.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></head>
     </head>
     <body>
+        <?php $current_url = 'index.php'; ?>
         <header>
-            <h1>Club Nautique</h1>
+            <?php include('header.php')?>
         </header>
-        
-        <nav>
-            <a href="index.php">Accueil</a>
-            <a href="cours_de_voile.php">Cours de Voile</a>
-            <a href="#">Gestion du Matériel</a>
-        </nav>
 
-        <div class="container">
-    
-            <h2>Bienvenue au Club Nautique</h2>
-            <p>Ce n'est qu'une proposition car je stress :D ...</p>
+        <div class="corps">
+            <h2>Bienvenue au Club Nautique Les Abeilles</h2>
+            <div class="fonctionnalites">
+                <a href="#" class="button">Créer un employé</a>
+                <a href="#" class="button">Créer un profil Client</a>
+                <a href="#" class="button">Rechercher un Client</a>
+                <a href="#" class="button">Rechercher un Cours</a>
+            </div>
 
-            <a href="#" class="button">Créer un employé</a>
-            <a href="inscriptionClient.php" class="button">Créer un profil Client</a>
-            <a href="#" class="button">Rechercher Client</a>
-            <a href="#" class="button">Rechercher Cours</a>
+            <br><br>
+
+            <img id="photoSurf" src="images/surf.jpg" alt="Personne qui fqit du surf">
+
+            <p>vsdfvsdffvsdfvsdf</p>
         </div>
 
         <footer>
-            &copy; 2023 Club Nautique
+            <?php include('footer.php')?>
         </footer>
     </body>
 </html>
