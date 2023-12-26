@@ -21,3 +21,16 @@ BEGIN
 END;
 $BODY$
 LANGUAGE PlpgSQL;
+
+/* 3 - Supprimer un client */
+DROP PROCEDURE IF EXISTS supprimer_client;
+CREATE OR REPLACE PROCEDURE supprimer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE) AS $BODY$
+DECLARE
+    idClient INTEGER;
+BEGIN  
+    SELECT INTO idClient idpers FROM (SELECT * FROM recherche_client($1, $2, $3)) AS client;
+	DELETE FROM Client WHERE idPersonne = idClient;
+	
+END;
+$BODY$
+LANGUAGE PlpgSQL;      
