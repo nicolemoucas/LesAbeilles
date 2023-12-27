@@ -20,7 +20,6 @@
         </header>
         
         <?php
-            
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             session_start(); 
@@ -76,7 +75,7 @@
             <div>
                 <a href="index.php" class="button">Retour</a>
                 <button class="button" formaction="#">Modifier le profil</button>
-                <button class= "button" formaction="javascript:confimerSuppression()">Supprimer le profil</button>
+                <button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>
             </div>
             <label for="NomClient" class="label">NOM</label><br>
             <input type="text" id="NomClient" name="NomClient" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomcl ?>" required/>
@@ -138,7 +137,7 @@
     </body>
 </html>
 <script>
-    function confimerSuppression() {
+    function confirmerSuppression() {
         const formulaire = document.formulaire;
         if(confirm("Voulez-vous vraiment supprimer le profil de ce client ?")) {
             const url = 'supprimerProfilClient.php?nom=' + formulaire.NomClient.value + '&prenom=' + formulaire.PrenomClient.value  + '&dateNaiss=' + formulaire.DateNaissanceClient.value ;
