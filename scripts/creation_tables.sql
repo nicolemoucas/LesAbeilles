@@ -1,4 +1,4 @@
--- Création des types ENUM
+- - Création des types ENUM
 DROP TYPE IF EXISTS EMoyenPaiement CASCADE;
 CREATE TYPE EMoyenPaiement AS ENUM ('Carte', 'Especes');
 
@@ -132,7 +132,7 @@ Niveau EEtatCours,
 IdMoniteur serial REFERENCES Moniteur(IdPersonne)
 );
 
--- Création de la table Participation
+- - Création de la table Participation
 
 DROP TABLE IF EXISTS Participation CASCADE;
 CREATE TABLE Participation (
@@ -156,28 +156,26 @@ NumSerie SERIAL PRIMARY KEY,
 Disponible Boolean,
 NbPlaces Int,
 Statut EStatutMateriel,
-IdPrixMateriel serial REFERENCES PrixMateriel(IdPrixMateriel)
-);
+IdPrixMateriel serial REFERENCES PrixMateriel(IdPrixMateriel),
+Role_Materiel Varchar(20) CHECK (Role IN ('¨Pedalo', 'StandUpPaddle', 'Catamaran ', 'PlancheAVoile')))
+PARTITION BY LIST (Role_Materiel);
 
 DROP TABLE IF EXISTS Pedalo CASCADE;
-CREATE TABLE Pedalo(
-
-NumSerie serial REFERENCES Materiel(NumSerie)
-
-) INHERITS (Materiel);
+CREATE TABLE Pedalo PARTITION OF Materiel FOR VALUES IN(’Pedalo’)(
+);
 
 DROP TABLE IF EXISTS StandUpPaddle CASCADE;
-CREATE TABLE StandUpPaddle(
+CREATE TABLE StandUpPaddle  PARTITION OF Materiel FOR VALUES IN(’StandUpPaddle’)(
 Capacite int
-) INHERITS (Materiel);
+);
 
 DROP TABLE IF EXISTS Catamaran CASCADE;
-CREATE TABLE Catamaran() INHERITS (Materiel);
+CREATE TABLE Catamaran PARTITION OF Materiel FOR VALUES IN(’Catamaran’)();
 
 DROP TABLE IF EXISTS PlancheAVoile CASCADE;
-CREATE TABLE PlancheAVoile(
+CREATE TABLE PlancheAVoile  PARTITION OF Materiel FOR VALUES IN(’PlancheAVoile ’)(
 IdCours SERIAL REFERENCES CoursPlancheVoile(IdCours)
-) INHERITS (Materiel);
+);
 
 DROP TABLE IF EXISTS Flotteur CASCADE;
 CREATE TABLE Flotteur(
