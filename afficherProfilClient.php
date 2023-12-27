@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="css/inscriptionClient.css" />
+        <link rel="stylesheet" type="text/css" href="css/inscription.css" />
         <link rel="stylesheet" href="css/styles.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
         <meta charset="UTF-8">
@@ -78,7 +78,6 @@
                 <button class="button" formaction="#">Modifier le profil</button>
                 <button class= "button" formaction="javascript:confimerSuppression()">Supprimer le profil</button>
             </div>
-            
             <label for="NomClient" class="label">NOM</label><br>
             <input type="text" id="NomClient" name="NomClient" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomcl ?>" required/>
             <div id="nomError" class="error"></div><br>
