@@ -97,7 +97,11 @@ TarifLocation float,
 EtatLocation EEtatLocation,
 NumSerie serial REFERENCES Materiel(NumSerie),
 IdClient serial REFERENCES Client(IdClient),
-IdPaiement serial REFERENCES Paiement(IdPaiement)
+IdPaiement serial REFERENCES Paiement(IdPaiement),
+IdPedalo serial REFERENCES Pedalo(IdPedalo),
+IdStandUpPaddle serial REFERENCES StandUpPaddle(IdStandUpPaddle),
+IdCatamaran serial REFERENCES Catamaran(IdCatamaran),
+IdPlancheVoile serial REFERENCES PlancheAVoile(IdPlancheVoile)
 );
 
 DROP TABLE IF EXISTS CoursPlancheVoile CASCADE;
