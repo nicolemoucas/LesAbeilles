@@ -52,5 +52,11 @@ body {
 }
 
 input {
-  width: 100px;
+  width: 20em;
+}
+
+.error {
+  background-color: white;
+  color: red;
+  font-weight: bold;
 }

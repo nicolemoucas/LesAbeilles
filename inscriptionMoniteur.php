@@ -72,6 +72,7 @@
         if(formulaire.NomMoniteur.validity.valid) {
             nomError.textContent = "";
             nomError.className = "error"
+            formulaire.NomMoniteur.className= "valid"
         } else {
             nomError.textContent = "Veuillez renseigner le nom du moniteur."
             nomError.className = "error active"
@@ -84,6 +85,7 @@
         if(formulaire.PrenomMoniteur.validity.valid) {
             prenomError.textContent = "";
             prenomError.className = "error"
+            formulaire.PrenomMoniteur.className= "valid"
         } else {
             prenomError.textContent = "Veuillez renseigner le prénom du moniteur."
             prenomError.className = "error active"
@@ -96,16 +98,17 @@
         if(formulaire.DateNaissanceMoniteur.validity.valid) {
             dateNaisError.textContent = "";
             dateNaisError.className = "error"
+            formulaire.DateNaissanceMoniteur.className= "valid"
         } else {
             dateNaisError.textContent = "Veuillez renseigner la date de naissance du moniteur."
             dateNaisError.className = "error active"
             formulaire.DateNaissanceMoniteur.className= "invalid"
             isValid = false;
         }
-        }
+    }
 
-        if(!isValid) {
-            event.preventDefault();
-        }
-});
+    if(!isValid) {
+        event.preventDefault();
+    }
+);
 </script>

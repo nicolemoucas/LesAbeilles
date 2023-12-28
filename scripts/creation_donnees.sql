@@ -28,6 +28,7 @@ INSERT INTO Location (IdLocation, DateHeureLocation, Duree, TarifLocation, EtatL
 SELECT enum_range(null::ECamping);
 SELECT enum_range(null::EStatutClient);
 SELECT enum_range(null::EPreferenceContact);
+SELECT enum_range(null::ERoleEmploye);
 
 -- Compte
 CREATE EXTENSION pgcrypto;

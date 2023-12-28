@@ -44,12 +44,22 @@ BEGIN
 END;
 $$ Language PlpgSQL;
 
-
-/* 5 - Créer un moniteur */
-DROP PROCEDURE IF EXISTS creer_moniteur;
-CREATE OR REPLACE PROCEDURE creer_moniteur(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR) AS $BODY$
+/* 5 - Créer un employé */
+DROP PROCEDURE IF EXISTS creer_employe;
+CREATE OR REPLACE PROCEDURE creer_employe(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR) AS $BODY$
 BEGIN
+-- NCM
     INSERT INTO Client(nom, prenom, datenaissance, mail, numtelephone) VALUES ($1, $2, $3, $4, $5);
 END;
 $BODY$
 LANGUAGE PlpgSQL;
+
+/* 6 - Retrouver un employé */
+DROP FUNCTION IF EXISTS recherche_employe;
+CREATE OR REPLACE FUNCTION recherche_employe(nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE)
+RETURNS TABLE (idpers INTEGER, nomEmp VARCHAR, prenomEmp VARCHAR, dateNaissanceEmp DATE, mailEmp VARCHAR, numTelephoneEmp VARCHAR) AS $$
+
+BEGIN
+    RETURN QUERY SELECT * FROM CompteEmploye WHERE lower(Nom) = lower($1) AND lower(Prenom) = lower($2) AND DateNaissance = $3;
+END;
+$$ Language PlpgSQL;
