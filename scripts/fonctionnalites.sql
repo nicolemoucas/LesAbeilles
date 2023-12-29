@@ -53,3 +53,27 @@ BEGIN
 END;
 $BODY$
 LANGUAGE PlpgSQL;
+
+--Consulter la liste des employés
+CREATE OR REPLACE FUNCTION ConsulterListeEmploye()
+RETURNS TABLE (
+    Nom VARCHAR(30),
+    Prenom VARCHAR(30),
+    Mail VARCHAR(50),
+    NumTelephone VARCHAR(16),
+    DateNaissance DATE,
+    TypeEmploye EtypeEmploye
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        ce.nom,
+        ce.prenom,
+        ce.mail,
+        ce.numtelephone,
+        ce.datenaissance,
+        ce.typeemploye
+    FROM
+        compteemploye ce;
+END;
+$$ LANGUAGE plpgsql;
