@@ -1,12 +1,14 @@
+-- FK ajoutées après l'insertion des clients
+
 -- Création des types ENUM
 DROP TYPE IF EXISTS EMoyenPaiement CASCADE;
-CREATE TYPE EMoyenPaiement AS ENUM ('Carte', 'Especes');
+CREATE TYPE EMoyenPaiement AS ENUM ('Carte', 'Espèces');
 
 DROP TYPE IF EXISTS EETatLocation CASCADE;
 CREATE TYPE EETatLocation AS ENUM ('Terminée', 'En cours', 'Annulée');
 
-DROP TYPE IF EXISTS ETailleFlotteur CASCADE;
-CREATE TYPE ETailleFlotteur AS ENUM ('150l', '170l', '190l', '205l');
+DROP TYPE IF EXISTS ECapaciteFlotteur CASCADE;
+CREATE TYPE ECapaciteFlotteur AS ENUM ('150l', '170l', '190l', '205l');
 
 DROP TYPE IF EXISTS ETailleVoile CASCADE;
 CREATE TYPE ETailleVoile AS ENUM ('3m2', '4m2', '4.5m2', '4.9m2', '5.4m2');
@@ -43,14 +45,13 @@ Statut EStatutClient,
 Taille float,
 Poids float,
 PreferenceContact EPreferenceContact,
-IdCertificat int REFERENCES CertificatMedical(IdCertificat)
+IdCertificat int
 );
-
 
 DROP TABLE IF EXISTS EstParentDe CASCADE;
 CREATE TABLE EstParentDe(
-IdParent int REFERENCES Client(IdClient),
-IdEnfant int REFERENCES Client(IdClient),
+IdParent int,
+IdEnfant int,
 PRIMARY KEY (IdParent, IdEnfant)
 );
 
@@ -59,7 +60,7 @@ CREATE TABLE CertificatMedical(
 IdCertificat SERIAL PRIMARY KEY,
 DateDelivrance Date,
 DocumentPDF bytea,
-IdClient int NOT NULL REFERENCES Client(IdClient) -- FK ajoutée après l'insertion des clients
+IdClient int NOT NULL 
 );
 
 DROP TABLE IF EXISTS TypeForfait CASCADE;
@@ -75,49 +76,46 @@ IdForfait SERIAL PRIMARY KEY,
 DateFin Date,
 NbSeancesRestantes int,
 ForfaitEnfant Boolean,
-IdClient serial REFERENCES Client(IdClient),
-IdTypeForfait serial REFERENCES TypeForfait(IdTypeForfait)
+IdClient int,
+IdTypeForfait int,
+IdPaiement int
 );
 
 DROP TABLE IF EXISTS Paiement CASCADE;
 CREATE TABLE Paiement(
 IdPaiement SERIAL PRIMARY KEY,
-DateHeure time,
+DateHeure timestamp,
 Montant float,
-MoyenPaiement EMoyenPaiement,
-IdForfait serial REFERENCES Forfait(IdForfait)
+MoyenPaiement EMoyenPaiement
 );
 
 DROP TABLE IF EXISTS Location CASCADE;
 CREATE TABLE Location(
 IdLocation SERIAL PRIMARY KEY,
-DateHeureLocation time,
-Duree int,
+DateHeureLocation timestamp,
+Duree interval,
 TarifLocation float,
 EtatLocation EEtatLocation,
-NumSerie serial REFERENCES Materiel(NumSerie),
-IdClient serial REFERENCES Client(IdClient),
-IdPaiement serial REFERENCES Paiement(IdPaiement),
-IdPedalo serial REFERENCES Pedalo(IdPedalo),
-IdStandUpPaddle serial REFERENCES StandUpPaddle(IdStandUpPaddle),
-IdCatamaran serial REFERENCES Catamaran(IdCatamaran),
-IdPlancheVoile serial REFERENCES PlancheAVoile(IdPlancheVoile)
+IdClient int,
+IdPaiement int,
+IdStandUpPaddle int,
+IdPlancheVoile int,
+IdPedalo int,
+IdCatamaran int 
 );
 
 DROP TABLE IF EXISTS CoursPlancheVoile CASCADE;
 CREATE TABLE CoursPlancheVoile(
 IdCours SERIAL PRIMARY KEY,
-DateHeure time,
-Niveau EEtatCours,
-IdCompte serial REFERENCES CompteEmploye(IdCompte)
+DateHeure timestamp,
+Niveau EStatutClient,
+IdCompte int
 );
-
--- Création de la table Participation
 
 DROP TABLE IF EXISTS Participation CASCADE;
 CREATE TABLE Participation (
-IdClient SERIAL REFERENCES Client(IdClient),
-IdCours SERIAL REFERENCES CoursPlancheVoile(IdCours),
+IdClient int,
+IdCours int,
 PRIMARY KEY (IdClient, IdCours)
 );
 
@@ -136,87 +134,94 @@ IdPedalo SERIAL PRIMARY KEY,
 Disponible Boolean,
 NbPlaces Int,
 Statut EStatutMateriel,
-IdPrixMateriel serial REFERENCES PrixMateriel(IdPrixMateriel)
+IdPrixMateriel int
 );
 
 DROP TABLE IF EXISTS StandUpPaddle CASCADE;
 CREATE TABLE StandUpPaddle(
 IdStandUpPaddle SERIAL PRIMARY KEY,
 Disponible Boolean,
-NbPlaces Int,
+NbPlaces int,
 Statut EStatutMateriel,
-Capacite int,
-IdPrixMateriel serial REFERENCES PrixMateriel(IdPrixMateriel)
+Capacite Varchar(5),
+IdPrixMateriel int
 );
 
 DROP TABLE IF EXISTS Catamaran CASCADE;
 CREATE TABLE Catamaran(
 IdCatamaran SERIAL PRIMARY KEY,
 Disponible Boolean,
-NbPlaces Int,
+NbPlaces int,
 Statut EStatutMateriel,
-IdPrixMateriel serial REFERENCES PrixMateriel(IdPrixMateriel));
+IdPrixMateriel int
+);
 
 DROP TABLE IF EXISTS PlancheAVoile CASCADE;
 CREATE TABLE PlancheAVoile(
 IdPlancheVoile SERIAL PRIMARY KEY,
 Disponible Boolean,
-NbPlaces Int,
+NbPlaces int,
 Statut EStatutMateriel,
-IdPrixMateriel serial REFERENCES PrixMateriel(IdPrixMateriel),
-IdCours SERIAL REFERENCES CoursPlancheVoile(IdCours)
+IdPrixMateriel int
 );
 
 DROP TABLE IF EXISTS Flotteur CASCADE;
 CREATE TABLE Flotteur(
-IdPlancheVoile Serial PRIMARY KEY REFERENCES PlancheAVoile(IdPlancheVoile),
-Taille ETailleFlotteur
+IdFlotteur Serial,
+IdPlancheVoile int,
+Capacite ECapaciteFlotteur,
+CONSTRAINT PK_Flotteur PRIMARY KEY (IdFlotteur, IdPlancheVoile)
 );
 
 DROP TABLE IF EXISTS PiedDeMat CASCADE;
 CREATE TABLE PiedDeMat(
-IdPlancheVoile Serial PRIMARY KEY REFERENCES PlancheAVoile(IdPlancheVoile)
+IdPiedDeMat Serial,
+IdPlancheVoile int,
+CONSTRAINT PK_PiedDeMat PRIMARY KEY (IdPiedDeMat, IdPlancheVoile)
 );
-
 
 DROP TABLE IF EXISTS Voile CASCADE;
 CREATE TABLE Voile(
-IdPlancheVoile Serial PRIMARY KEY REFERENCES PlancheAVoile(IdPlancheVoile)
+IdVoile Serial,
+IdPlancheVoile int,
+Taille ETailleVoile,
+CONSTRAINT PK_Voile PRIMARY KEY (IdVoile, IdPlancheVoile)
 );
-
 
 DROP TABLE IF EXISTS Diplome CASCADE;
 CREATE TABLE Diplome(
 IdDiplome SERIAL PRIMARY KEY,
-DateObtention date,
-DocumentPDF bytea
+DateObtention Date,
+DocumentPDF bytea,
+IdMoniteur int
 );
 
 DROP TABLE IF EXISTS CompteEmploye CASCADE;
 CREATE TABLE CompteEmploye (
 IdCompte SERIAL PRIMARY KEY,
 NomUtilisateur varchar(30),
-MotDePasse varchar(20),
+MotDePasse varchar(100),
 Nom Varchar(30),
 Prenom Varchar(30),
 DateNaissance Date,
 Mail Varchar(50),
 NumTelephone Varchar(10),
 TypeEmploye EtypeEmploye null,
-IdDiplome serial REFERENCES Diplome(IdDiplome), -- FK ajoutée après l'insertion des données
-IdPermis serial REFERENCES PermisBateau(IdPermis)
+IdDiplome int,
+IdPermis int
 );
 
 DROP TABLE IF EXISTS PermisBateau CASCADE;
 CREATE TABLE PermisBateau(
 IdPermis SERIAL PRIMARY KEY,
+DateObtention Date,
 DocumentPDF bytea,
-DateObtention Date
+IdProprietaire int
 );
 
 DROP TABLE IF EXISTS Reservation CASCADE;
 CREATE TABLE Reservation (
-IdCours SERIAL REFERENCES CoursPlancheVoile(IdCours),
-IdPlancheVoile SERIAL REFERENCES PlancheAVoile(IdPlancheVoile),
+IdCours int,
+IdPlancheVoile int,
 PRIMARY KEY (IdCours, IdPlancheVoile)
 );
