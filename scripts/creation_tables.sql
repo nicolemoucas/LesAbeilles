@@ -109,6 +109,7 @@ CREATE TABLE CoursPlancheVoile(
 IdCours SERIAL PRIMARY KEY,
 DateHeure timestamp,
 Niveau EStatutClient,
+EtatCours EEtatCours,
 IdCompte int
 );
 
