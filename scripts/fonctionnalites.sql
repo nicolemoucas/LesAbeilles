@@ -54,7 +54,7 @@ END;
 $BODY$
 LANGUAGE PlpgSQL;
 
---5 - Consulter la liste des employés
+--6 - Consulter la liste des employés
 CREATE OR REPLACE FUNCTION ConsulterListeEmploye()
 RETURNS TABLE (
     Nom VARCHAR(30),
@@ -78,7 +78,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
---  6- Afficher profil Employe 
+--  7- Afficher profil Employe 
 DROP FUNCTION IF EXISTS AfficherProfilEmploye(Nom VARCHAR(30), Prenom VARCHAR(30));
 CREATE OR REPLACE FUNCTION AfficherProfilEmploye(Nom VARCHAR(30), Prenom VARCHAR(30))
 RETURNS TABLE (
