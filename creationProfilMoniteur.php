@@ -1,3 +1,6 @@
+<?php
+    session_start(); 
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,7 +8,7 @@
         <script>
             function alertMoniteurExists() {
                 alert("Ce moniteur existe déjà.");
-                window.location.href= 'http://localhost/LesAbeilles';
+                window.location.href= 'http://localhost/LesAbeilles/AccueilPropriétaire.php';
             }
         </script>
     </head>
@@ -17,7 +20,7 @@
             
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
-            session_start(); 
+
             
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
     
@@ -43,7 +46,7 @@
                     $mailMoniteur, 
                     $telMoniteur
                 )); 
-                header('Location: http://localhost/LesAbeilles');
+                header('Location: http://localhost/LesAbeilles/AccueilPropriétaire.php');
             }
         ?>
     </body>

@@ -1,3 +1,7 @@
+<?php
+    // Start the session
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -34,7 +38,8 @@
             <option value="Reçu">Reçu</option>
             <option value="Fonctionnel">Fonctionnel</option>
             <option value="Hors service">Hors service</option>
-            <option value="Mis au rebut">Mis au rebut</option>
+            <?php if ($_SESSION["role"] === 'Propriétaire') 
+            echo '<option value="Mis au rebut">Mis au rebut</option>' ?>
         </select>
 
         <button type="submit" style="background-color: #3498db; color: white;">Changer l'état</button>

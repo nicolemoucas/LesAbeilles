@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html>
+<?php
+    // Start the session
+    session_start();
+?>
     <link rel="stylesheet" type="text/css" href="css/inscription.css" />
     <link rel="stylesheet" href="css/styles.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -15,10 +19,10 @@
         <?php
             // débogage, mettre en 1 pour afficher les erreurs, 0 pour les cacher
             header('Access-Control-Allow-Origin: *');
-            ini_set('display_errors', 0);
-            ini_set('display_startup_errors', 0);
-            session_start(); 
-            $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
+          
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=" .$_SESSION["identifiant"]." password=" . $_SESSION["motdepasse"]) or die("Impossible de se connecter : " . pg_result_error($connexion));
             
             //pour la combobox des noms de campings
             $requete = "SELECT unnest(enum_range(NULL::ECamping)) AS ECamp";

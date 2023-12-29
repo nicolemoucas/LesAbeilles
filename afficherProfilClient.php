@@ -1,3 +1,7 @@
+<?php
+    // Start the session
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,9 +12,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">   
         <title> Profil client </title>
         <script>
-            function alertClientExists() {
+            function redirectionPropriétaire() {
+                window.location.href= 'http://localhost/LesAbeilles/AccueilPropriétaire.php';
+            }
+
+            function redirectionMoniteur() {
+                window.location.href= 'http://localhost/LesAbeilles/AccueilMoniteur.php';
+            }
+            function redirection(role){
+                switch (role) {
+                    case 'Propriétaire':
+                        redirectionPropriétaire();
+                        break;
+                    case 'Moniteur':
+                        redirectionMoniteur();
+                        break;
+                }
+            }
+            function alertClientExists(role) {
                 alert("Ce client n'existe pas.");
-                window.location.href= 'http://localhost/LesAbeilles';
+                switch (role) {
+                    case 'Propriétaire':
+                        redirectionPropriétaire();
+                        break;
+                    case 'Moniteur':
+                        redirectionMoniteur();
+                        break;
+                }
             }
         </script>
     </head>
@@ -22,9 +50,8 @@
         <?php
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
-            session_start(); 
             
-            $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
+            $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=" .$_SESSION["identifiant"]." password=" . $_SESSION["motdepasse"]) or die("Impossible de se connecter : " . pg_result_error($connexion));
 
             $nomClient = $_POST["NomClient"];
             $prenomClient = $_POST["PrenomClient"];
@@ -35,7 +62,7 @@
 
         
             if(pg_num_rows($recupClient) == 0) {
-                echo '<script type="text/javascript"> alertClientExists(); </script>';
+                echo '<script type="text/javascript"> alertClientExists("'.$_SESSION["role"].'"); </script>';
             } else {
                 $row = pg_fetch_object($recupClient);
                 
@@ -73,9 +100,10 @@
         <div>
         <form method="post" name="formulaire" novalidate="" class="form">
             <div>
-                <a href="index.php" class="button">Retour</a>
+                <button class="button" formaction="javascript:redirection('<?php echo $_SESSION["role"]?>')">Retour</a>
                 <button class="button" formaction="#">Modifier le profil</button>
-                <button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>
+                <?php if ($_SESSION["role"] === 'Propriétaire') 
+                echo '<button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>'?>
             </div>
             <label for="NomClient" class="label">NOM</label><br>
             <input type="text" id="NomClient" name="NomClient" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomcl ?>" required/>

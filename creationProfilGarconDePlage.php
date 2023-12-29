@@ -11,7 +11,7 @@ session_start();
         <script>
             function alertGarconDePlageExists() {
                 alert("Ce garçon de plage existe déjà.");
-                window.location.href= 'http://localhost/LesAbeilles';
+                window.location.href= 'http://localhost/LesAbeilles/AccueilPropriétaire.php';
             }
         </script>
         <style>
@@ -126,7 +126,7 @@ session_start();
                         ));
     
                         // Redirection après l'insertion
-                        header('Location: http://localhost/LesAbeilles');
+                        header('Location: http://localhost/LesAbeilles/AccueilPropriétaire.php');
                     }
                 }
     

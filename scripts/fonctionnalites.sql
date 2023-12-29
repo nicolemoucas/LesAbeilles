@@ -25,10 +25,10 @@ LANGUAGE PlpgSQL;
 DROP PROCEDURE IF EXISTS supprimer_client;
 CREATE OR REPLACE PROCEDURE supprimer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE) AS $BODY$
 DECLARE
-    idClient INTEGER;
+    idPersonne INTEGER;
 BEGIN  
-    SELECT INTO idClient idpers FROM (SELECT * FROM recherche_client($1, $2, $3)) AS client;
-	DELETE FROM Client WHERE idPersonne = idClient;
+    SELECT INTO idPersonne idpers FROM (SELECT * FROM recherche_client($1, $2, $3)) AS client;
+	DELETE FROM Client WHERE idClient = idPersonne;
 	
 END;
 $BODY$
@@ -105,4 +105,28 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP FUNCTION IF EXISTS verification_utilisateur;
+CREATE OR REPLACE FUNCTION verification_utilisateur(identifiant VARCHAR, mdp VARCHAR)
+RETURNS BOOLEAN AS $$
+DECLARE 
+    mdpcrypte VARCHAR;
+BEGIN
+    SELECT INTO mdpcrypte motdepasse FROM informations_connexion WHERE nomutilisateur=$1;
+    IF mdpcrypte IS NOT NULL THEN 
+        RETURN (SELECT (mdpcrypte= crypt($2, mdpcrypte)));
+    ELSE
+        RETURN FALSE;
+    END IF;
+END;
+$$ Language PlpgSQL;
 
+DROP FUNCTION IF EXISTS fetch_role_utilisateur;
+CREATE OR REPLACE FUNCTION fetch_role_utilisateur(identifiant VARCHAR, mdp VARCHAR)
+RETURNS etypeemploye AS $$
+DECLARE 
+        mdpcrypte VARCHAR;
+BEGIN
+    SELECT INTO mdpcrypte motdepasse FROM informations_connexion WHERE nomutilisateur=$1;
+    RETURN (SELECT typeemploye FROM informations_connexion WHERE nomutilisateur = $1 AND motdepasse = crypt($2, mdpcrypte));
+END;
+$$ Language PlpgSQL;
