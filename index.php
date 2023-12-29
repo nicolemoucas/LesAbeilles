@@ -18,7 +18,7 @@
             <div class="fonctionnalites">
                 <a href="#" class="button">Créer un profil propriétaire</a>
                 <a href="inscriptionMoniteur.php" class="button">Créer un profil moniteur</a>
-                <a href="#" class="button">Créer un profil garçon de plage</a>
+                <a href="creationProfilGarconDePlage.php" class="button">Créer un profil garçon de plage</a>
                 <a href="inscriptionClient.php" class="button">Créer un profil client</a>
                 <a href="rechercherClient.php" class="button">Rechercher un client</a>
                 <a href="#" class="button">Rechercher un cours</a>
