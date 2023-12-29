@@ -146,40 +146,40 @@ INSERT INTO PrixMateriel (IdPrixMateriel, NomMateriel, PrixDemiHeure, PrixHeure)
 SELECT * FROM PrixMateriel;
 
 -- Materiel
-SELECT enum_range(null::EStatutMateriel); --"{Reçu,Fonctionnel,""Hors service"",""Mis au rebut""}"
+SELECT enum_range(null::EStatutMateriel); --"{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
 
 --- Catamaran Hobie Cart 15 (prix materiel 1) OK
-INSERT INTO Catamaran (IdCatamaran, Disponible, NbPlaces, Statut, IdPrixMateriel) VALUES
-	(DEFAULT, TRUE, 4, 'Fonctionnel', 1),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', 1);
+INSERT INTO Catamaran (IdCatamaran, NbPlaces, Statut, IdPrixMateriel) VALUES
+	(DEFAULT, 4, 'Fonctionnel', 1),
+	(DEFAULT, 4, 'Fonctionnel', 1);
 SELECT * FROM Catamaran;
 
 -- Stand Up Paddle (prix materiel 3) OK
-INSERT INTO StandUpPaddle (IdStandUpPaddle, Disponible, NbPlaces, Statut, Capacite, IdPrixMateriel) VALUES
-	(DEFAULT, TRUE, 4, 'Reçu', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Reçu', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', '200l', 3),
-	(DEFAULT, FALSE, 4, 'Hors service', '200l', 3),
-	(DEFAULT, FALSE, 4, 'Hors service', '200l', 3),
-	(DEFAULT, FALSE, 4, 'Hors service', '200l', 3);
+INSERT INTO StandUpPaddle (IdStandUpPaddle, NbPlaces, Statut, Capacite, IdPrixMateriel) VALUES
+	(DEFAULT, 4, 'Reçu', '200l', 3),
+	(DEFAULT, 4, 'Reçu', '200l', 3),
+	(DEFAULT, 4, 'Fonctionnel', '200l', 3),
+	(DEFAULT, 4, 'Fonctionnel', '200l', 3),
+	(DEFAULT, 4, 'Fonctionnel', '200l', 3),
+	(DEFAULT, 4, 'Fonctionnel', '200l', 3),
+	(DEFAULT, 4, 'Fonctionnel', '200l', 3),
+	(DEFAULT, 4, 'Hors service', '200l', 3),
+	(DEFAULT, 4, 'Hors service', '200l', 3),
+	(DEFAULT, 4, 'Hors service', '200l', 3);
 SELECT * FROM StandUpPaddle;
 
 --- Planche A Voile (prix materiel 2) OK
-INSERT INTO PlancheAVoile (IdPlancheVoile, Disponible, NbPlaces, Statut, IdPrixMateriel) VALUES
-	(DEFAULT, TRUE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --2 
-	(DEFAULT, TRUE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --4
-	(DEFAULT, TRUE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --6
-	(DEFAULT, TRUE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --8 
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --10
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --12
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --14
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --16
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --18
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2); --20
+INSERT INTO PlancheAVoile (IdPlancheVoile, NbPlaces, Statut, IdPrixMateriel) VALUES
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --2 
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --4
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --6
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --8 
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --10
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --12
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --14
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --16
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --18
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2); --20
 SELECT * FROM PlancheAVoile;
 
 -- Flotteur (Planche à Voile) OK
@@ -253,11 +253,11 @@ INSERT INTO Voile (IdVoile, IdPlancheVoile, Taille) VALUES
 SELECT * FROM Voile;
 
 -- Pédalo (prix materiel 4) OK
-INSERT INTO Pedalo (IdPedalo, Disponible, NbPlaces, Statut, IdPrixMateriel) VALUES
-	(DEFAULT, TRUE, 4, 'Fonctionnel', 4),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', 4),
-	(DEFAULT, FALSE, 4, 'Fonctionnel', 4),
-	(DEFAULT, FALSE, 4, 'Hors service', 4);
+INSERT INTO Pedalo (IdPedalo, NbPlaces, Statut, IdPrixMateriel) VALUES
+	(DEFAULT, 4, 'Fonctionnel', 4),
+	(DEFAULT, 4, 'Fonctionnel', 4),
+	(DEFAULT, 4, 'Fonctionnel', 4),
+	(DEFAULT, 4, 'Hors service', 4);
 SELECT * FROM Pedalo;
 	 
 -- Réservation
