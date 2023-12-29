@@ -114,10 +114,10 @@ INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, Da
 -- Moniteurs OK
 INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye, IdDiplome) VALUES
 	(DEFAULT, 'jbond', crypt('jbond', gen_salt('bf')), 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', '0699887766', 'Moniteur', 2),
-	(DEFAULT, 'ffleuriot', crypt('ffleuriot', gen_salt('bf')), 'FLEURIOT', 'Florent', '1980-05-29', 'ff@gmail.be', '0694857601', 'Moniteur', 4);
+	(DEFAULT, 'ffleuriot', crypt('ffleuriot', gen_salt('bf')), 'FLEURIOT', 'Florent', '1980-05-29', 'ff@gmail.be', '0694857601', 4),
+	(DEFAULT, 'hmeyer', crypt('hmeyer', gen_salt('bf')), 'MEYER', 'Hugo', '2000-02-02', 'hmeyer@gmail.lu', '0785948372', 'Moniteur', 3);
 -- Garçons de plage OK
 INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
-	(DEFAULT, 'hmeyer', crypt('hmeyer', gen_salt('bf')), 'MEYER', 'Hugo', '2000-02-02', 'hmeyer@gmail.lu', '0785948372', 'Garçon de Plage'),
 	(DEFAULT, 'dlee', crypt('dlee', gen_salt('bf')), 'LEE', 'David', '1996-08-04', 'dlee@outlook.fr', '0649586700', 'Garçon de Plage'),
 	(DEFAULT, 'lpetit', crypt('lpetit', gen_salt('bf')), 'PETIT', 'Laura', '1993-06-04', 'lpetit@gmail.fr', '0766548392', 'Garçon de Plage');
 SELECT * FROM CompteEmploye;
