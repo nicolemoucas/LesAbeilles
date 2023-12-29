@@ -53,3 +53,56 @@ BEGIN
 END;
 $BODY$
 LANGUAGE PlpgSQL;
+
+--6 - Consulter la liste des employés
+CREATE OR REPLACE FUNCTION ConsulterListeEmploye()
+RETURNS TABLE (
+    Nom VARCHAR(30),
+    Prenom VARCHAR(30),
+    Mail VARCHAR(50),
+    NumTelephone VARCHAR(16),
+    DateNaissance DATE,
+    TypeEmploye EtypeEmploye
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        ce.nom,
+        ce.prenom,
+        ce.mail,
+        ce.numtelephone,
+        ce.datenaissance,
+        ce.typeemploye
+    FROM
+        compteemploye ce;
+END;
+$$ LANGUAGE plpgsql;
+
+--  7- Afficher profil Employe 
+DROP FUNCTION IF EXISTS AfficherProfilEmploye(Nom VARCHAR(30), Prenom VARCHAR(30));
+CREATE OR REPLACE FUNCTION AfficherProfilEmploye(Nom VARCHAR(30), Prenom VARCHAR(30))
+RETURNS TABLE (
+    nomEmploye VARCHAR(30),
+    prenomEmploye VARCHAR(30),
+    dateNaissanceEmploye DATE,
+    mail VARCHAR(50),
+    numTelephone VARCHAR(30),
+    TypeEmploye EtypeEmploye
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        Ce.nom,
+        Ce.prenom,
+        Ce.datenaissance,
+        Ce.mail,
+        Ce.numtelephone,
+        Ce.TypeEmploye
+    FROM
+        CompteEmploye Ce
+    WHERE
+        lower(Ce.nom) = lower($1) AND lower(Ce.prenom) = lower($2);
+END;
+$$ LANGUAGE plpgsql;
+
+
