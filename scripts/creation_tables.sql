@@ -87,7 +87,6 @@ IdPaiement SERIAL PRIMARY KEY,
 DateHeure timestamp,
 Montant float,
 MoyenPaiement EMoyenPaiement
-MoyenPaiement EMoyenPaiement
 );
 
 DROP TABLE IF EXISTS Location CASCADE;
