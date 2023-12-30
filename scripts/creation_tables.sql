@@ -42,17 +42,10 @@ Mail Varchar(50),
 NumTelephone Varchar(10),
 Camping ECamping,
 Statut EStatutClient,
-Taille float,
+Taille int, -- en centimètres
 Poids float,
 PreferenceContact EPreferenceContact,
 IdCertificat int
-);
-
-DROP TABLE IF EXISTS EstParentDe CASCADE;
-CREATE TABLE EstParentDe(
-IdParent int,
-IdEnfant int,
-PRIMARY KEY (IdParent, IdEnfant)
 );
 
 DROP TABLE IF EXISTS CertificatMedical CASCADE;
