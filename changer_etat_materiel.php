@@ -32,7 +32,7 @@
             <option value="Catamaran">Catamaran</option>
             <option value="PlancheVoile">Planche à voile</option>
         </select>
-
+<?php echo $_SESSION["role"] ?>
         <label for="nouvel_etat">Nouvel état :</label>
         <select name="nouvel_etat" required>
             <option value="Reçu">Reçu</option>
