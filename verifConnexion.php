@@ -16,8 +16,8 @@
                     alert("Votre identifiant ou votre mot de passe est erroné. Veuillez réessayer.");
                     window.location.href= 'http://localhost/LesAbeilles/NomProvisoire.php';
                 }
-        function redirectionPropriétaire() {
-            window.location.href= 'http://localhost/LesAbeilles/AccueilPropriétaire.php';
+        function redirectionProprietaire() {
+            window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
         }
 
         function redirectionMoniteur() {
@@ -53,7 +53,7 @@
 
                switch ($role->fetch_role_utilisateur) {
                     case 'Propriétaire':
-                        echo '<script type="text/javascript"> redirectionPropriétaire(); </script>';
+                        echo '<script type="text/javascript"> redirectionProprietaire(); </script>';
                         break;
                     case 'Moniteur':
                         echo '<script type="text/javascript"> redirectionMoniteur(); </script>';

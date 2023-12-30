@@ -8,7 +8,7 @@
         <script>
             function alertMoniteurExists() {
                 alert("Ce moniteur existe déjà.");
-                window.location.href= 'http://localhost/LesAbeilles/AccueilPropriétaire.php';
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
         </script>
     </head>
@@ -63,7 +63,7 @@
                     $row[0]
                 ));
                 // alert("Le compte moniteur pour $prenomMoniteur $nomMoniteur a été créé.");
-                header('Location: http://localhost/LesAbeilles/AccueilPropriétaire.php');
+                header('Location: http://localhost/LesAbeilles/AccueilProprietaire.php');
             }
         ?>
     </body>

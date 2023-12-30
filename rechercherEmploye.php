@@ -31,6 +31,7 @@
         ?>
         <div class="corps">
             <h1>Rechercher un employé</h1>
+            <p>* Champs obligatoires</p>
             <form method="post" name="formulaire" novalidate="" class="form" action="afficherProfilEmploye.php">
 
                 <div>
@@ -43,17 +44,23 @@
                 </div>
                 <br>
 
-                <label for="NomEmploye" class="label">NOM</label><br>
+                <label for="NomEmploye" class="label">NOM *</label><br>
                 <input type="text" id="NomEmploye" name="NomEmploye" placeholder="Ex : BOULANGER" required/>
                 <div id="nomError" class="error"></div><br>
 
-                <label for="PrenomEmploye">Prénom</label><br>
+                <label for="PrenomEmploye">Prénom *</label><br>
                 <input type="text" id="PrenomEmploye" name="PrenomEmploye" placeholder="Ex : Jean Michel" required/>
                 <div id="prenomError" class="error"></div><br>
 
-                <label for="DateNaissanceEmploye">Date de naissance</label><br>
+                <label for="DateNaissanceEmploye">Date de naissance *</label><br>
                 <input type="date" id="DateNaissanceEmploye" name= "DateNaissanceEmploye" placeholder="Ex : 08/01/1975" required/>
                 <div id="dateNaisError" class="error"></div><br>
+
+                <label for="MailEmploye">Email</label><br>
+                <input type="email" id="MailEmploye" name="MailEmploye" placeholder="Ex : boulangerjm@free.fr"/><br><br>
+
+                <label for="TelEmploye" pattern="0[0-9]{9}">Numéro de téléphone</label><br>
+                <input type="text" id="TelEmploye" name="TelEmploye" placeholder="Ex : 0777764231"/><br><br>
 
                 <div>
                     <button class="button">Rechercher</button>
@@ -72,8 +79,14 @@
         let isValid = true;
         console.log(formulaire);
 
-        const roleError = document.getElementById("roleError")
+        if((!formulaire.MailEmploye.value) && (!formulaire.TelEmploye.value)) {
+            alert("Il faut renseigner un email ou un numéro de téléphone.");
+            formulaire.MailEmploye.className="invalid";
+            formulaire.TelEmploye.className="invalid";
+            isValid = false;
+        }
 
+        const roleError = document.getElementById("roleError")
         if(formulaire.RoleEmploye.validity.valid) {
             roleError.textContent = "";
             roleError.className = "error"
@@ -86,7 +99,6 @@
         }
 
         const nomError = document.getElementById("nomError")
-
         if(formulaire.NomEmploye.validity.valid) {
             nomError.textContent = "";
             nomError.className = "error"
@@ -99,7 +111,6 @@
         }
 
         const prenomError = document.getElementById("prenomError")
-
         if(formulaire.PrenomEmploye.validity.valid) {
             prenomError.textContent = "";
             prenomError.className = "error"
@@ -112,7 +123,6 @@
         }
 
         const dateNaisError = document.getElementById("dateNaisError")
-
         if(formulaire.DateNaissanceEmploye.validity.valid) {
             dateNaisError.textContent = "";
             dateNaisError.className = "error"

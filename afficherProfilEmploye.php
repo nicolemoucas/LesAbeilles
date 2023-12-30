@@ -1,3 +1,7 @@
+<?php
+    // Start the session
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,11 +10,37 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">   
-        <title> Profil employé </title>
+        <title>Profil employé</title>
         <script>
+            function redirectionProprietaire() {
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
+            }
+
+            function redirectionMoniteur() {
+                window.location.href= 'http://localhost/LesAbeilles/AccueilMoniteur.php';
+            }
+
+            function redirection(role){
+                switch (role) {
+                    case 'Propriétaire':
+                        redirectionProprietaire();
+                        break;
+                    case 'Moniteur':
+                        redirectionMoniteur();
+                        break;
+                }
+            }
+
             function alertEmployeExists() {
-                alert("Cet employé n'existe pas.");
-                window.location.href= 'http://localhost/LesAbeilles';
+                alert("Cet employé n'existe pas. Vous serez redirigé sur l'écran d'accueil.");
+                switch (role) {
+                    case 'Propriétaire':
+                        redirectionProprietaire();
+                        break;
+                    case 'Moniteur':
+                        redirectionMoniteur();
+                        break;
+                }
             }
         </script>
     </head>
@@ -29,10 +59,11 @@
             $nomEmploye = $_POST["NomEmploye"];
             $prenomEmploye = $_POST["PrenomEmploye"];
             $dateNaissEmploye = $_POST["DateNaissanceEmploye"];
+            $mailEmploye = $_POST["MailEmploye"];
+            $telEmploye = $_POST["TelEmploye"];
     
-            $recupEmploye = pg_prepare($connexion, "recup_employe", 'SELECT * FROM recherche_employe($1,$2,$3)');
-            $recupEmploye = pg_execute($connexion, "recup_employe", array($nomEmploye, $prenomEmploye, $dateNaissEmploye)); 
-
+            $recupEmploye = pg_prepare($connexion, "recup_employe", 'SELECT * FROM f_rechercher_employe($1,$2,$3,$4,$5)');
+            $recupEmploye = pg_execute($connexion, "recup_employe", array($nomEmploye, $prenomEmploye, $dateNaissEmploye, $emailEmploye, $numTelEmploye)); 
         
             if(pg_num_rows($recupEmploye) == 0) {
                 echo '<script type="text/javascript"> alertEmployeExists(); </script>';
@@ -41,7 +72,7 @@
             }
         ?>
     <div>
-        <h1>Profil employé : <?php echo $row->prenomcl . ' ' .$row->nomcl?></h1>
+        <h1>Profil employé : <?php echo $row->prenomemp . ' ' .$row->nomemp?></h1>
     </div>
         <div>
         <form method="post" name="formulaire" novalidate="" class="form">
@@ -53,15 +84,15 @@
 
             <label for="NomEmploye" class="label">Rôle</label><br>
             <?php echo $Post[RoleEmploye]; ?>
-            <input type="text" id="NomEmploye" name="NomEmploye" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomcl ?>" required/>
+            <input type="text" id="NomEmploye" name="NomEmploye" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomemp ?>" required/>
             <div id="nomError" class="error"></div><br>
             
             <label for="NomEmploye" class="label">NOM</label><br>
-            <input type="text" id="NomEmploye" name="NomEmploye" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomcl ?>" required/>
+            <input type="text" id="NomEmploye" name="NomEmploye" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomemp ?>" required/>
             <div id="nomError" class="error"></div><br>
                 
             <label for="PrenomEmploye">Prénom</label><br>
-            <input type="text" id="PrenomEmploye" name="PrenomEmploye" placeholder="Ex : Jean Michel" value= "<?php echo $row->prenomcl ?>" required/>
+            <input type="text" id="PrenomEmploye" name="PrenomEmploye" placeholder="Ex : Jean Michel" value= "<?php echo $row->prenomemp ?>" required/>
             <div id="prenomError" class="error"></div><br>
 
             <label for="DateNaissanceEmploye">Date de naissance</label><br>
@@ -71,7 +102,7 @@
             <label for="MailEmploye"> Email </label><br>
             <input type="email" id="MailEmploye" name="MailEmploye" placeholder="Ex : boulangerjm@free.fr"value= "<?php echo $row->mailcl ?>" /><br><br>
 
-            <label for="TelEmploye" pattern="0[0-9]{9}" value="<?php echo $row->numtelephonecl ?>" >Numéro de téléphone</label><br>
+            <label for="TelEmploye" pattern="0[0-9]{9}" value="<?php echo $row->numtelephonecl ?>">Numéro de téléphone</label><br>
             <input type="text" id="TelEmploye" name="TelEmploye" placeholder="Ex : 0777764231"/><br><br>
             
             </form>
@@ -86,7 +117,7 @@
     function confirmerSuppression() {
         const formulaire = document.formulaire;
         if(confirm("Voulez-vous vraiment supprimer le profil de cet employé ?")) {
-            const url = 'supprimerProfilEmploye.php?nom=' + formulaire.NomEmploye.value + '&prenom=' + formulaire.PrenomEmploye.value  + '&dateNaiss=' + formulaire.DateNaissanceEmploye.value ;
+            const url = 'supprimerProfilEmploye.php?nom=' + formulaire.NomEmploye.value + '&prenom=' + formulaire.PrenomEmploye.value + '&dateNaiss=' + formulaire.DateNaissanceEmploye.value + '&mail=' + formulaire.MailEmploye.value  + '&numTel=' + formulaire.TelEmploye.value ;
             document.location = url;
         }
     }

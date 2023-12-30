@@ -215,7 +215,3 @@ IdCours int,
 IdPlancheVoile int,
 PRIMARY KEY (IdCours, IdPlancheVoile)
 );
-
-DROP VIEW IF EXISTS informations_connexion CASCADE;
-CREATE VIEW informations_connexion AS
-SELECT nomutilisateur, motdepasse, typeemploye FROM compteemploye;

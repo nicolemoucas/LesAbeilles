@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Création du profil moniteur </title>
+        <title> Création du profil propriétaire </title>
         <script>
-            function alertMoniteurExists() {
-                alert("Ce moniteur existe déjà.");
+            function alertProprietaireExists() {
+                alert("Ce propriétaire existe déjà. Vous allez être redirigé vers l'accueil.");
                 window.location.href= 'http://localhost/LesAbeilles';
             }
         </script>
     </head>
     <body>
     <div>
-        <h1>Formulaire de création du profil moniteur :</h1>
+        <h1>Formulaire de création du profil propriétaire :</h1>
     </div>
         <?php
             ini_set('display_errors', 1);
@@ -22,32 +22,31 @@
     
             $nomUtilisateur = $_POST["NomUtilisateur"];
             $motDePasse = $_POST["MotDePasse"];
-            $nomMoniteur = $_POST["NomMoniteur"];
-            $prenomMoniteur = $_POST["PrenomMoniteur"];
-            $dateNaissMoniteur = $_POST["DateNaissanceMoniteur"];
-            $mailMoniteur = $_POST["MailMoniteur"];
-            $telMoniteur = $_POST["TelMoniteur"];
-            $prefContactMoniteur = $_POST["PrefContactMoniteur"];
+            $nomProprietaire = $_POST["NomProprietaire"];
+            $prenomProprietaire = $_POST["PrenomProprietaire"];
+            $dateNaissProprietaire = $_POST["DateNaissanceProprietaire"];
+            $mailProprietaire = $_POST["MailProprietaire"];
+            $telProprietaire = $_POST["TelProprietaire"];
+            $prefContactProprietaire = $_POST["PrefContactProprietaire"];
             $dateObtentionDiplome = $_POST["DateObtentionDiplome"];
             $lienURLDiplome = $_POST["LienURLDiplome"];
     
-            $verifMoniteur = pg_prepare($connexion, "verif_moniteur", "SELECT f_rechercher_employe('Moniteur',$1,$2,$3,$4,$5)");
-            $verifMoniteur = pg_execute($connexion, "verif_moniteur", array($nomMoniteur, $prenomMoniteur, $dateNaissMoniteur, $mailMoniteur, $telMoniteur)); 
+            $verifProprietaire = pg_prepare($connexion, "verif_proprietaire", "SELECT f_rechercher_employe('Proprietaire',$1,$2,$3,$4,$5)");
+            $verifProprietaire = pg_execute($connexion, "verif_proprietaire", array($nomProprietaire, $prenomProprietaire, $dateNaissProprietaire, $mailProprietaire, $telProprietaire)); 
             
-            if(pg_num_rows($verifMoniteur) > 0) {
-                echo '<script type="text/javascript"> alertMoniteurExists(); </script>';
-;
+            if(pg_num_rows($verifProprietaire) > 0) {
+                echo '<script type="text/javascript"> alertProprietaireExists(); </script>';
             } else {
-                // insérer nouveau moniteur et récupérer son idCompte
-                $requete = pg_prepare($connexion, "inserer_moniteur", 'SELECT f_creer_moniteur($1, $2, $3, $4, $5, $6, $7)');
-                $result = pg_execute($connexion, "inserer_moniteur", array(
+                // insérer nouveau propriétaire et récupérer son idCompte
+                $requete = pg_prepare($connexion, "inserer_proprietaire", 'SELECT f_creer_proprietaire($1, $2, $3, $4, $5, $6, $7)');
+                $result = pg_execute($connexion, "inserer_proprietaire", array(
                     $nomUtilisateur,
                     $motDePasse,
-                    $nomMoniteur, 
-                    $prenomMoniteur, 
-                    $dateNaissMoniteur,  
-                    $mailMoniteur, 
-                    $telMoniteur
+                    $nomProprietaire, 
+                    $prenomProprietaire, 
+                    $dateNaissProprietaire,  
+                    $mailProprietaire, 
+                    $telProprietaire
                 ));
                 $row = pg_fetch_row($result);
                 // echo "$row[0]"; // idCompte
@@ -58,7 +57,7 @@
                     $lienURLDiplome,
                     $row[0]
                 ));
-                // alert("Le compte moniteur pour $prenomMoniteur $nomMoniteur a été créé.");
+                // alert("Le compte propriétaire pour $prenomProprietaire $nomProprietaire a été créé.");
                 header('Location: http://localhost/LesAbeilles');
             }
         ?>
