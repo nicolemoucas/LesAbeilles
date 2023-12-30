@@ -22,7 +22,7 @@
                 <a href="inscriptionClient.php" class="button">Créer un profil client</a>
                 <a href="rechercherClient.php" class="button">Rechercher un client</a>
                 <a href="#" class="button">Rechercher un cours</a>
-                <a href="iInscription_client_cours_voile.php" class="button">inscription d'un Client à un cours</a>
+                <a href="inscription_client_cours_voile.php" class="button">Inscription d'un Client à un cours</a>
             </div>
 
             <br><br>
