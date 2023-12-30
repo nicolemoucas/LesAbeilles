@@ -7,7 +7,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> Création d'un profil moniteur</title>
+        <title> Création d'un profil propriétaire</title>
     </head>
     <body>
         <header>
@@ -32,9 +32,9 @@
         ?>
       
         <div class="corps">
-            <h1>Formulaire de création du profil moniteur :</h1>
+            <h1>Formulaire de création du profil propriétaire :</h1>
             <p>* Champs obligatoires</p>
-            <form method="post" name="formulaire" novalidate="" class="form" action="creationProfilMoniteur.php">-
+            <form method="post" name="formulaire" novalidate="" class="form" action="creationProfilMoniteur.php">
 
                 <label for="NomMoniteur" class="label">NOM *</label><br>
                 <input type="text" id="NomMoniteur" name="NomMoniteur" placeholder="Ex : BOULANGER" required/>
@@ -145,18 +145,6 @@
             prenomError.textContent = "Veuillez renseigner le prénom du moniteur."
             prenomError.className = "error active"
             formulaire.PrenomMoniteur.className= "invalid"
-            isValid = false;
-        }
-
-        const motDePasseError = document.getElementById("motDePasseError")
-        if(formulaire.MotDePasse.validity.valid) {
-            motDePasseError.textContent = "";
-            motDePasseError.className = "error";
-            formulaire.MotDePasse.className= "valid";
-        } else {
-            motDePasseError.textContent = "Veuillez renseigner le mot de passe du moniteur."
-            motDePasseError.className = "error active"
-            formulaire.MotDePasse.className= "invalid"
             isValid = false;
         }
 

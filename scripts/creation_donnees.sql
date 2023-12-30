@@ -1,12 +1,12 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto; -- pour crypter les mots de passe
 
 -- Certificat Médical OK
-INSERT INTO CertificatMedical (IdCertificat, DateDelivrance, DocumentPDF, IdClient) VALUES
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),-- example random pour pouvoir insérer les données
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13); 
+INSERT INTO CertificatMedical (IdCertificat, DateDelivrance, LienDocumentPDF, IdClient) VALUES
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1fbdICYRItidtTzYpYLW6ZWwdElZiG_-z/view?usp=drive_link', 13),-- example random pour pouvoir insérer les données
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1QlICJMIBRUyzmb50Bty8Jl8pqYZh2FnM/view?usp=drive_link', 14),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1NrU0QpN-17j-dyhuSIfgP4Ktff2X3cnW/view?usp=drive_link', 15),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1bdbLyyKGs9MPdf4hA1lj6g2vJgBwZiw2/view?usp=drive_link', 16),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1pYPuPtIbEho8oBHU9ZQyucOwM7YkT-uE/view?usp=drive_link', 17); 
 SELECT * FROM CertificatMedical;
 
 -- Type Forfait OK
@@ -36,19 +36,19 @@ INSERT INTO Paiement (IdPaiement, DateHeure, Montant, MoyenPaiement) VALUES
 SELECT * FROM Paiement;
 
 -- Diplôme OK
-INSERT INTO Diplome (IdDiplome, DateObtention, DocumentPDF, IdMoniteur) VALUES
-	(DEFAULT, '2021-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 3),-- example random pour pouvoir insérer les données
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 3),
-	(DEFAULT, '2020-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 4),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 4); 
+INSERT INTO Diplome (IdDiplome, DateObtention, LienDocumentPDF, IdMoniteur) VALUES
+	(DEFAULT, '2021-10-10', 'https://drive.google.com/file/d/1QiXghjblbhdeyqIvnLT9n_trK4Io1OU7/view?usp=drive_link', 3),-- example random pour pouvoir insérer les données
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1b3xjlb21cCZA392lbzGPY0tsQkc4tSeF/view?usp=drive_link', 3),
+	(DEFAULT, '2020-10-10', 'https://drive.google.com/file/d/1JpNlpyos-tFZ3AGmVEeWsaoLTIzkg24b/view?usp=drive_link', 4),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1BSGwX18SWwfXWR7w0b7Vc8L4jkx-ElkT/view?usp=drive_link', 4); 
 SELECT * FROM Diplome;
 SELECT * FROM CompteEmploye;
 
 -- Permis Bateau
-INSERT INTO PermisBateau (IdPermis, DateObtention, DocumentPDF, IdProprietaire) VALUES
-	(DEFAULT, '2022-01-02', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 1),
-	(DEFAULT, '2023-01-02', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 1),
-	(DEFAULT, '2023-01-02', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 2);
+INSERT INTO PermisBateau (IdPermis, DateObtention, LienDocumentPDF, IdProprietaire) VALUES
+	(DEFAULT, '2022-01-02', 'https://drive.google.com/file/d/1RunXqNU_UQaShvsZp63I5Wcr0HOVDzYW/view?usp=drive_link', 1),
+	(DEFAULT, '2023-01-02', 'https://drive.google.com/file/d/1foUCZ4RWaPsM_lUN7tOtj2phqaQfzGYV/view?usp=drive_link', 1),
+	(DEFAULT, '2023-01-02', 'https://drive.google.com/file/d/14bj8lZfiRb4LHh8pOBEx-byt5pK_p_E0/view?usp=drive_link', 2);
 SELECT * FROM PermisBateau;
 	
 -- Location
@@ -120,7 +120,8 @@ INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, Da
 INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
 	(DEFAULT, 'dlee', crypt('dlee', gen_salt('bf')), 'LEE', 'David', '1996-08-04', 'dlee@outlook.fr', '0649586700', 'Garçon de Plage'),
 	(DEFAULT, 'lpetit', crypt('lpetit', gen_salt('bf')), 'PETIT', 'Laura', '1993-06-04', 'lpetit@gmail.fr', '0766548392', 'Garçon de Plage');
-SELECT * FROM CompteEmploye;
+--SELECT * FROM CompteEmploye where typeemploye = 'Propriétaire';
+--SELECT * FROM CompteEmploye where typeemploye = 'Moniteur';
 
 -- Cours de Planche à Voile
 SELECT * FROM Client;
@@ -253,11 +254,11 @@ INSERT INTO Voile (IdVoile, IdPlancheVoile, Taille) VALUES
 SELECT * FROM Voile;
 
 -- Pédalo (prix materiel 4) OK
-INSERT INTO Pedalo (IdPedalo, NbPlaces, Statut, IdPrixMateriel) VALUES
-	(DEFAULT, 4, 'Fonctionnel', 4),
-	(DEFAULT, 4, 'Fonctionnel', 4),
-	(DEFAULT, 4, 'Fonctionnel', 4),
-	(DEFAULT, 4, 'Hors service', 4);
+INSERT INTO Pedalo (IdPedalo, Disponible, NbPlaces, Statut, IdPrixMateriel) VALUES
+	(DEFAULT, TRUE, 4, 'Fonctionnel', 4),
+	(DEFAULT, TRUE, 4, 'Fonctionnel', 4),
+	(DEFAULT, FALSE, 4, 'Fonctionnel', 4),
+	(DEFAULT, FALSE, 4, 'Hors service', 4);
 SELECT * FROM Pedalo;
 	 
 -- Réservation
