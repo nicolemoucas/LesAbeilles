@@ -20,7 +20,7 @@
                         <a href="#.php">Planning</a>
                     </li>
                     <li <?php if($current_url == 'cours_de_voile.php'){ echo 'class="current"';}?>>
-                        <a href="cours_de_voile.php">Cours de Voile</a>
+                        <a href="menu_cours_voile.php">Cours de Voile</a>
                     </li>
                     <li <?php if($current_url == 'gestion_materiel.php'){ echo 'class="current"';}?>>
                         <a href="gestion_materiel.php">Gestion du Matériel</a>

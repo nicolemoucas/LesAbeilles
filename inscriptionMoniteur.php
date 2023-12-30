@@ -1,3 +1,7 @@
+<?php
+    // Start the session
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" type="text/css" href="css/inscription.css" />
@@ -18,7 +22,6 @@
             header('Access-Control-Allow-Origin: *');
             ini_set('display_errors', 0);
             ini_set('display_startup_errors', 0);
-            session_start(); 
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
 
             //pour la combobox des préférences de contact

@@ -1,3 +1,7 @@
+<?php
+    // Start the session
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -28,13 +32,14 @@
             <option value="Catamaran">Catamaran</option>
             <option value="PlancheVoile">Planche à voile</option>
         </select>
-
+<?php echo $_SESSION["role"] ?>
         <label for="nouvel_etat">Nouvel état :</label>
         <select name="nouvel_etat" required>
             <option value="Reçu">Reçu</option>
             <option value="Fonctionnel">Fonctionnel</option>
             <option value="Hors service">Hors service</option>
-            <option value="Mis au rebut">Mis au rebut</option>
+            <?php if ($_SESSION["role"] === 'Propriétaire') 
+            echo '<option value="Mis au rebut">Mis au rebut</option>' ?>
         </select>
 
         <button type="submit" style="background-color: #3498db; color: white;">Changer l'état</button>
