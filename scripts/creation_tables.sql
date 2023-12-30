@@ -31,6 +31,7 @@ CREATE TYPE EEtatCours AS ENUM ('Prévu', 'En cours', 'Réalisé', 'Annulé');
 DROP TYPE IF EXISTS ETypeEmploye CASCADE;
 CREATE TYPE ETypeEmploye AS ENUM ('Propriétaire', 'Moniteur', 'Garçon de Plage', 'Annulé');
 
+
 -- Création des tables
 DROP Table IF EXISTS Client CASCADE;
 CREATE TABLE Client(

@@ -187,6 +187,16 @@ LANGUAGE PlpgSQL;
 --CALL p_creer_permis('2022-10-10', 'csdc', 2); --test
 --SELECT * FROM PermisBateau;DROP FUNCTION IF EXISTS verification_utilisateur;
 
+/* 12 - Trouver noms moniteurs */
+DROP FUNCTION IF EXISTS fetch_nom_moniteur;
+CREATE OR REPLACE FUNCTION fetch_nom_moniteur()
+RETURNS TABLE (id_moniteur INT, nom_moniteur VARCHAR, prenom_moniteur VARCHAR, date_moniteur DATE) AS $$
+
+BEGIN
+    RETURN QUERY (SELECT idcompte, nom, prenom, datenaissance FROM compteemploye WHERE typeemploye='Moniteur');
+END;
+$$ Language PlpgSQL;
+
 CREATE OR REPLACE FUNCTION verification_utilisateur(identifiant VARCHAR, mdp VARCHAR)
 RETURNS BOOLEAN AS $$
 DECLARE 
@@ -211,3 +221,21 @@ BEGIN
     RETURN (SELECT typeemploye FROM informations_connexion WHERE nomutilisateur = $1 AND motdepasse = crypt($2, mdpcrypte));
 END;
 $$ Language PlpgSQL;
+
+-- false si le moniteur est pas dispo, true s'il est dispo
+DROP FUNCTION IF EXISTS verification_moniteur_disponible;
+CREATE OR REPLACE FUNCTION verification_moniteur_disponible(idMoniteur INT, dateHeureCours TIMESTAMP)
+RETURNS BOOLEAN AS $$
+
+BEGIN
+     RETURN (SELECT(NOT EXISTS(SELECT * FROM coursplanchevoile WHERE idCompte = idMoniteur AND dateheure BETWEEN $2 - interval '2 hours' AND $2 + interval '2 hours' AND etatcours='Prévu')));
+END;
+$$ Language PlpgSQL;
+
+DROP PROCEDURE IF EXISTS creer_cours;
+CREATE OR REPLACE PROCEDURE creer_cours(horaireCours TIMESTAMP, nivCours EStatutClient, idMoniteur INT) AS $BODY$
+BEGIN
+    INSERT INTO CoursPlancheVoile(dateheure, niveau, etatcours, idcompte) VALUES ($1, $2, 'Prévu', $3);
+END;
+$BODY$
+LANGUAGE PlpgSQL;
