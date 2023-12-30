@@ -40,7 +40,7 @@
                 $row = pg_fetch_object($recupClient);
                 
             }
-            //pour la combobox des noms de campings
+            //pour la combobox des noms des campings
             $requete = "SELECT unnest(enum_range(NULL::ECamping)) AS ECamp";
             $listeCampings = pg_query($connexion, $requete);
             $campings_combobox_php = "";
@@ -58,7 +58,7 @@
                 $prefContact_combobox_php .= '<option value="' . $option->eprefcontact . '"' .$pselected . '>' . $option->eprefcontact . '</option>';
             }
             
-            //pour la combobox des statuts de clients
+            //pour la combobox des statuts des clients
             $requete="SELECT unnest(enum_range(NULL::EStatutClient)) AS EStatut";
             $listeStatutClient = pg_query($connexion, $requete);
             $statut_combobox_php= "";
@@ -67,66 +67,67 @@
                 $statut_combobox_php .= '<option value="' . $option->estatut . '"' .$selected . '>' . $option->estatut . '</option>';
             }
         ?>
-    <div>
-        <h1>Profil client : <?php echo $row->prenomcl . ' ' .$row->nomcl?></h1>
-    </div>
         <div>
-        <form method="post" name="formulaire" novalidate="" class="form">
-            <div>
-                <a href="index.php" class="button">Retour</a>
-                <button class="button" formaction="#">Modifier le profil</button>
-                <button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>
-            </div>
-            <label for="NomClient" class="label">NOM</label><br>
-            <input type="text" id="NomClient" name="NomClient" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomcl ?>" required/>
-            <div id="nomError" class="error"></div><br>
-                
-            <label for="PrenomClient">Prénom</label><br>
-            <input type="text" id="PrenomClient" name="PrenomClient" placeholder="Ex : Jean Michel" value= "<?php echo $row->prenomcl ?>" required/>
-            <div id="prenomError" class="error"></div><br>
+            <h1>Profil client : <?php echo $row->prenomcl . ' ' .$row->nomcl?></h1>
+        </div>
+        <div class="corps">
+            <form method="post" name="formulaire" novalidate="" class="form">
+                <div>
+                    <a href="index.php" class="button">Retour</a>
+                    <button class="button" formaction="#">Modifier le profil</button>
+                    <button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>
+                </div>
+                <label for="NomClient" class="label">NOM</label><br>
+                <input type="text" id="NomClient" name="NomClient" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomcl ?>" required/>
+                <div id="nomError" class="error"></div><br>
+                    
+                <label for="PrenomClient">Prénom</label><br>
+                <input type="text" id="PrenomClient" name="PrenomClient" placeholder="Ex : Jean Michel" value= "<?php echo $row->prenomcl ?>" required/>
+                <div id="prenomError" class="error"></div><br>
 
-            <label for="DateNaissanceClient">Date de naissance</label><br>
-            <input type="date" id="DateNaissanceClient" name= "DateNaissanceClient" placeholder="Ex : 08/01/1975" value= "<?php echo $row->datenaissancecl ?>" required/>
-            <div id="dateNaisError" class="error"></div><br>
+                <label for="DateNaissanceClient">Date de naissance</label><br>
+                <input type="date" id="DateNaissanceClient" name= "DateNaissanceClient" placeholder="Ex : 08/01/1975" value= "<?php echo $row->datenaissancecl ?>" required/>
+                <div id="dateNaisError" class="error"></div><br>
 
-            <label for="MailClient"> Email </label><br>
-            <input type="email" id="MailClient" name="MailClient" placeholder="Ex : boulangerjm@free.fr"value= "<?php echo $row->mailcl ?>" /><br><br>
+                <label for="MailClient"> Email </label><br>
+                <input type="email" id="MailClient" name="MailClient" placeholder="Ex : boulangerjm@free.fr"value= "<?php echo $row->mailcl ?>" /><br><br>
 
-            <label for="TelClient" pattern="0[0-9]{9}" value="<?php echo $row->numtelephonecl ?>" >Numéro de téléphone</label><br>
-            <input type="text" id="TelClient" name="TelClient" placeholder="Ex : 0777764231"/><br><br>
+                <label for="TelClient" pattern="0[0-9]{9}" value="<?php echo $row->numtelephonecl ?>" >Numéro de téléphone</label><br>
+                <input type="text" id="TelClient" name="TelClient" placeholder="Ex : 0777764231"/><br><br>
 
-            <div>
-            <label for="PrefContactClient">Préférence de contact</label><br>
-                <select name="PrefContactClient" class="form-control" id="PrefContactClient" value= "<?php echo $row->preferencecontactcl ?>" required >
-                    <option disabled selected value> -- Sélectionnez une option -- </option>
-                    <?php echo $prefContact_combobox_php; ?>
-                </select>
-                <div id="prefContactError" class="error"></div><br>
-            </div>
+                <div>
+                <label for="PrefContactClient">Préférence de contact</label><br>
+                    <select name="PrefContactClient" class="form-control" id="PrefContactClient" value= "<?php echo $row->preferencecontactcl ?>" required >
+                        <option disabled selected value> -- Sélectionnez une option -- </option>
+                        <?php echo $prefContact_combobox_php; ?>
+                    </select>
+                    <div id="prefContactError" class="error"></div><br>
+                </div>
 
-            <div>
-            <label for="CampingClient">Camping</label><br>
-                <select name="CampingClient" class="form-control" id="CampingClient" required>
-                    <?php echo $campings_combobox_php; ?>
-                </select><br><br>
-            </div>
+                <div>
+                    <label for="CampingClient">Camping</label><br>
+                    <select name="CampingClient" class="form-control" id="CampingClient" required>
+                        <?php echo $campings_combobox_php; ?>
+                    </select>
+                </div>
+                <br><br>
 
-            <label for="TailleClient">Taille (en cm)</label>
-            <input type="number" min=0 id="TailleClient" name="TailleClient" placeholder="Ex : 170" value= "<?php echo $row->taillecl ?>" required/>
-            <div id="tailleError" class="error"></div><br>
+                <label for="TailleClient">Taille (en cm)</label>
+                <input type="number" min=0 id="TailleClient" name="TailleClient" placeholder="Ex : 170" value= "<?php echo $row->taillecl ?>" required/>
+                <div id="tailleError" class="error"></div><br>
 
-            <label for="PoidsClient">Poids (en kg)</label>
-            <input type="number" min=0 id="PoidsClient" name="PoidsClient" placeholder="Ex : 80" value="<?php echo $row->poidscl ?>" required/>
-            <div id="poidsError" class="error"></div><br>
+                <label for="PoidsClient">Poids (en kg)</label>
+                <input type="number" min=0 id="PoidsClient" name="PoidsClient" placeholder="Ex : 80" value="<?php echo $row->poidscl ?>" required/>
+                <div id="poidsError" class="error"></div><br>
 
-            <div>
-            <label for="StatutClient">Niveau sportif</label><br>
-                <select name="StatutClient" class="form-control" id="StatutClient" value= "<?php echo $row->statutcl ?>" required>
-                    <option disabled selected value> -- Sélectionnez une option -- </option>
-                    <?php echo $statut_combobox_php; ?>
-                </select> 
-                <div id="statutError" class="error"></div><br>
-            </div>
+                <div>
+                <label for="StatutClient">Niveau sportif</label><br>
+                    <select name="StatutClient" class="form-control" id="StatutClient" value= "<?php echo $row->statutcl ?>" required>
+                        <option disabled selected value> -- Sélectionnez une option -- </option>
+                        <?php echo $statut_combobox_php; ?>
+                    </select> 
+                    <div id="statutError" class="error"></div><br>
+                </div>
             
             </form>
         </div>

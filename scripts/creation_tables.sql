@@ -59,7 +59,7 @@ DROP TABLE IF EXISTS CertificatMedical CASCADE;
 CREATE TABLE CertificatMedical(
 IdCertificat SERIAL PRIMARY KEY,
 DateDelivrance Date,
-DocumentPDF bytea,
+LienDocumentPDF Varchar(120),
 IdClient int NOT NULL 
 );
 
@@ -192,7 +192,7 @@ DROP TABLE IF EXISTS Diplome CASCADE;
 CREATE TABLE Diplome(
 IdDiplome SERIAL PRIMARY KEY,
 DateObtention Date,
-DocumentPDF bytea,
+LienDocumentPDF Varchar(120),
 IdMoniteur int
 );
 
@@ -215,7 +215,7 @@ DROP TABLE IF EXISTS PermisBateau CASCADE;
 CREATE TABLE PermisBateau(
 IdPermis SERIAL PRIMARY KEY,
 DateObtention Date,
-DocumentPDF bytea,
+LienDocumentPDF Varchar(120),
 IdProprietaire int
 );
 
