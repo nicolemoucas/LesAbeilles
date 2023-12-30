@@ -10,19 +10,20 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">   
-        <title> Profil client </title>
+        <title>Profil client</title>
         <script>
-            function redirectionPropriétaire() {
-                window.location.href= 'http://localhost/LesAbeilles/AccueilPropriétaire.php';
+            function redirectionProprietaire() {
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
 
             function redirectionMoniteur() {
                 window.location.href= 'http://localhost/LesAbeilles/AccueilMoniteur.php';
             }
+
             function redirection(role){
                 switch (role) {
                     case 'Propriétaire':
-                        redirectionPropriétaire();
+                        redirectionProprietaire();
                         break;
                     case 'Moniteur':
                         redirectionMoniteur();
@@ -30,10 +31,10 @@
                 }
             }
             function alertClientExists(role) {
-                alert("Ce client n'existe pas.");
+                alert("Ce client n'existe pas.. Vous serez redirigé sur l'écran d'accueil.");
                 switch (role) {
                     case 'Propriétaire':
-                        redirectionPropriétaire();
+                        redirectionProprietaire();
                         break;
                     case 'Moniteur':
                         redirectionMoniteur();
@@ -60,7 +61,6 @@
             $recupClient = pg_prepare($connexion, "recup_client", 'SELECT * FROM recherche_client($1,$2,$3)');
             $recupClient = pg_execute($connexion, "recup_client", array($nomClient, $prenomClient, $dateNaissClient)); 
 
-        
             if(pg_num_rows($recupClient) == 0) {
                 echo '<script type="text/javascript"> alertClientExists("'.$_SESSION["role"].'"); </script>';
             } else {

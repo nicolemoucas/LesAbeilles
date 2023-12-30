@@ -1,3 +1,6 @@
+--SELECT groname FROM pg_group WHERE groname = 'proprietaires_abeilles' OR groname = 'moniteurs_abeilles' OR groname = 'garcons_de_plage_abeilles';
+
+-- Propriétaires
 DROP GROUP IF EXISTS proprietaires_abeilles;
 CREATE GROUP proprietaires_abeilles;
 
@@ -23,6 +26,15 @@ GRANT EXECUTE ON PROCEDURE creer_cours(horaireCours TIMESTAMP, nivCours EStatutC
 GRANT USAGE ON SEQUENCE client_idclient_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO proprietaires_abeilles;
 
+DROP USER IF EXISTS lfrottier;
+CREATE USER lfrottier WITH ENCRYPTED PASSWORD 'lfrottier';
+DROP USER IF EXISTS jfrottier;
+CREATE USER jfrottier WITH ENCRYPTED PASSWORD 'jfrottier';
+
+GRANT proprietaires_abeilles TO lfrottier;
+GRANT proprietaires_abeilles TO jfrottier;
+
+-- Moniteurs
 DROP GROUP IF EXISTS moniteurs_abeilles;
 CREATE GROUP moniteurs_abeilles;
 
@@ -38,18 +50,6 @@ GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissan
 camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteur_abeilles;
 
-DROP GROUP IF EXISTS garcons_de_plage_abeilles;
-CREATE GROUP garcons_de_plage_abeilles;
-
-DROP USER IF EXISTS lfrottier;
-CREATE USER lfrottier WITH ENCRYPTED PASSWORD 'lfrottier';
-DROP USER IF EXISTS jfrottier;
-CREATE USER jfrottier WITH ENCRYPTED PASSWORD 'jfrottier';
-
-GRANT proprietaires_abeilles TO lfrottier;
-
-GRANT proprietaires_abeilles TO jfrottier;
-
 DROP USER IF EXISTS jbond;
 CREATE USER jbond WITH ENCRYPTED PASSWORD 'jbond';
 DROP USER IF EXISTS ffleuriot;
@@ -61,6 +61,10 @@ GRANT moniteurs_abeilles TO jbond;
 GRANT moniteurs_abeilles TO ffleuriot;
 GRANT moniteurs_abeilles TO hmeyer;
 
+-- Garçons de plage
+DROP GROUP IF EXISTS garcons_de_plage_abeilles;
+CREATE GROUP garcons_de_plage_abeilles;
+
 DROP USER IF EXISTS dlee;
 CREATE USER dlee WITH ENCRYPTED PASSWORD 'dlee';
 DROP USER IF EXISTS lpetit;
@@ -69,6 +73,7 @@ CREATE USER lpetit WITH ENCRYPTED PASSWORD 'lpetit';
 GRANT garcons_de_plage_abeilles TO dlee;
 GRANT garcons_de_plage_abeilles TO lpetit;
 
+-- Connexion user
 DROP USER IF EXISTS connexion_user;
 CREATE USER connexion_user WITH ENCRYPTED PASSWORD 'connexion';
 

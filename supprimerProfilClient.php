@@ -14,7 +14,7 @@
         <script>
             function confirmerClientSupprime() {
                 alert("Le profil du client a bien été supprimé");
-                window.location.href= 'http://localhost/LesAbeilles/AccueilPropriétaire.php';
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
         </script>
     </head>

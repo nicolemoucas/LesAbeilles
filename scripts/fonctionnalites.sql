@@ -110,7 +110,22 @@ END;
 $$ Language PlpgSQL;
 -- SELECT f_rechercher_employe('Moniteur', 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', null); -- test
 
-/* 8 - Créer un moniteur */
+/* 3 - Supprimer un employé */
+DROP PROCEDURE IF EXISTS p_supprimer_employe;
+CREATE OR REPLACE PROCEDURE p_supprimer_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR)
+	AS $BODY$
+DECLARE
+    idEmploye INTEGER;
+BEGIN  
+    SELECT INTO idEmploye idEmp FROM (SELECT * FROM f_rechercher_employe($1, $2, $3, $4, $5, $6)) AS employe;
+	DELETE FROM CompteEmploye WHERE idCompte = idEmploye;
+END;
+$BODY$
+LANGUAGE PlpgSQL;
+--CALL p_supprimer_employe('Propriétaire', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
+--SELECT * FROM CompteEmploye where typeemploye = 'Propriétaire';
+
+/* Créer un moniteur */
 --SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Moniteur';
 -- la FK diplôme est insérée au moment de créer le diplôme
 DROP FUNCTION IF EXISTS f_creer_moniteur;
@@ -127,28 +142,27 @@ BEGIN
 END;
 $BODY$
 LANGUAGE PlpgSQL;
-SELECT f_creer_moniteur ('jbond', 'jbond', 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', null); --test
+--SELECT f_creer_moniteur('jbond', 'jbond', 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', null); --test
 
-/* 9 - Créer un propriétaire */
+/* Créer un propriétaire */
 SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Propriétaire';
--- la FK diplôme est insérée au moment de créer le diplôme
-DROP FUNCTION IF EXISTS f_creer_moniteur;
-CREATE OR REPLACE FUNCTION f_creer_moniteur(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
-	RETURNS RECORD
+DROP FUNCTION IF EXISTS f_creer_proprietaire;
+CREATE OR REPLACE FUNCTION f_creer_proprietaire(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
+	RETURNS int
 	AS $BODY$
-DECLARE nouvIdMoniteur RECORD;
+DECLARE nouvIdProprietaire int;
 
 BEGIN
 	INSERT INTO CompteEmploye (NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
-		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Moniteur')
-		RETURNING IdCompte INTO nouvIdMoniteur;
-	RETURN nouvIdMoniteur;
+		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Propriétaire')
+		RETURNING IdCompte INTO nouvIdProprietaire;
+	RETURN nouvIdProprietaire;
 END;
 $BODY$
 LANGUAGE PlpgSQL;
---SELECT f_creer_moniteur ('jbond', 'jbond', 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', null); --test
+--SELECT f_creer_proprietaire('kfrottier', 'kylie', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
 
-/* 10 - Créer diplôme */
+/* Créer diplôme */
 DROP PROCEDURE IF EXISTS p_creer_diplome;
 CREATE OR REPLACE PROCEDURE p_creer_diplome(dateObtention DATE, LienDocumentPDF VARCHAR, IdMoniteur int) 
 	AS $BODY$

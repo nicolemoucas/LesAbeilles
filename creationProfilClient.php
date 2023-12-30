@@ -7,8 +7,8 @@
     <head>
         <title> Création du profil client </title>
         <script>
-            function redirectionPropriétaire() {
-                window.location.href= 'http://localhost/LesAbeilles/AccueilPropriétaire.php';
+            function redirectionProprietaire() {
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
 
             function redirectionMoniteur() {
@@ -18,7 +18,7 @@
                 alert("Ce client existe déjà.");
                 switch (role) {
                     case 'Propriétaire':
-                        redirectionPropriétaire();
+                        redirectionProprietaire();
                         break;
                     case 'Moniteur':
                         redirectionMoniteur();
@@ -69,7 +69,7 @@
 
                  switch ($_SESSION["role"]) {
                     case 'Propriétaire':
-                        echo '<script type="text/javascript"> redirectionPropriétaire(); </script>';
+                        echo '<script type="text/javascript"> redirectionProprietaire(); </script>';
                         break;
                     case 'Moniteur':
                         echo '<script type="text/javascript"> redirectionMoniteur(); </script>';
