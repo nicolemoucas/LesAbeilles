@@ -23,7 +23,7 @@ DROP TYPE IF EXISTS EStatutClient CASCADE;
 CREATE TYPE EStatutClient AS ENUM ('Débutant', 'Sportif');
 
 DROP TYPE IF EXISTS EStatutMateriel CASCADE;
-CREATE TYPE EStatutMateriel AS ENUM ('Reçu', 'Fonctionnel', 'Hors service', 'Mis au rebut');
+CREATE TYPE EStatutMateriel AS ENUM ('Reçu', 'Fonctionnel', 'Hors service', 'Mis au rebut','En location');
 
 DROP TYPE IF EXISTS EEtatCours CASCADE;
 CREATE TYPE EEtatCours AS ENUM ('Prévu', 'En cours', 'Réalisé', 'Annulé');
@@ -132,7 +132,6 @@ PrixDemiHeure float NULL
 DROP TABLE IF EXISTS Pedalo CASCADE;
 CREATE TABLE Pedalo(
 IdPedalo SERIAL PRIMARY KEY,
-Disponible Boolean,
 NbPlaces Int,
 Statut EStatutMateriel,
 IdPrixMateriel int
@@ -141,7 +140,6 @@ IdPrixMateriel int
 DROP TABLE IF EXISTS StandUpPaddle CASCADE;
 CREATE TABLE StandUpPaddle(
 IdStandUpPaddle SERIAL PRIMARY KEY,
-Disponible Boolean,
 NbPlaces int,
 Statut EStatutMateriel,
 Capacite Varchar(5),
@@ -151,7 +149,6 @@ IdPrixMateriel int
 DROP TABLE IF EXISTS Catamaran CASCADE;
 CREATE TABLE Catamaran(
 IdCatamaran SERIAL PRIMARY KEY,
-Disponible Boolean,
 NbPlaces int,
 Statut EStatutMateriel,
 IdPrixMateriel int
@@ -160,7 +157,6 @@ IdPrixMateriel int
 DROP TABLE IF EXISTS PlancheAVoile CASCADE;
 CREATE TABLE PlancheAVoile(
 IdPlancheVoile SERIAL PRIMARY KEY,
-Disponible Boolean,
 NbPlaces int,
 Statut EStatutMateriel,
 IdPrixMateriel int
