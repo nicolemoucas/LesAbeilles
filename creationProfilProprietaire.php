@@ -17,8 +17,7 @@
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             session_start(); 
-            // echo '<script>console.log("session started"); </script>';
-
+            
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
     
             $nomUtilisateur = $_POST["NomUtilisateur"];
@@ -39,7 +38,6 @@
                 echo '<script type="text/javascript"> alertMoniteurExists(); </script>';
 ;
             } else {
-                // echo '<script>console.log("before moniteur created"); </script>';
                 // insérer nouveau moniteur et récupérer son idCompte
                 $requete = pg_prepare($connexion, "inserer_moniteur", 'SELECT f_creer_moniteur($1, $2, $3, $4, $5, $6, $7)');
                 $result = pg_execute($connexion, "inserer_moniteur", array(
@@ -52,7 +50,7 @@
                     $telMoniteur
                 ));
                 $row = pg_fetch_row($result);
-                // echo '<script>console.log("id compte : ' . $row[0] . '"); </script>'; // idCompte
+                // echo "$row[0]"; // idCompte
 
                 $requete = pg_prepare($connexion, "inserer_diplome", 'CALL p_creer_diplome($1, $2, $3)');
                 $result = pg_execute($connexion, "inserer_diplome", array(
@@ -64,5 +62,6 @@
                 header('Location: http://localhost/LesAbeilles');
             }
         ?>
+        <p></p>
     </body>
 </html>
