@@ -127,14 +127,14 @@ INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, Da
 SELECT * FROM Client;
 SELECT enum_range(null::EStatutClient); --"{Débutant,Sportif}"
 INSERT INTO CoursPlancheVoile (IdCours, DateHeure, Niveau, IdCompte) VALUES
-	(DEFAULT, '2023-08-21 14:00:00', 'Débutant', 1),
-	(DEFAULT, '2023-08-22 14:00:00', 'Débutant', 3),
-	(DEFAULT, '2023-08-23 14:00:00', 'Débutant', 6),
-	(DEFAULT, '2023-08-24 14:00:00', 'Sportif', 2),
-	(DEFAULT, '2023-08-25 14:00:00', 'Sportif', 4),
-	(DEFAULT, '2023-08-26 10:00:00', 'Sportif', 5),
-	(DEFAULT, '2023-08-26 14:00:00', 'Débutant', 4),
-	(DEFAULT, '2023-08-26 14:00:00', 'Sportif', 5);
+	(DEFAULT, '2023-08-21 14:00:00', 'Débutant', 1, 'Prévu'),
+	(DEFAULT, '2023-08-22 14:00:00', 'Débutant', 3, 'Prévu'),
+	(DEFAULT, '2023-08-23 14:00:00', 'Débutant', 6, 'Prévu'),
+	(DEFAULT, '2023-08-24 14:00:00', 'Sportif', 2, 'Prévu'),
+	(DEFAULT, '2023-08-25 14:00:00', 'Sportif', 4, 'Prévu'),
+	(DEFAULT, '2023-08-26 10:00:00', 'Sportif', 5, 'Prévu'),
+	(DEFAULT, '2023-08-26 14:00:00', 'Débutant', 4, 'Prévu'),
+	(DEFAULT, '2023-08-26 14:00:00', 'Sportif', 5, 'Prévu');
 SELECT * FROM CoursPlancheVoile;
 
 -- Prix Matériel
