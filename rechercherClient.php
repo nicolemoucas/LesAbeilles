@@ -54,6 +54,7 @@
         if(formulaire.NomClient.validity.valid) {
             nomError.textContent = "";
             nomError.className = "error"
+            formulaire.NomClient.className= "valid"
         } else {
             nomError.textContent = "Veuillez renseigner le nom du client."
             nomError.className = "error active"
@@ -66,6 +67,7 @@
         if(formulaire.PrenomClient.validity.valid) {
             prenomError.textContent = "";
             prenomError.className = "error"
+            formulaire.PrenomClient.className= "valid"
         } else {
             prenomError.textContent = "Veuillez renseigner le prénom du client."
             prenomError.className = "error active"
@@ -78,6 +80,7 @@
         if(formulaire.DateNaissanceClient.validity.valid) {
             dateNaisError.textContent = "";
             dateNaisError.className = "error"
+            formulaire.DateNaissanceClient.className= "valid"
         } else {
             dateNaisError.textContent = "Veuillez renseigner la date de naissance du client."
             dateNaisError.className = "error active"

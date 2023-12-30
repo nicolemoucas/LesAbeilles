@@ -25,3 +25,12 @@
 .label {
   width: 150px;
 }
+
+#inputMDP i {
+  margin-left: -30px;
+  cursor: pointer;
+}
+
+.DocumentPDFEmploye a {
+  text-decoration: none;
+}

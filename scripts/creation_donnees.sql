@@ -1,12 +1,12 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto; -- pour crypter les mots de passe
 
 -- Certificat Médical OK
-INSERT INTO CertificatMedical (IdCertificat, DateDelivrance, DocumentPDF, IdClient) VALUES
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),-- example random pour pouvoir insérer les données
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13); 
+INSERT INTO CertificatMedical (IdCertificat, DateDelivrance, LienDocumentPDF, IdClient) VALUES
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1fbdICYRItidtTzYpYLW6ZWwdElZiG_-z/view?usp=drive_link', 13),-- example random pour pouvoir insérer les données
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1QlICJMIBRUyzmb50Bty8Jl8pqYZh2FnM/view?usp=drive_link', 14),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1NrU0QpN-17j-dyhuSIfgP4Ktff2X3cnW/view?usp=drive_link', 15),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1bdbLyyKGs9MPdf4hA1lj6g2vJgBwZiw2/view?usp=drive_link', 16),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1pYPuPtIbEho8oBHU9ZQyucOwM7YkT-uE/view?usp=drive_link', 17); 
 SELECT * FROM CertificatMedical;
 
 -- Type Forfait OK
@@ -36,19 +36,19 @@ INSERT INTO Paiement (IdPaiement, DateHeure, Montant, MoyenPaiement) VALUES
 SELECT * FROM Paiement;
 
 -- Diplôme OK
-INSERT INTO Diplome (IdDiplome, DateObtention, DocumentPDF, IdMoniteur) VALUES
-	(DEFAULT, '2021-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 3),-- example random pour pouvoir insérer les données
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 3),
-	(DEFAULT, '2020-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 4),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 4); 
+INSERT INTO Diplome (IdDiplome, DateObtention, LienDocumentPDF, IdMoniteur) VALUES
+	(DEFAULT, '2021-10-10', 'https://drive.google.com/file/d/1QiXghjblbhdeyqIvnLT9n_trK4Io1OU7/view?usp=drive_link', 3),-- example random pour pouvoir insérer les données
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1b3xjlb21cCZA392lbzGPY0tsQkc4tSeF/view?usp=drive_link', 3),
+	(DEFAULT, '2020-10-10', 'https://drive.google.com/file/d/1JpNlpyos-tFZ3AGmVEeWsaoLTIzkg24b/view?usp=drive_link', 4),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1BSGwX18SWwfXWR7w0b7Vc8L4jkx-ElkT/view?usp=drive_link', 4); 
 SELECT * FROM Diplome;
 SELECT * FROM CompteEmploye;
 
 -- Permis Bateau
-INSERT INTO PermisBateau (IdPermis, DateObtention, DocumentPDF, IdProprietaire) VALUES
-	(DEFAULT, '2022-01-02', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 1),
-	(DEFAULT, '2023-01-02', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 1),
-	(DEFAULT, '2023-01-02', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 2);
+INSERT INTO PermisBateau (IdPermis, DateObtention, LienDocumentPDF, IdProprietaire) VALUES
+	(DEFAULT, '2022-01-02', 'https://drive.google.com/file/d/1RunXqNU_UQaShvsZp63I5Wcr0HOVDzYW/view?usp=drive_link', 1),
+	(DEFAULT, '2023-01-02', 'https://drive.google.com/file/d/1foUCZ4RWaPsM_lUN7tOtj2phqaQfzGYV/view?usp=drive_link', 1),
+	(DEFAULT, '2023-01-02', 'https://drive.google.com/file/d/14bj8lZfiRb4LHh8pOBEx-byt5pK_p_E0/view?usp=drive_link', 2);
 SELECT * FROM PermisBateau;
 	
 -- Location
@@ -120,20 +120,21 @@ INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, Da
 INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
 	(DEFAULT, 'dlee', crypt('dlee', gen_salt('bf')), 'LEE', 'David', '1996-08-04', 'dlee@outlook.fr', '0649586700', 'Garçon de Plage'),
 	(DEFAULT, 'lpetit', crypt('lpetit', gen_salt('bf')), 'PETIT', 'Laura', '1993-06-04', 'lpetit@gmail.fr', '0766548392', 'Garçon de Plage');
-SELECT * FROM CompteEmploye;
+--SELECT * FROM CompteEmploye where typeemploye = 'Propriétaire';
+--SELECT * FROM CompteEmploye where typeemploye = 'Moniteur';
 
 -- Cours de Planche à Voile
 SELECT * FROM Client;
 SELECT enum_range(null::EStatutClient); --"{Débutant,Sportif}"
 INSERT INTO CoursPlancheVoile (IdCours, DateHeure, Niveau, IdCompte) VALUES
-	(DEFAULT, '2023-08-21 14:00:00', 'Débutant', 1),
-	(DEFAULT, '2023-08-22 14:00:00', 'Débutant', 3),
-	(DEFAULT, '2023-08-23 14:00:00', 'Débutant', 6),
-	(DEFAULT, '2023-08-24 14:00:00', 'Sportif', 2),
-	(DEFAULT, '2023-08-25 14:00:00', 'Sportif', 4),
-	(DEFAULT, '2023-08-26 10:00:00', 'Sportif', 5),
-	(DEFAULT, '2023-08-26 14:00:00', 'Débutant', 4),
-	(DEFAULT, '2023-08-26 14:00:00', 'Sportif', 5);
+	(DEFAULT, '2023-08-21 14:00:00', 'Débutant', 1, 'Prévu'),
+	(DEFAULT, '2023-08-22 14:00:00', 'Débutant', 3, 'Prévu'),
+	(DEFAULT, '2023-08-23 14:00:00', 'Débutant', 6, 'Prévu'),
+	(DEFAULT, '2023-08-24 14:00:00', 'Sportif', 2, 'Prévu'),
+	(DEFAULT, '2023-08-25 14:00:00', 'Sportif', 4, 'Prévu'),
+	(DEFAULT, '2023-08-26 10:00:00', 'Sportif', 5, 'Prévu'),
+	(DEFAULT, '2023-08-26 14:00:00', 'Débutant', 4, 'Prévu'),
+	(DEFAULT, '2023-08-26 14:00:00', 'Sportif', 5, 'Prévu');
 SELECT * FROM CoursPlancheVoile;
 
 -- Prix Matériel
@@ -146,40 +147,40 @@ INSERT INTO PrixMateriel (IdPrixMateriel, NomMateriel, PrixDemiHeure, PrixHeure)
 SELECT * FROM PrixMateriel;
 
 -- Materiel
-SELECT enum_range(null::EStatutMateriel); --"{Reçu,Fonctionnel,""Hors service"",""Mis au rebut""}"
+SELECT enum_range(null::EStatutMateriel); --"{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
 
 --- Catamaran Hobie Cart 15 (prix materiel 1) OK
-INSERT INTO Catamaran (IdCatamaran, Disponible, NbPlaces, Statut, IdPrixMateriel) VALUES
-	(DEFAULT, TRUE, 4, 'Fonctionnel', 1),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', 1);
+INSERT INTO Catamaran (IdCatamaran, NbPlaces, Statut, IdPrixMateriel) VALUES
+	(DEFAULT, 4, 'Fonctionnel', 1),
+	(DEFAULT, 4, 'Fonctionnel', 1);
 SELECT * FROM Catamaran;
 
 -- Stand Up Paddle (prix materiel 3) OK
-INSERT INTO StandUpPaddle (IdStandUpPaddle, Disponible, NbPlaces, Statut, Capacite, IdPrixMateriel) VALUES
-	(DEFAULT, TRUE, 4, 'Reçu', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Reçu', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', '200l', 3),
-	(DEFAULT, TRUE, 4, 'Fonctionnel', '200l', 3),
-	(DEFAULT, FALSE, 4, 'Hors service', '200l', 3),
-	(DEFAULT, FALSE, 4, 'Hors service', '200l', 3),
-	(DEFAULT, FALSE, 4, 'Hors service', '200l', 3);
+INSERT INTO StandUpPaddle (IdStandUpPaddle, NbPlaces, Statut, Capacite, IdPrixMateriel) VALUES
+	(DEFAULT, 4, 'Reçu', '200l', 3),
+	(DEFAULT, 4, 'Reçu', '200l', 3),
+	(DEFAULT, 4, 'Fonctionnel', '200l', 3),
+	(DEFAULT, 4, 'Fonctionnel', '200l', 3),
+	(DEFAULT, 4, 'Fonctionnel', '200l', 3),
+	(DEFAULT, 4, 'Fonctionnel', '200l', 3),
+	(DEFAULT, 4, 'Fonctionnel', '200l', 3),
+	(DEFAULT, 4, 'Hors service', '200l', 3),
+	(DEFAULT, 4, 'Hors service', '200l', 3),
+	(DEFAULT, 4, 'Hors service', '200l', 3);
 SELECT * FROM StandUpPaddle;
 
 --- Planche A Voile (prix materiel 2) OK
-INSERT INTO PlancheAVoile (IdPlancheVoile, Disponible, NbPlaces, Statut, IdPrixMateriel) VALUES
-	(DEFAULT, TRUE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --2 
-	(DEFAULT, TRUE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --4
-	(DEFAULT, TRUE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --6
-	(DEFAULT, TRUE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --8 
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --10
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --12
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --14
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --16
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2), --18
-	(DEFAULT, FALSE, 1, 'Reçu', 2), (DEFAULT, TRUE, 1, 'Reçu', 2); --20
+INSERT INTO PlancheAVoile (IdPlancheVoile, NbPlaces, Statut, IdPrixMateriel) VALUES
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --2 
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --4
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --6
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --8 
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --10
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --12
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --14
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --16
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --18
+	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2); --20
 SELECT * FROM PlancheAVoile;
 
 -- Flotteur (Planche à Voile) OK

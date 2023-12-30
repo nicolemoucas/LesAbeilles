@@ -1,7 +1,3 @@
-<?php
-    // Start the session
-    session_start();
-?>
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" type="text/css" href="css/inscription.css" />
@@ -11,7 +7,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> Création d'un profil moniteur</title>
+        <title> Création d'un profil propriétaire</title>
     </head>
     <body>
         <header>
@@ -22,6 +18,7 @@
             header('Access-Control-Allow-Origin: *');
             ini_set('display_errors', 0);
             ini_set('display_startup_errors', 0);
+            session_start(); 
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
 
             //pour la combobox des préférences de contact
@@ -35,9 +32,9 @@
         ?>
       
         <div class="corps">
-            <h1>Formulaire de création du profil moniteur :</h1>
+            <h1>Formulaire de création du profil propriétaire :</h1>
             <p>* Champs obligatoires</p>
-            <form method="post" name="formulaire" novalidate="" class="form" action="creationProfilMoniteur.php">-
+            <form method="post" name="formulaire" novalidate="" class="form" action="creationProfilMoniteur.php">
 
                 <label for="NomMoniteur" class="label">NOM *</label><br>
                 <input type="text" id="NomMoniteur" name="NomMoniteur" placeholder="Ex : BOULANGER" required/>
@@ -148,18 +145,6 @@
             prenomError.textContent = "Veuillez renseigner le prénom du moniteur."
             prenomError.className = "error active"
             formulaire.PrenomMoniteur.className= "invalid"
-            isValid = false;
-        }
-
-        const motDePasseError = document.getElementById("motDePasseError")
-        if(formulaire.MotDePasse.validity.valid) {
-            motDePasseError.textContent = "";
-            motDePasseError.className = "error";
-            formulaire.MotDePasse.className= "valid";
-        } else {
-            motDePasseError.textContent = "Veuillez renseigner le mot de passe du moniteur."
-            motDePasseError.className = "error active"
-            formulaire.MotDePasse.className= "invalid"
             isValid = false;
         }
 

@@ -44,17 +44,7 @@ BEGIN
 END;
 $$ Language PlpgSQL;
 
-
-/* 5 - Créer un moniteur */
-DROP PROCEDURE IF EXISTS creer_moniteur;
-CREATE OR REPLACE PROCEDURE creer_moniteur(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR) AS $BODY$
-BEGIN
-    INSERT INTO Client(nom, prenom, datenaissance, mail, numtelephone) VALUES ($1, $2, $3, $4, $5);
-END;
-$BODY$
-LANGUAGE PlpgSQL;
-
---6 - Consulter la liste des employés
+/* 5 - Consulter la liste des employés */
 CREATE OR REPLACE FUNCTION ConsulterListeEmploye()
 RETURNS TABLE (
     Nom VARCHAR(30),
@@ -78,7 +68,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
---  7- Afficher profil Employe 
+/* 6 - Afficher profil Employe */
 DROP FUNCTION IF EXISTS AfficherProfilEmploye(Nom VARCHAR(30), Prenom VARCHAR(30));
 CREATE OR REPLACE FUNCTION AfficherProfilEmploye(Nom VARCHAR(30), Prenom VARCHAR(30))
 RETURNS TABLE (
@@ -105,7 +95,98 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP FUNCTION IF EXISTS verification_utilisateur;
+/* 7 - Retrouver un employé */
+--SELECT enum_range(null::ERoleEmploye); -- "{Propriétaire,Moniteur,""Garçon de Plage""}"
+SELECT * FROM CompteEmploye;
+DROP FUNCTION IF EXISTS f_rechercher_employe;
+CREATE OR REPLACE FUNCTION f_rechercher_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR)
+RETURNS TABLE (idEmp INTEGER, nomEmp VARCHAR, prenomEmp VARCHAR, mailEmp VARCHAR, numTelEmp VARCHAR) AS $$
+
+BEGIN
+    RETURN QUERY SELECT idCompte, nom, prenom, mail, numTelephone
+		FROM CompteEmploye 
+		WHERE typeEmploye::TEXT LIKE ($1) AND lower(Nom) = lower($2) AND lower(Prenom) = lower($3) AND DateNaissance = $4 AND (lower(mail) = lower($5) OR numTelephone = $6);
+END;
+$$ Language PlpgSQL;
+-- SELECT f_rechercher_employe('Moniteur', 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', null); -- test
+
+/* 8 - Créer un moniteur */
+--SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Moniteur';
+-- la FK diplôme est insérée au moment de créer le diplôme
+DROP FUNCTION IF EXISTS f_creer_moniteur;
+CREATE OR REPLACE FUNCTION f_creer_moniteur(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
+	RETURNS int
+	AS $BODY$
+DECLARE nouvIdMoniteur int;
+
+BEGIN
+	INSERT INTO CompteEmploye (NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
+		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Moniteur')
+		RETURNING IdCompte INTO nouvIdMoniteur;
+	RETURN nouvIdMoniteur;
+END;
+$BODY$
+LANGUAGE PlpgSQL;
+SELECT f_creer_moniteur ('jbond', 'jbond', 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', null); --test
+
+/* 9 - Créer un propriétaire */
+SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Propriétaire';
+-- la FK diplôme est insérée au moment de créer le diplôme
+DROP FUNCTION IF EXISTS f_creer_moniteur;
+CREATE OR REPLACE FUNCTION f_creer_moniteur(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
+	RETURNS RECORD
+	AS $BODY$
+DECLARE nouvIdMoniteur RECORD;
+
+BEGIN
+	INSERT INTO CompteEmploye (NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
+		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Moniteur')
+		RETURNING IdCompte INTO nouvIdMoniteur;
+	RETURN nouvIdMoniteur;
+END;
+$BODY$
+LANGUAGE PlpgSQL;
+--SELECT f_creer_moniteur ('jbond', 'jbond', 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', null); --test
+
+/* 10 - Créer diplôme */
+DROP PROCEDURE IF EXISTS p_creer_diplome;
+CREATE OR REPLACE PROCEDURE p_creer_diplome(dateObtention DATE, LienDocumentPDF VARCHAR, IdMoniteur int) 
+	AS $BODY$
+DECLARE nouvIdDiplome int;
+BEGIN
+	INSERT INTO Diplome (DateObtention, LienDocumentPDF, IdMoniteur) VALUES
+	($1, $2, $3)
+	RETURNING IdDiplome INTO nouvIdDiplome;
+	UPDATE CompteEmploye 
+		SET IdDiplome = nouvIdDiplome
+		WHERE IdCompte = $3;
+END;
+$BODY$
+LANGUAGE PlpgSQL;
+SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Moniteur';
+SELECT * FROM Diplome d inner join CompteEmploye c on d.idMoniteur = c.idCompte;
+--CALL p_creer_diplome ('2022-02-02', 'vsdsdf', 3);
+
+
+-- check constraints de Diplôme et Moniteur
+SELECT conname AS constraint_name, 
+contype AS constraint_type
+FROM pg_catalog.pg_constraint cons
+JOIN pg_catalog.pg_class t ON t.oid = cons.conrelid
+WHERE t.relname ='diplome' OR t.relname = 'compteemploye';
+
+/* 11 - Créer permis bateau */
+DROP PROCEDURE IF EXISTS p_creer_permis;
+CREATE OR REPLACE PROCEDURE p_creer_permis(dateObtention DATE, LienDocumentPDF VARCHAR, IdProprietaire int) AS $BODY$
+BEGIN
+	INSERT INTO PermisBateau (DateObtention, LienDocumentPDF, IdProprietaire) VALUES
+	($1, $2, $3); 
+END;
+$BODY$
+LANGUAGE PlpgSQL;
+--CALL p_creer_permis('2022-10-10', 'csdc', 2); --test
+--SELECT * FROM PermisBateau;DROP FUNCTION IF EXISTS verification_utilisateur;
+
 CREATE OR REPLACE FUNCTION verification_utilisateur(identifiant VARCHAR, mdp VARCHAR)
 RETURNS BOOLEAN AS $$
 DECLARE 

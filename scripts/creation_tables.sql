@@ -23,7 +23,7 @@ DROP TYPE IF EXISTS EStatutClient CASCADE;
 CREATE TYPE EStatutClient AS ENUM ('Débutant', 'Sportif');
 
 DROP TYPE IF EXISTS EStatutMateriel CASCADE;
-CREATE TYPE EStatutMateriel AS ENUM ('Reçu', 'Fonctionnel', 'Hors service', 'Mis au rebut');
+CREATE TYPE EStatutMateriel AS ENUM ('Reçu', 'Fonctionnel', 'Hors service', 'Mis au rebut','En location');
 
 DROP TYPE IF EXISTS EEtatCours CASCADE;
 CREATE TYPE EEtatCours AS ENUM ('Prévu', 'En cours', 'Réalisé', 'Annulé');
@@ -59,7 +59,7 @@ DROP TABLE IF EXISTS CertificatMedical CASCADE;
 CREATE TABLE CertificatMedical(
 IdCertificat SERIAL PRIMARY KEY,
 DateDelivrance Date,
-DocumentPDF bytea,
+LienDocumentPDF Varchar(120),
 IdClient int NOT NULL 
 );
 
@@ -87,6 +87,7 @@ IdPaiement SERIAL PRIMARY KEY,
 DateHeure timestamp,
 Montant float,
 MoyenPaiement EMoyenPaiement
+MoyenPaiement EMoyenPaiement
 );
 
 DROP TABLE IF EXISTS Location CASCADE;
@@ -109,6 +110,7 @@ CREATE TABLE CoursPlancheVoile(
 IdCours SERIAL PRIMARY KEY,
 DateHeure timestamp,
 Niveau EStatutClient,
+EtatCours EEtatCours,
 IdCompte int
 );
 
@@ -131,7 +133,6 @@ PrixDemiHeure float NULL
 DROP TABLE IF EXISTS Pedalo CASCADE;
 CREATE TABLE Pedalo(
 IdPedalo SERIAL PRIMARY KEY,
-Disponible Boolean,
 NbPlaces Int,
 Statut EStatutMateriel,
 IdPrixMateriel int
@@ -140,7 +141,6 @@ IdPrixMateriel int
 DROP TABLE IF EXISTS StandUpPaddle CASCADE;
 CREATE TABLE StandUpPaddle(
 IdStandUpPaddle SERIAL PRIMARY KEY,
-Disponible Boolean,
 NbPlaces int,
 Statut EStatutMateriel,
 Capacite Varchar(5),
@@ -150,7 +150,6 @@ IdPrixMateriel int
 DROP TABLE IF EXISTS Catamaran CASCADE;
 CREATE TABLE Catamaran(
 IdCatamaran SERIAL PRIMARY KEY,
-Disponible Boolean,
 NbPlaces int,
 Statut EStatutMateriel,
 IdPrixMateriel int
@@ -159,7 +158,6 @@ IdPrixMateriel int
 DROP TABLE IF EXISTS PlancheAVoile CASCADE;
 CREATE TABLE PlancheAVoile(
 IdPlancheVoile SERIAL PRIMARY KEY,
-Disponible Boolean,
 NbPlaces int,
 Statut EStatutMateriel,
 IdPrixMateriel int
@@ -192,7 +190,7 @@ DROP TABLE IF EXISTS Diplome CASCADE;
 CREATE TABLE Diplome(
 IdDiplome SERIAL PRIMARY KEY,
 DateObtention Date,
-DocumentPDF bytea,
+LienDocumentPDF Varchar(120),
 IdMoniteur int
 );
 
@@ -215,7 +213,7 @@ DROP TABLE IF EXISTS PermisBateau CASCADE;
 CREATE TABLE PermisBateau(
 IdPermis SERIAL PRIMARY KEY,
 DateObtention Date,
-DocumentPDF bytea,
+LienDocumentPDF Varchar(120),
 IdProprietaire int
 );
 
