@@ -259,7 +259,6 @@ INSERT INTO Pedalo (IdPedalo, Disponible, NbPlaces, Statut, IdPrixMateriel) VALU
 	(DEFAULT, TRUE, 4, 'Fonctionnel', 4),
 	(DEFAULT, FALSE, 4, 'Fonctionnel', 4),
 	(DEFAULT, FALSE, 4, 'Hors service', 4);
-SELECT * FROM Pedalo;
 	 
 -- Réservation
 SELECT * FROM CoursPlancheVoile;
