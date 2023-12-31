@@ -12,8 +12,9 @@ CREATE GROUP proprietaires_abeilles;
 GRANT SELECT ON Client TO proprietaires_abeilles;
 GRANT INSERT ON Client TO proprietaires_abeilles;
 GRANT DELETE ON Client TO proprietaires_abeilles;
-GRANT SELECT ON compteemploye to proprietaires_abeilles;
+GRANT SELECT ON compteemploye TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON coursplanchevoile TO proprietaires_abeilles;
+GRANT UPDATE ON compteemploye TO proprietaires_abeilles;
 
 GRANT USAGE ON TYPE ECamping TO proprietaires_abeilles;
 GRANT USAGE ON TYPE EPreferenceContact TO proprietaires_abeilles;
@@ -27,6 +28,7 @@ GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissan
 camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE supprimer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE creer_cours(horaireCours TIMESTAMP, nivCours EStatutClient, idMoniteur INT) TO proprietaires_abeilles;
+GRANT EXECUTE ON PROCEDURE modifier_employe(idEmp INT, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, telEmploye VARCHAR)  TO proprietaires_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO proprietaires_abeilles;

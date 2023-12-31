@@ -296,3 +296,13 @@ BEGIN
 END;
 $BODY$
 LANGUAGE PlpgSQL;
+
+DROP PROCEDURE IF EXISTS modifier_employe;
+CREATE OR REPLACE PROCEDURE modifier_employe(idEmp INT, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, telEmploye VARCHAR) as $BODY$
+BEGIN
+	UPDATE compteemploye 
+	SET nom = $2, prenom = $3, datenaissance = $4, mail = $5, numtelephone = $6
+	WHERE idcompte = $1;
+END;
+$BODY$
+LANGUAGE PlpgSQL;
