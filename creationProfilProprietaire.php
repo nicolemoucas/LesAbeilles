@@ -31,7 +31,7 @@
             $dateObtentionDiplome = $_POST["DateObtentionDiplome"];
             $lienURLDiplome = $_POST["LienURLDiplome"];
     
-            $verifProprietaire = pg_prepare($connexion, "verif_proprietaire", "SELECT f_rechercher_employe('Proprietaire',$1,$2,$3,$4,$5)");
+            $verifProprietaire = pg_prepare($connexion, "verif_proprietaire", "SELECT f_rechercher_employe('Propriétaire',$1,$2,$3,$4,$5)");
             $verifProprietaire = pg_execute($connexion, "verif_proprietaire", array($nomProprietaire, $prenomProprietaire, $dateNaissProprietaire, $mailProprietaire, $telProprietaire)); 
             
             if(pg_num_rows($verifProprietaire) > 0) {
