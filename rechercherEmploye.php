@@ -1,3 +1,6 @@
+<?php            
+    session_start(); 
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +20,6 @@
         <?php
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
-            session_start(); 
             
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
 
@@ -78,13 +80,6 @@
     formulaire.addEventListener("submit", (event) => {
         let isValid = true;
         console.log(formulaire);
-
-        if((!formulaire.MailEmploye.value) && (!formulaire.TelEmploye.value)) {
-            alert("Il faut renseigner un email ou un numéro de téléphone.");
-            formulaire.MailEmploye.className="invalid";
-            formulaire.TelEmploye.className="invalid";
-            isValid = false;
-        }
 
         const roleError = document.getElementById("roleError")
         if(formulaire.RoleEmploye.validity.valid) {

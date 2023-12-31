@@ -54,8 +54,7 @@
         <?php
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
-            session_start(); 
-            
+
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
 
             $roleEmploye = $_POST["RoleEmploye"];
@@ -71,24 +70,34 @@
 
             if(pg_num_rows($recupEmploye) == 0) {
                 echo 'employee not found';
-                echo '<script type="text/javascript"> alertEmployeNotExists(); </script>';
+                echo '<script type="text/javascript"> alertEmployeNotExists("'.$_SESSION["role"].'"); </script>';
             } else {
                 $row = pg_fetch_object($recupEmploye);
+            }
+
+            $requete = "SELECT unnest(enum_range(NULL::ETypeEmploye)) AS EtypeEmploye";
+            $typeEmployes = pg_query($connexion, $requete);
+            $employes_combobox_php = "";
+            while ($option = pg_fetch_object($typeEmployes)) {
+                $etselected = $option->etypeemploye == $row->typeemploye ? ' selected' : '';
+                $employes_combobox_php .= '<option value="' . $option->etypeemploye . '"' .$etselected . '>' . $option->etypeemploye . '</option>';
             }
         ?>
     <div class="corps">
         <h1>Profil employé : <?php echo $row->prenomemp . ' ' .$row->nomemp?></h1>
         <form method="post" name="formulaire" novalidate="" class="form">
             <div>
-                <a href="index.php" class="button">Retour</a>
+                <button class="button" formaction="javascript:redirection('<?php echo $_SESSION["role"]?>')">Retour</a>
                 <button class="button" formaction="#">Modifier le profil</button>
                 <button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>
             </div>
 
             <label for="RoleEmploye" class="label">Rôle :</label>
-            <input type="text" id="RoleEmploye" name="RoleEmploye" value= "<?php echo $roleEmploye; ?>" required/>
+            <select name="RoleEmploye" class="form-control" id="RoleEmploye" value= "<?php echo $row->typeemploye ?>" required >
+                <?php echo $employes_combobox_php; ?>
+            </select>            
             <br><br>
-            
+    
             <label for="NomEmploye" class="label">NOM : </label><br>
             <input type="text" id="NomEmploye" name="NomEmploye" value= "<?php echo $row->nomemp ?>" required/>
             <br><br>
