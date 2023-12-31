@@ -31,13 +31,15 @@
                 }
             }
 
-            function alertEmployeExists() {
+            function alertEmployeNotExists(role) {
                 alert("Cet employé n'existe pas. Vous serez redirigé sur l'écran d'accueil.");
                 switch (role) {
                     case 'Propriétaire':
+                        console.log('propio')
                         redirectionProprietaire();
                         break;
                     case 'Moniteur':
+                        console.log('moni')
                         redirectionMoniteur();
                         break;
                 }
@@ -56,25 +58,26 @@
             
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
 
+            $roleEmploye = $_POST["RoleEmploye"];
             $nomEmploye = $_POST["NomEmploye"];
             $prenomEmploye = $_POST["PrenomEmploye"];
             $dateNaissEmploye = $_POST["DateNaissanceEmploye"];
             $mailEmploye = $_POST["MailEmploye"];
             $telEmploye = $_POST["TelEmploye"];
     
-            $recupEmploye = pg_prepare($connexion, "recup_employe", 'SELECT * FROM f_rechercher_employe($1,$2,$3,$4,$5)');
-            $recupEmploye = pg_execute($connexion, "recup_employe", array($nomEmploye, $prenomEmploye, $dateNaissEmploye, $emailEmploye, $numTelEmploye)); 
-        
+            $recupEmploye = pg_prepare($connexion, "recup_employe", 'SELECT * FROM f_rechercher_employe($1,$2,$3,$4,$5,$6)');
+            $recupEmploye = pg_execute($connexion, "recup_employe", array($roleEmploye, $nomEmploye, $prenomEmploye, $dateNaissEmploye, $mailEmploye, $telEmploye)); 
+            // echo '/n/n--'.$roleEmploye.', '.$nomEmploye.', '.$prenomEmploye.', '.$dateNaissEmploye.', '.$mailEmploye.', '.$telEmploye.'--/n/n';
+
             if(pg_num_rows($recupEmploye) == 0) {
-                echo '<script type="text/javascript"> alertEmployeExists(); </script>';
+                echo 'employee not found';
+                echo '<script type="text/javascript"> alertEmployeNotExists(); </script>';
             } else {
                 $row = pg_fetch_object($recupEmploye);
             }
         ?>
-    <div>
+    <div class="corps">
         <h1>Profil employé : <?php echo $row->prenomemp . ' ' .$row->nomemp?></h1>
-    </div>
-        <div>
         <form method="post" name="formulaire" novalidate="" class="form">
             <div>
                 <a href="index.php" class="button">Retour</a>
@@ -82,28 +85,29 @@
                 <button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>
             </div>
 
-            <label for="NomEmploye" class="label">Rôle</label><br>
-            <?php echo $Post[RoleEmploye]; ?>
-            <input type="text" id="NomEmploye" name="NomEmploye" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomemp ?>" required/>
-            <div id="nomError" class="error"></div><br>
+            <label for="RoleEmploye" class="label">Rôle :</label>
+            <input type="text" id="RoleEmploye" name="RoleEmploye" value= "<?php echo $roleEmploye; ?>" required/>
+            <br><br>
             
-            <label for="NomEmploye" class="label">NOM</label><br>
-            <input type="text" id="NomEmploye" name="NomEmploye" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomemp ?>" required/>
-            <div id="nomError" class="error"></div><br>
-                
+            <label for="NomEmploye" class="label">NOM : </label><br>
+            <input type="text" id="NomEmploye" name="NomEmploye" value= "<?php echo $row->nomemp ?>" required/>
+            <br><br>
+
             <label for="PrenomEmploye">Prénom</label><br>
-            <input type="text" id="PrenomEmploye" name="PrenomEmploye" placeholder="Ex : Jean Michel" value= "<?php echo $row->prenomemp ?>" required/>
-            <div id="prenomError" class="error"></div><br>
+            <input type="text" id="PrenomEmploye" name="PrenomEmploye" value= "<?php echo $row->prenomemp ?>" required/>
+            <br><br>
 
             <label for="DateNaissanceEmploye">Date de naissance</label><br>
-            <input type="date" id="DateNaissanceEmploye" name= "DateNaissanceEmploye" placeholder="Ex : 08/01/1975" value= "<?php echo $row->datenaissancecl ?>" required/>
-            <div id="dateNaisError" class="error"></div><br>
+            <input type="date" id="DateNaissanceEmploye" name= "DateNaissanceEmploye" value= "<?php echo $dateNaissEmploye ?>" required/>
+            <br><br>
 
             <label for="MailEmploye"> Email </label><br>
-            <input type="email" id="MailEmploye" name="MailEmploye" placeholder="Ex : boulangerjm@free.fr"value= "<?php echo $row->mailcl ?>" /><br><br>
+            <input type="email" id="MailEmploye" name="MailEmploye" value= "<?php echo $row->mailemp ?>"/>
+            <br><br>
 
-            <label for="TelEmploye" pattern="0[0-9]{9}" value="<?php echo $row->numtelephonecl ?>">Numéro de téléphone</label><br>
-            <input type="text" id="TelEmploye" name="TelEmploye" placeholder="Ex : 0777764231"/><br><br>
+            <label for="TelEmploye" pattern="0[0-9]{9}">Numéro de téléphone</label><br>
+            <input type="text" id="TelEmploye" name="TelEmploye" value="<?php echo $row->numtelemp ?>"/>
+            <br><br>
             
             </form>
         </div>
@@ -117,7 +121,7 @@
     function confirmerSuppression() {
         const formulaire = document.formulaire;
         if(confirm("Voulez-vous vraiment supprimer le profil de cet employé ?")) {
-            const url = 'supprimerProfilEmploye.php?nom=' + formulaire.NomEmploye.value + '&prenom=' + formulaire.PrenomEmploye.value + '&dateNaiss=' + formulaire.DateNaissanceEmploye.value + '&mail=' + formulaire.MailEmploye.value  + '&numTel=' + formulaire.TelEmploye.value ;
+            const url = 'supprimerProfilEmploye.php?NomEmploye=' + formulaire.NomEmploye.value + '&PrenomEmploye=' + formulaire.PrenomEmploye.value + '&DateNaissEmploye=' + formulaire.DateNaissanceEmploye.value + '&MailEmploye=' + formulaire.MailEmploye.value  + '&TelEmploye=' + formulaire.TelEmploye.value + '&RoleEmploye=' + formulaire.RoleEmploye.value ;
             document.location = url;
         }
     }

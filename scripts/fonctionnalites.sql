@@ -103,7 +103,7 @@ RETURNS TABLE (idEmp INTEGER, nomUtilEmp VARCHAR, nomEmp VARCHAR, prenomEmp VARC
 BEGIN
     RETURN QUERY SELECT idCompte, nomUtilisateur, nom, prenom, mail, numTelephone
 		FROM CompteEmploye 
-		WHERE typeEmploye::TEXT LIKE ($1) AND lower(Nom) = lower($2) AND lower(Prenom) = lower($3) AND DateNaissance = $4 AND (lower(mail) = lower($5) OR numTelephone = $6);
+		WHERE lower(typeEmploye::TEXT) LIKE lower($1) AND lower(Nom) = lower($2) AND lower(Prenom) = lower($3) AND DateNaissance = $4 AND (lower(mail) = lower($5) OR numTelephone = $6);
 END;
 $$ Language PlpgSQL;
 --SELECT * FROM CompteEmploye;
@@ -227,6 +227,21 @@ LANGUAGE PlpgSQL;
 --CALL p_creer_permis('2022-10-10', 'LIENTESTPERMIS.com', 2); --test
 --SELECT * FROM PermisBateau;
 
+DROP FUNCTION IF EXISTS verification_utilisateur;
+CREATE OR REPLACE FUNCTION verification_utilisateur(identifiant VARCHAR, mdp VARCHAR)
+RETURNS BOOLEAN AS $$
+DECLARE 
+    mdpcrypte VARCHAR;
+BEGIN
+    SELECT INTO mdpcrypte motdepasse FROM informations_connexion WHERE nomutilisateur=$1;
+    IF mdpcrypte IS NOT NULL THEN 
+        RETURN (SELECT (mdpcrypte= crypt($2, mdpcrypte)));
+    ELSE
+        RETURN FALSE;
+    END IF;
+END;
+$$ Language PlpgSQL;
+
 /* 12 - Trouver noms moniteurs */
 DROP FUNCTION IF EXISTS fetch_nom_moniteur;
 CREATE OR REPLACE FUNCTION fetch_nom_moniteur()
@@ -252,6 +267,7 @@ BEGIN
 END;
 $$ Language PlpgSQL;
 
+/* Récupérer rôle utilisateur */
 DROP FUNCTION IF EXISTS fetch_role_utilisateur;
 CREATE OR REPLACE FUNCTION fetch_role_utilisateur(identifiant VARCHAR, mdp VARCHAR)
 RETURNS etypeemploye AS $$

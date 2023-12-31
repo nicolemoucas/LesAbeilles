@@ -12,7 +12,7 @@
     </head>
     <script>
         function redirectionPropriétaire() {
-                window.location.href= 'http://localhost/LesAbeilles/AccueilPropriétaire.php';
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
 
             function redirectionMoniteur() {

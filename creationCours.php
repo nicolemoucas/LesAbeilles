@@ -8,7 +8,7 @@
         <script>
             function redirection() {
                 alert("Cours créé avec succès.");
-                window.location.href= 'http://localhost/LesAbeilles/AccueilPropriétaire.php';
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
             function alertMoniteurNonDisponible() {
                 alert("Ce moniteur n'est pas disponible pour cet horaire.");

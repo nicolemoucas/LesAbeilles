@@ -3,7 +3,7 @@
 FROM pg_user
 JOIN pg_auth_members ON (pg_user.usesysid = pg_auth_members.member)
 JOIN pg_roles ON (pg_roles.oid = pg_auth_members.roleid)
-WHERE pg_roles.rolname = 'proprietaires_abeilles';*/ --moniteurs
+WHERE pg_roles.rolname = 'moniteurs_abeilles';*/ -- proprietaires
 
 -- Propriétaires
 DROP GROUP IF EXISTS proprietaires_abeilles;

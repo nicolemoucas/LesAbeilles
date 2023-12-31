@@ -8,9 +8,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">   
         <title>Suppression profil employé</title>
         <script>
+            function redirectionProprietaire() {
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
+            }
+
             function confirmerEmployeSupprime() {
                 alert("Le profil de l'employé a bien été supprimé.");
-                window.location.href= 'http://localhost/LesAbeilles';
+                redirectionProprietaire();
             }
         </script>
     </head>
@@ -26,17 +30,19 @@
         
         $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
 
-        $nomClient = $_GET["nom"];
-        $prenomClient = $_GET["prenom"];
-        $dateNaissClient = $_GET["dateNaiss"];
-        $mailEmploye = $_POST["MailEmploye"];
-        $telEmploye = $_POST["TelEmploye"];
+        $roleEmploye = $_GET["RoleEmploye"];
+        $nomEmploye = $_GET["NomEmploye"];
+        $prenomEmploye = $_GET["PrenomEmploye"];
+        $dateNaissEmploye = $_GET["DateNaissEmploye"];
+        $mailEmploye = $_GET["MailEmploye"];
+        $telEmploye = $_GET["TelEmploye"];
+        echo 'date'.$dateNaissEmploye;
 
-        $deleteClient = $recupClient = pg_prepare($connexion, "delete_employe", "CALL p_supprimer_employe('Propriétaire',$1,$2,$3,$4,$5)");
-        $deleteClient = pg_execute($connexion, "delete_employe", array($nomClient, $prenomClient, $dateNaissClient)); 
+        $deleteEmploye = pg_prepare($connexion, "delete_employe", "CALL p_supprimer_employe($1,$2,$3,$4,$5,$6)");
+        $deleteEmploye = pg_execute($connexion, "delete_employe", array($roleEmploye, $nomEmploye, $prenomEmploye, $dateNaissEmploye, $mailEmploye, $telEmploye)); 
 
-        if($deleteClient) {
-            echo '<script type="text/javascript"> confirmerClientSupprime(); </script>';
+        if($deleteEmploye) {
+            echo '<script type="text/javascript"> confirmerEmployeSupprime(); </script>';
         }
         ?>
     </body>

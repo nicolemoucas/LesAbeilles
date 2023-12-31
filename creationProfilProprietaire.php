@@ -28,15 +28,16 @@
             $mailProprietaire = $_POST["MailProprietaire"];
             $telProprietaire = $_POST["TelProprietaire"];
             $prefContactProprietaire = $_POST["PrefContactProprietaire"];
-            $dateObtentionDiplome = $_POST["DateObtentionDiplome"];
-            $lienURLDiplome = $_POST["LienURLDiplome"];
+            $dateObtentionPermis = $_POST["DateObtentionPermis"];
+            $lienURLPermis = $_POST["LienURLPermis"];
     
             $verifProprietaire = pg_prepare($connexion, "verif_proprietaire", "SELECT f_rechercher_employe('Propriétaire',$1,$2,$3,$4,$5)");
             $verifProprietaire = pg_execute($connexion, "verif_proprietaire", array($nomProprietaire, $prenomProprietaire, $dateNaissProprietaire, $mailProprietaire, $telProprietaire)); 
-            
-            if(pg_num_rows($verifProprietaire) > 0) {
+            // echo 'nomUtilisateur : '.$nomUtilisateur.', '.$nomProprietaire.', '.$prenomProprietaire.', '.$dateNaissProprietaire.', '.$mailProprietaire.', '.$telProprietaire;
+            if(pg_num_rows($verifProprietaire) != 0) {
                 echo '<script type="text/javascript"> alertProprietaireExists(); </script>';
             } else {
+                echo 'not exists:'.pg_num_rows($verifProprietaire).'--';
                 // insérer nouveau propriétaire et récupérer son idCompte
                 $requete = pg_prepare($connexion, "inserer_proprietaire", 'SELECT f_creer_proprietaire($1, $2, $3, $4, $5, $6, $7)');
                 $result = pg_execute($connexion, "inserer_proprietaire", array(
@@ -51,10 +52,10 @@
                 $row = pg_fetch_row($result);
                 // echo "$row[0]"; // idCompte
 
-                $requete = pg_prepare($connexion, "inserer_diplome", 'CALL p_creer_diplome($1, $2, $3)');
-                $result = pg_execute($connexion, "inserer_diplome", array(
-                    $dateObtentionDiplome,
-                    $lienURLDiplome,
+                $requete = pg_prepare($connexion, "inserer_permis", 'CALL p_creer_permis($1, $2, $3)');
+                $result = pg_execute($connexion, "inserer_permis", array(
+                    $dateObtentionPermis,
+                    $lienURLPermis,
                     $row[0]
                 ));
                 // alert("Le compte propriétaire pour $prenomProprietaire $nomProprietaire a été créé.");
