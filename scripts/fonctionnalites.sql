@@ -29,7 +29,6 @@ DECLARE
 BEGIN  
     SELECT INTO idPersonne idpers FROM (SELECT * FROM recherche_client($1, $2, $3)) AS client;
 	DELETE FROM Client WHERE idClient = idPersonne;
-	
 END;
 $BODY$
 LANGUAGE PlpgSQL;
@@ -97,33 +96,43 @@ $$ LANGUAGE plpgsql;
 
 /* 7 - Retrouver un employé */
 --SELECT enum_range(null::ERoleEmploye); -- "{Propriétaire,Moniteur,""Garçon de Plage""}"
-SELECT * FROM CompteEmploye;
 DROP FUNCTION IF EXISTS f_rechercher_employe;
 CREATE OR REPLACE FUNCTION f_rechercher_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR)
-RETURNS TABLE (idEmp INTEGER, nomEmp VARCHAR, prenomEmp VARCHAR, mailEmp VARCHAR, numTelEmp VARCHAR) AS $$
+RETURNS TABLE (idEmp INTEGER, nomUtilEmp VARCHAR, nomEmp VARCHAR, prenomEmp VARCHAR, mailEmp VARCHAR, numTelEmp VARCHAR) AS $$
 
 BEGIN
-    RETURN QUERY SELECT idCompte, nom, prenom, mail, numTelephone
+    RETURN QUERY SELECT idCompte, nomUtilisateur, nom, prenom, mail, numTelephone
 		FROM CompteEmploye 
 		WHERE typeEmploye::TEXT LIKE ($1) AND lower(Nom) = lower($2) AND lower(Prenom) = lower($3) AND DateNaissance = $4 AND (lower(mail) = lower($5) OR numTelephone = $6);
 END;
 $$ Language PlpgSQL;
--- SELECT f_rechercher_employe('Moniteur', 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', null); -- test
+--SELECT * FROM CompteEmploye;
+SELECT f_rechercher_employe('Moniteur', 'BOND', 'James', '1996-08-04', 'jbond@lesabeilles.fr', null); -- test
 
-/* 3 - Supprimer un employé */
-DROP PROCEDURE IF EXISTS p_supprimer_employe;
-CREATE OR REPLACE PROCEDURE p_supprimer_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR)
+/* Créer un propriétaire */
+SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Propriétaire';
+DROP FUNCTION IF EXISTS f_creer_proprietaire;
+CREATE OR REPLACE FUNCTION f_creer_proprietaire(nomUtilisateur VARCHAR, motDePasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
+	RETURNS int
 	AS $BODY$
 DECLARE
-    idEmploye INTEGER;
-BEGIN  
-    SELECT INTO idEmploye idEmp FROM (SELECT * FROM f_rechercher_employe($1, $2, $3, $4, $5, $6)) AS employe;
-	DELETE FROM CompteEmploye WHERE idCompte = idEmploye;
+	nouvIdProprietaire int;
+	nomUtil VARCHAR;
+	mdp VARCHAR;
+BEGIN
+	nomUtil := $1;
+	mdp := $2;
+	INSERT INTO CompteEmploye (NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
+		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Propriétaire')
+		RETURNING IdCompte INTO nouvIdProprietaire;
+	-- créer user et ajout au groupe de propriétaires
+    EXECUTE FORMAT('CREATE USER "%I" WITH ENCRYPTED PASSWORD ''%s''', nomUtil, mdp);
+	EXECUTE FORMAT('GRANT proprietaires_abeilles TO %I', nomUtil);
+	RETURN nouvIdProprietaire;
 END;
 $BODY$
 LANGUAGE PlpgSQL;
---CALL p_supprimer_employe('Propriétaire', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
---SELECT * FROM CompteEmploye where typeemploye = 'Propriétaire';
+--SELECT f_creer_proprietaire('kfrottier', 'kfrottiermdp', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
 
 /* Créer un moniteur */
 --SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Moniteur';
@@ -132,55 +141,64 @@ DROP FUNCTION IF EXISTS f_creer_moniteur;
 CREATE OR REPLACE FUNCTION f_creer_moniteur(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
 	RETURNS int
 	AS $BODY$
-DECLARE nouvIdMoniteur int;
-
+DECLARE
+	nouvIdMoniteur int;
+	nomUtil VARCHAR;
+	mdp VARCHAR;
 BEGIN
+	nomUtil := $1;
+	mdp := $2;
 	INSERT INTO CompteEmploye (NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
 		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Moniteur')
 		RETURNING IdCompte INTO nouvIdMoniteur;
+	-- créer user et ajout au groupe de moniteurs
+    EXECUTE FORMAT('CREATE USER "%I" WITH ENCRYPTED PASSWORD ''%s''', nomUtil, mdp);
+	EXECUTE FORMAT('GRANT moniteurs_abeilles TO %I', nomUtil);
 	RETURN nouvIdMoniteur;
 END;
 $BODY$
 LANGUAGE PlpgSQL;
---SELECT f_creer_moniteur('jbond', 'jbond', 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', null); --test
+--SELECT f_creer_moniteur('batman', 'batmanmdp', 'WAYNE', 'Bruce', '1996-08-04', 'bwayne@batman.com', null); --test
 
-/* Créer un propriétaire */
-SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Propriétaire';
-DROP FUNCTION IF EXISTS f_creer_proprietaire;
-CREATE OR REPLACE FUNCTION f_creer_proprietaire(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
-	RETURNS int
+/* Supprimer un employé */
+DROP PROCEDURE IF EXISTS p_supprimer_employe;
+CREATE OR REPLACE PROCEDURE p_supprimer_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR)
 	AS $BODY$
-DECLARE nouvIdProprietaire int;
-
+DECLARE
+    idEmploye INTEGER;
+	nomUtil VARCHAR;
 BEGIN
-	INSERT INTO CompteEmploye (NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
-		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Propriétaire')
-		RETURNING IdCompte INTO nouvIdProprietaire;
-	RETURN nouvIdProprietaire;
+    SELECT idEmp, nomUtilEmp INTO idEmploye, nomUtil FROM (SELECT * FROM f_rechercher_employe($1, $2, $3, $4, $5, $6)) AS employe;
+	DELETE FROM CompteEmploye WHERE idCompte = idEmploye;
+	-- supprimer rôle employé
+	EXECUTE FORMAT('DROP USER IF EXISTS %I', nomUtil);
 END;
 $BODY$
 LANGUAGE PlpgSQL;
---SELECT f_creer_proprietaire('kfrottier', 'kylie', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
+--CALL p_supprimer_employe('Propriétaire', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
+--SELECT * FROM CompteEmploye where typeemploye = 'Propriétaire';
+--SELECT * FROM pg_catalog.pg_roles WHERE rolname = 'kfrottier';
 
 /* Créer diplôme */
 DROP PROCEDURE IF EXISTS p_creer_diplome;
 CREATE OR REPLACE PROCEDURE p_creer_diplome(dateObtention DATE, LienDocumentPDF VARCHAR, IdMoniteur int) 
 	AS $BODY$
-DECLARE nouvIdDiplome int;
+DECLARE 
+	nouvIdDiplome int;
 BEGIN
 	INSERT INTO Diplome (DateObtention, LienDocumentPDF, IdMoniteur) VALUES
 	($1, $2, $3)
 	RETURNING IdDiplome INTO nouvIdDiplome;
+	-- Insertion du diplôme (FK) dans moniteur
 	UPDATE CompteEmploye 
 		SET IdDiplome = nouvIdDiplome
 		WHERE IdCompte = $3;
 END;
 $BODY$
 LANGUAGE PlpgSQL;
-SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Moniteur';
-SELECT * FROM Diplome d inner join CompteEmploye c on d.idMoniteur = c.idCompte;
---CALL p_creer_diplome ('2022-02-02', 'vsdsdf', 3);
-
+--SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Moniteur';
+--SELECT * FROM Diplome d inner join CompteEmploye c on d.idMoniteur = c.idCompte;
+--CALL p_creer_diplome ('2022-02-02', 'LIENTEST.com', 3);
 
 -- check constraints de Diplôme et Moniteur
 SELECT conname AS constraint_name, 
@@ -191,15 +209,23 @@ WHERE t.relname ='diplome' OR t.relname = 'compteemploye';
 
 /* 11 - Créer permis bateau */
 DROP PROCEDURE IF EXISTS p_creer_permis;
-CREATE OR REPLACE PROCEDURE p_creer_permis(dateObtention DATE, LienDocumentPDF VARCHAR, IdProprietaire int) AS $BODY$
+CREATE OR REPLACE PROCEDURE p_creer_permis(dateObtention DATE, LienDocumentPDF VARCHAR, IdProprietaire int) 
+	AS $BODY$
+DECLARE 
+	nouvIdPermis int;
 BEGIN
 	INSERT INTO PermisBateau (DateObtention, LienDocumentPDF, IdProprietaire) VALUES
-	($1, $2, $3); 
+	($1, $2, $3)
+	RETURNING IdPermis INTO nouvIdPermis; 
+	-- Insertion du diplôme (FK) dans moniteur
+	UPDATE CompteEmploye 
+		SET IdPermis = nouvIdPermis
+		WHERE IdCompte = $3;
 END;
 $BODY$
 LANGUAGE PlpgSQL;
---CALL p_creer_permis('2022-10-10', 'csdc', 2); --test
---SELECT * FROM PermisBateau;DROP FUNCTION IF EXISTS verification_utilisateur;
+--CALL p_creer_permis('2022-10-10', 'LIENTESTPERMIS.com', 2); --test
+--SELECT * FROM PermisBateau;
 
 /* 12 - Trouver noms moniteurs */
 DROP FUNCTION IF EXISTS fetch_nom_moniteur;
@@ -211,6 +237,7 @@ BEGIN
 END;
 $$ Language PlpgSQL;
 
+DROP FUNCTION IF EXISTS verification_utilisateur;
 CREATE OR REPLACE FUNCTION verification_utilisateur(identifiant VARCHAR, mdp VARCHAR)
 RETURNS BOOLEAN AS $$
 DECLARE 
@@ -229,7 +256,7 @@ DROP FUNCTION IF EXISTS fetch_role_utilisateur;
 CREATE OR REPLACE FUNCTION fetch_role_utilisateur(identifiant VARCHAR, mdp VARCHAR)
 RETURNS etypeemploye AS $$
 DECLARE 
-        mdpcrypte VARCHAR;
+	mdpcrypte VARCHAR;
 BEGIN
     SELECT INTO mdpcrypte motdepasse FROM informations_connexion WHERE nomutilisateur=$1;
     RETURN (SELECT typeemploye FROM informations_connexion WHERE nomutilisateur = $1 AND motdepasse = crypt($2, mdpcrypte));

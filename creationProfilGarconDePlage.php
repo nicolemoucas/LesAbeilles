@@ -101,7 +101,7 @@ session_start();
     
                 // Vérification de l'existence du garçon de plage
                 $verifGarconDePlage = pg_prepare($connexion, "my_verif", 'SELECT f_rechercher_employe($1, $2, $3, $4, $5)');
-                $verifGarconDePlage = pg_execute($connexion, "my_verif", array($nomGarconPlage, $prenomGarconPlage, $dateNaissanceGarconPlage, $mailGarconPlage, $telGarconPlage));
+                $verifGarconDePlage = pg_execute($connexion, "my_verif", array('Garçon de Plage', $nomGarconPlage, $prenomGarconPlage, $dateNaissanceGarconPlage, $mailGarconPlage, $telGarconPlage));
     
                 // Vérification du succès de la requête
                 if ($verifGarconDePlage === false) {

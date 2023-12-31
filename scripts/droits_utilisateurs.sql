@@ -1,4 +1,9 @@
 --SELECT groname FROM pg_group WHERE groname = 'proprietaires_abeilles' OR groname = 'moniteurs_abeilles' OR groname = 'garcons_de_plage_abeilles';
+/*SELECT usename, rolname
+FROM pg_user
+JOIN pg_auth_members ON (pg_user.usesysid = pg_auth_members.member)
+JOIN pg_roles ON (pg_roles.oid = pg_auth_members.roleid)
+WHERE pg_roles.rolname = 'proprietaires_abeilles';*/ --moniteurs
 
 -- Propriétaires
 DROP GROUP IF EXISTS proprietaires_abeilles;
@@ -48,7 +53,7 @@ GRANT USAGE ON TYPE EStatutClient TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE) TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO moniteurs_abeilles;
-GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteur_abeilles;
+GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteurs_abeilles;
 
 DROP USER IF EXISTS jbond;
 CREATE USER jbond WITH ENCRYPTED PASSWORD 'jbond';
