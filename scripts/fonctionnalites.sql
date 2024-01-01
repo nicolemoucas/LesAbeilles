@@ -109,7 +109,7 @@ $$ Language PlpgSQL;
 --SELECT * FROM CompteEmploye;
 SELECT f_rechercher_employe('Moniteur', 'BOND', 'James', '1996-08-04', 'jbond@lesabeilles.fr', null); -- test
 
-/* Créer un propriétaire */
+/* 8- Créer un propriétaire */
 SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Propriétaire';
 DROP FUNCTION IF EXISTS f_creer_proprietaire;
 CREATE OR REPLACE FUNCTION f_creer_proprietaire(nomUtilisateur VARCHAR, motDePasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
@@ -134,7 +134,7 @@ $BODY$
 LANGUAGE PlpgSQL;
 --SELECT f_creer_proprietaire('kfrottier', 'kfrottiermdp', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
 
-/* Créer un moniteur */
+/* 9- Créer un moniteur */
 --SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Moniteur';
 -- la FK diplôme est insérée au moment de créer le diplôme
 DROP FUNCTION IF EXISTS f_creer_moniteur;
@@ -160,7 +160,7 @@ $BODY$
 LANGUAGE PlpgSQL;
 --SELECT f_creer_moniteur('batman', 'batmanmdp', 'WAYNE', 'Bruce', '1996-08-04', 'bwayne@batman.com', null); --test
 
-/* Supprimer un employé */
+/* 10 -Supprimer un employé */
 DROP PROCEDURE IF EXISTS p_supprimer_employe;
 CREATE OR REPLACE PROCEDURE p_supprimer_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR)
 	AS $BODY$
@@ -179,7 +179,7 @@ LANGUAGE PlpgSQL;
 --SELECT * FROM CompteEmploye where typeemploye = 'Propriétaire';
 --SELECT * FROM pg_catalog.pg_roles WHERE rolname = 'kfrottier';
 
-/* Créer diplôme */
+/* 11 - Créer diplôme */
 DROP PROCEDURE IF EXISTS p_creer_diplome;
 CREATE OR REPLACE PROCEDURE p_creer_diplome(dateObtention DATE, LienDocumentPDF VARCHAR, IdMoniteur int) 
 	AS $BODY$
@@ -207,7 +207,7 @@ FROM pg_catalog.pg_constraint cons
 JOIN pg_catalog.pg_class t ON t.oid = cons.conrelid
 WHERE t.relname ='diplome' OR t.relname = 'compteemploye';
 
-/* 11 - Créer permis bateau */
+/* 12 - Créer permis bateau */
 DROP PROCEDURE IF EXISTS p_creer_permis;
 CREATE OR REPLACE PROCEDURE p_creer_permis(dateObtention DATE, LienDocumentPDF VARCHAR, IdProprietaire int) 
 	AS $BODY$
@@ -242,7 +242,7 @@ BEGIN
 END;
 $$ Language PlpgSQL;
 
-/* 12 - Trouver noms moniteurs */
+/* 13 - Trouver noms moniteurs */
 DROP FUNCTION IF EXISTS fetch_nom_moniteur;
 CREATE OR REPLACE FUNCTION fetch_nom_moniteur()
 RETURNS TABLE (id_moniteur INT, nom_moniteur VARCHAR, prenom_moniteur VARCHAR, date_moniteur DATE) AS $$
@@ -267,7 +267,7 @@ BEGIN
 END;
 $$ Language PlpgSQL;
 
-/* Récupérer rôle utilisateur */
+/* 14 Récupérer rôle utilisateur */
 DROP FUNCTION IF EXISTS fetch_role_utilisateur;
 CREATE OR REPLACE FUNCTION fetch_role_utilisateur(identifiant VARCHAR, mdp VARCHAR)
 RETURNS etypeemploye AS $$
@@ -307,7 +307,7 @@ END;
 $BODY$
 LANGUAGE PlpgSQL;
 
-/* Consulter la liste des inscrits à un cours*/
+/* 14 Consulter la liste des inscrits à un cours*/
 
 CREATE OR REPLACE FUNCTION listeInscritsCoursVoile(DateCours timestamp)
 RETURNS TABLE (
@@ -332,7 +332,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-/* - Consulter le planning des cours de voile */
+/* 15 - Consulter le planning des cours de voile */
 
 CREATE OR REPLACE FUNCTION consulter_cours_voile()
 RETURNS TABLE (
@@ -354,7 +354,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-/* - Modifier le profil d'un client */
+/* 16 - Modifier le profil d'un client */
 
 CREATE OR REPLACE PROCEDURE modifier_profil_client(
     IN client_id INT,
@@ -394,7 +394,7 @@ BEGIN
 END;
 $$;
 
-/* Mettre un matériel "Hors service" */
+/* 17 - Mettre un matériel "Hors service" */
 
 CREATE OR REPLACE PROCEDURE mettre_hors_service(IN materiel_id INT)
 LANGUAGE plpgsql
@@ -414,7 +414,7 @@ BEGIN
 END;
 $$;
 
-/* Changer l'état d'un matériel */
+/* 18- Changer l'état d'un matériel */
 CREATE OR REPLACE PROCEDURE changer_etat_materiel(IN materiel_id INT,IN type_materiel VARCHAR(30),IN nouvel_etat EStatutMateriel)
 LANGUAGE plpgsql
 AS $$
@@ -442,7 +442,7 @@ BEGIN
 END;
 $$;
 
-/* Archiver une location */
+/* 19- Archiver une location */
 CREATE OR REPLACE PROCEDURE ArchiverLocations()
 LANGUAGE plpgsql
 AS $$
@@ -457,7 +457,7 @@ BEGIN
 END;
 $$;
 
-/* Inscription d'un client à un cours de planche à voile */
+/* 20- Inscription d'un client à un cours de planche à voile */
 CREATE OR REPLACE FUNCTION InscrireClientAuCours(client_id INT,cours_id INT)
 RETURNS VOID AS $$
 BEGIN
@@ -482,7 +482,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-/* Créer un profil de garçon de plage */
+/* 21- Créer un profil de garçon de plage */
 
 CREATE OR REPLACE PROCEDURE CreerProfilGarconDePlage(
     nom_personne VARCHAR(30),
