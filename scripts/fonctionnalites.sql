@@ -332,4 +332,175 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+/* - Consulter le planning des cours de voile */
+
+CREATE OR REPLACE FUNCTION consulter_cours_voile()
+RETURNS TABLE (
+    DateHeure timestamp,
+    Niveau EStatutclient,
+    NomMoniteur text
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        cpv.DateHeure,
+        cpv.Niveau,
+        ce.Nom || ' ' || ce.Prenom AS NomMoniteur
+    FROM
+        CoursPlancheVoile cpv
+    JOIN
+        CompteEmploye ce ON cpv.IdCompte = ce.IdCompte;
+END;
+$$ LANGUAGE plpgsql;
+
+/* - Modifier le profil d'un client */
+
+CREATE OR REPLACE PROCEDURE modifier_profil_client(
+    IN client_id INT,
+    IN nouveau_nom VARCHAR(30),
+    IN nouveau_prenom VARCHAR(30),
+    IN nouvelle_date_naissance DATE,
+    IN nouveau_mail VARCHAR(50),
+    IN nouveau_camping ECamping,
+    IN nouveau_statut EStatutClient,
+    IN nouvelle_taille FLOAT,
+    IN nouveau_poids FLOAT,
+    IN nouvelle_preference_contact EPreferenceContact
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- si le client n'existe pas
+    IF NOT EXISTS (SELECT 1 FROM Client WHERE IdPersonne = client_id) THEN
+        RAISE EXCEPTION 'Le client avec l''ID % n''existe pas.', client_id;
+    END IF;
+
+    -- sinon alors mise à jour du profil client
+    UPDATE Client
+    SET
+        Nom = nouveau_nom,
+        Prenom = nouveau_prenom,
+        DateNaissance = nouvelle_date_naissance,
+        Mail = nouveau_mail,
+        Camping = nouveau_camping,
+        Statut = nouveau_statut,
+        Taille = nouvelle_taille,
+        Poids = nouveau_poids,
+        PreferenceContact = nouvelle_preference_contact
+    WHERE IdPersonne = client_id;
+
+    RAISE NOTICE 'Le profil du client avec l''ID % a été modifié.', client_id;
+END;
+$$;
+
+/* Mettre un matériel "Hors service" */
+
+CREATE OR REPLACE PROCEDURE mettre_hors_service(IN materiel_id INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- si l'équipement n'existe pas
+    IF NOT EXISTS (SELECT 1 FROM Materiel WHERE NumSerie = materiel_id) THEN
+        RAISE EXCEPTION 'L''équipement avec le numéro de série % n''existe pas.', materiel_id;
+    END IF;
+
+	--sinon
+    UPDATE Materiel
+    SET Statut = 'Hors service'
+    WHERE NumSerie = materiel_id;
+
+    RAISE NOTICE 'L''équipement avec le numéro de série % a été mis hors service.', materiel_id;
+END;
+$$;
+
+/* Changer l'état d'un matériel */
+CREATE OR REPLACE PROCEDURE changer_etat_materiel(IN materiel_id INT,IN type_materiel VARCHAR(30),IN nouvel_etat EStatutMateriel)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    CASE type_materiel
+        WHEN 'Pedalo' THEN
+            UPDATE Pedalo SET Statut = nouvel_etat WHERE IdPedalo = materiel_id;
+        WHEN 'StandUpPaddle' THEN
+            UPDATE StandUpPaddle SET Statut = nouvel_etat WHERE IdStandUpPaddle = materiel_id;
+        WHEN 'Catamaran' THEN
+            UPDATE Catamaran SET Statut = nouvel_etat WHERE IdCatamaran = materiel_id;
+        WHEN 'PlancheAVoile' THEN
+            UPDATE PlancheAVoile SET Statut = nouvel_etat WHERE IdPlancheVoile = materiel_id;
+        WHEN 'Voile' THEN
+            UPDATE Voile SET Statut = nouvel_etat WHERE IdPlancheVoile = materiel_id;
+        WHEN 'Flotteur' THEN
+            UPDATE Flotteur SET Statut = nouvel_etat WHERE IdPlancheVoile = materiel_id;
+        WHEN 'PiedDeMat' THEN
+            UPDATE PiedDeMat SET Statut = nouvel_etat WHERE IdPlancheVoile = materiel_id;
+        ELSE
+            RAISE EXCEPTION 'type de matériel non pris en charge : %', type_materiel;
+    END CASE;
+
+    RAISE NOTICE 'L''état du matériel avec l''ID % a été changé en %.', materiel_id, nouvel_etat;
+END;
+$$;
+
+/* Archiver une location */
+CREATE OR REPLACE PROCEDURE ArchiverLocations()
+LANGUAGE plpgsql
+AS $$
+BEGIN
+--dans la version du projet amélioré :
+--pour chaque location terminée dans la table Location,
+-- création d'une ligne dans la table LocationArchive 
+    INSERT INTO LocationArchive
+    SELECT *
+    FROM Location
+    WHERE EtatLocation = 'Terminée';
+END;
+$$;
+
+/* Inscription d'un client à un cours de planche à voile */
+CREATE OR REPLACE FUNCTION InscrireClientAuCours(client_id INT,cours_id INT)
+RETURNS VOID AS $$
+BEGIN
+    -- si le client n'existe pas
+    IF NOT EXISTS (SELECT 1 FROM Client WHERE IdPersonne = client_id) THEN
+        RAISE EXCEPTION 'Le client avec l''ID % n''existe pas.', client_id;
+    END IF;
+
+    -- si le cours n'existe pas
+    IF NOT EXISTS (SELECT 1 FROM CoursPlancheVoile WHERE IdCours = cours_id) THEN
+        RAISE EXCEPTION 'Le cours avec l''ID % n''existe pas.', cours_id;
+    END IF;
+	
+	--voir pour faire le cas où le client n'a pas de forfait
+	-- on ne traite pas ce cas car il y a une vérification qui est faite directement sur le site
+
+    -- sinon si tout est bon
+    INSERT INTO Participe (IdCours, IdPersonne)
+    VALUES (cours_id, client_id);
+
+    RAISE NOTICE 'Le client avec l''ID % a été inscrit au cours avec l''ID %.', client_id, cours_id;
+END;
+$$ LANGUAGE plpgsql;
+
+/* Créer un profil de garçon de plage */
+
+CREATE OR REPLACE PROCEDURE CreerProfilGarconDePlage(
+    nom_personne VARCHAR(30),
+    prenom_personne VARCHAR(30),
+    date_naissance_personne DATE,
+    mail_personne VARCHAR(50),
+    telephone_personne VARCHAR(15)
+)
+AS $$
+BEGIN
+    INSERT INTO Personne (Nom, Prenom, DateNaissance, Mail, Telephone)
+    VALUES (nom_personne, prenom_personne, date_naissance_personne, mail_personne, telephone_personne);
+
+    INSERT INTO GarconDePlage DEFAULT VALUES;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
 
