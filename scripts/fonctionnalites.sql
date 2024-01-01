@@ -306,3 +306,30 @@ BEGIN
 END;
 $BODY$
 LANGUAGE PlpgSQL;
+
+/* Consulter la liste des inscrits à un cours*/
+
+CREATE OR REPLACE FUNCTION listeInscritsCoursVoile(DateCours timestamp)
+RETURNS TABLE (
+	idClient integer,
+	NomClient varchar(30),
+	PrenomClient varchar(30)	
+) AS $$
+BEGIN 
+    RETURN QUERY
+    SELECT
+		c.idCours,
+        Cl.nom,
+        Cl.prenom
+    FROM
+        Coursplanchevoile c
+		
+	join participation p on c.idcours = p.idcours
+	
+	join client cl on p.idclient = cl.idclient
+	
+    WHERE c.dateheure = datecours;
+END;
+$$ LANGUAGE plpgsql;
+
+
