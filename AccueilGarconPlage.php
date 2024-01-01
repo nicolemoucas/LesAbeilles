@@ -21,6 +21,7 @@
             <h2>Bienvenue au Club Nautique Les Abeilles</h2>
             <div class="fonctionnalites">
                 <a href="#" class="button">Rechercher un cours</a>
+                <a href="gestionMateriel.php" class="button">Consulter le stock de matériel</a>
             </div>
 
             <br><br>

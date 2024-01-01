@@ -5,7 +5,12 @@
         <script>
             function alertProprietaireExists() {
                 alert("Ce propriétaire existe déjà. Vous allez être redirigé vers l'accueil.");
-                window.location.href= 'http://localhost/LesAbeilles';
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
+            }
+
+            function alertProprietaireCree() {
+                alert("Le moniteur <?php $prenomProprietaire.' '. $nomProprietaire?> a été créé. Vous serez redigiré vers l'accueil.");
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
         </script>
     </head>
@@ -58,8 +63,8 @@
                     $lienURLPermis,
                     $row[0]
                 ));
-                // alert("Le compte propriétaire pour $prenomProprietaire $nomProprietaire a été créé.");
-                header('Location: http://localhost/LesAbeilles');
+                echo '<script type="text/javascript"> alertProprietaireCree(); </script>';
+                // header('Location: http://localhost/LesAbeilles/AccueilProprietaire.php');
             }
         ?>
         <p></p>

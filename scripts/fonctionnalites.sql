@@ -4,7 +4,7 @@
 DROP FUNCTION IF EXISTS recherche_client;
 CREATE OR REPLACE FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE)
 RETURNS TABLE (idpers INTEGER, nomCl VARCHAR, prenomCl VARCHAR, dateNaissanceCl DATE, mailCl VARCHAR, numTelephoneCl VARCHAR,
-campingCl ECamping, statutCl EStatutClient, poidsCl FLOAT, tailleCl FLOAT, preferenceContactCl EPreferenceContact, idCertificatCl INTEGER) AS $$
+campingCl ECamping, statutCl EStatutClient, poidsCl FLOAT, tailleCl int, preferenceContactCl EPreferenceContact, idCertificatCl INTEGER) AS $$
 
 BEGIN
     RETURN QUERY SELECT * FROM client WHERE lower(Nom) = lower($1) AND lower(Prenom) = lower($2) AND DateNaissance = $3;
@@ -107,7 +107,7 @@ BEGIN
 END;
 $$ Language PlpgSQL;
 --SELECT * FROM CompteEmploye;
-SELECT f_rechercher_employe('Moniteur', 'BOND', 'James', '1996-08-04', 'jbond@lesabeilles.fr', null); -- test
+--SELECT f_rechercher_employe('Moniteur', 'BOND', 'James', '1996-08-04', 'jbond@lesabeilles.fr', null); -- test
 
 /* Créer un propriétaire */
 SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Propriétaire';
@@ -134,7 +134,7 @@ $BODY$
 LANGUAGE PlpgSQL;
 --SELECT f_creer_proprietaire('kfrottier', 'kfrottiermdp', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
 
-/* Créer un moniteur */
+/* Créer un profil moniteur (Propriétaire) */
 --SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Moniteur';
 -- la FK diplôme est insérée au moment de créer le diplôme
 DROP FUNCTION IF EXISTS f_creer_moniteur;
@@ -152,6 +152,8 @@ BEGIN
 		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Moniteur')
 		RETURNING IdCompte INTO nouvIdMoniteur;
 	-- créer user et ajout au groupe de moniteurs
+	EXECUTE FORMAT('REASSIGN OWNED BY %I TO moniteurs_abeilles', nomUtil);
+	EXECUTE FORMAT('DROP USER IF EXISTS %I', nomUtil);
     EXECUTE FORMAT('CREATE USER "%I" WITH ENCRYPTED PASSWORD ''%s''', nomUtil, mdp);
 	EXECUTE FORMAT('GRANT moniteurs_abeilles TO %I', nomUtil);
 	RETURN nouvIdMoniteur;
@@ -160,7 +162,7 @@ $BODY$
 LANGUAGE PlpgSQL;
 --SELECT f_creer_moniteur('batman', 'batmanmdp', 'WAYNE', 'Bruce', '1996-08-04', 'bwayne@batman.com', null); --test
 
-/* Supprimer un employé */
+/* Supprimer un employé (Propriétaire) */
 DROP PROCEDURE IF EXISTS p_supprimer_employe;
 CREATE OR REPLACE PROCEDURE p_supprimer_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR)
 	AS $BODY$
@@ -171,11 +173,13 @@ BEGIN
     SELECT idEmp, nomUtilEmp INTO idEmploye, nomUtil FROM (SELECT * FROM f_rechercher_employe($1, $2, $3, $4, $5, $6)) AS employe;
 	DELETE FROM CompteEmploye WHERE idCompte = idEmploye;
 	-- supprimer rôle employé
+	EXECUTE FORMAT('DROP OWNED BY %I', nomUtil);
 	EXECUTE FORMAT('DROP USER IF EXISTS %I', nomUtil);
 END;
 $BODY$
 LANGUAGE PlpgSQL;
 --CALL p_supprimer_employe('Propriétaire', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
+--CALL p_supprimer_employe('Moniteur', 'WAYNE', 'Bruce', '1996-08-04', 'bwayne@batman.com', null) --test
 --SELECT * FROM CompteEmploye where typeemploye = 'Propriétaire';
 --SELECT * FROM pg_catalog.pg_roles WHERE rolname = 'kfrottier';
 

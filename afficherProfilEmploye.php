@@ -71,9 +71,17 @@
 
             if(pg_num_rows($recupEmploye) == 0) {
                 echo 'employee not found';
-                echo '<script type="text/javascript"> alertEmployeNotExists(); </script>';
+                echo '<script type="text/javascript"> alertEmployeNotExists("'.$_SESSION["role"].'"); </script>';
             } else {
                 $row = pg_fetch_object($recupEmploye);
+            }
+
+            //pour la combobox des rôles des employés
+            $requete = "SELECT unnest(enum_range(NULL::ERoleEmploye)) AS ERole";
+            $listeRolesEmployes = pg_query($connexion, $requete);
+            $employes_combobox_php = "";
+            while ($row_emp = pg_fetch_object($listeRolesEmployes)) {
+                $employes_combobox_php .= '<option value="' . $row_emp->erole . '">' . $row_emp->erole . '</option>';
             }
         ?>
     <div class="corps">
@@ -85,9 +93,14 @@
                 <button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>
             </div>
 
-            <label for="RoleEmploye" class="label">Rôle :</label>
-            <input type="text" id="RoleEmploye" name="RoleEmploye" value= "<?php echo $roleEmploye; ?>" required/>
-            <br><br>
+            <div>
+                <label for="RoleEmploye">Role employé</label><br>
+                <select name="RoleEmploye" class="form-control" id="RoleEmploye" required>
+                    <option value="<?php echo $roleEmploye; ?>"><?php echo $roleEmploye; ?></option>
+                    <?php echo $employes_combobox_php; ?>
+                </select>
+            </div>
+            <br>
             
             <label for="NomEmploye" class="label">NOM : </label><br>
             <input type="text" id="NomEmploye" name="NomEmploye" value= "<?php echo $row->nomemp ?>" required/>
