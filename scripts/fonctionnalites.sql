@@ -504,6 +504,38 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+/* 21- Consulter les cours de voile pour inscription client */
+/* C'est-à-dire les cours dont il reste encore de la place pour s'inscrire*/
+
+CREATE OR REPLACE FUNCTION consulter_cours_voile_pour_inscription()
+RETURNS TABLE (
+    dateheure timestamp,
+    niveau EStatutClient,
+    nommoniteur text,
+    nbplacesrestantes bigint
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        cpv.dateheure,
+        cpv.niveau,
+        ce.nom || ' ' || ce.prenom AS nommoniteur,
+        15 - COUNT(icv.idclient) AS nbplacesrestantes
+    FROM
+        coursplanchevoile cpv
+    JOIN
+        compteemploye ce ON cpv.idcompte = ce.idcompte
+    LEFT JOIN
+        participation icv ON cpv.idcours = icv.idcours
+    WHERE
+        cpv.etatcours = 'Prévu'
+    GROUP BY
+        cpv.dateheure, cpv.niveau, ce.nom, ce.prenom;
+END;
+$$ LANGUAGE plpgsql;
+
+
 
 
 
