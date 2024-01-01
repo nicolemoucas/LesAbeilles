@@ -1,3 +1,7 @@
+<?php
+    // Start the session
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,7 +14,7 @@
         <script>
             function confirmerClientSupprime() {
                 alert("Le profil du client a bien été supprimé");
-                window.location.href= 'http://localhost/LesAbeilles';
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
         </script>
     </head>
@@ -22,9 +26,8 @@
         <?php
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
-        session_start(); 
         
-        $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
+        $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=" .$_SESSION["identifiant"]." password=" . $_SESSION["motdepasse"]) or die("Impossible de se connecter : " . pg_result_error($connexion));
 
         $nomClient = $_GET["nom"];
         $prenomClient = $_GET["prenom"];

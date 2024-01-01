@@ -1,7 +1,3 @@
-<?php
-    // Start the session
-    session_start();
-?>
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" type="text/css" href="css/inscription.css" />
@@ -11,7 +7,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> Création d'un profil moniteur</title>
+        <title> Création d'un profil propriétaire</title>
     </head>
     <body>
         <header>
@@ -22,6 +18,7 @@
             header('Access-Control-Allow-Origin: *');
             ini_set('display_errors', 0);
             ini_set('display_startup_errors', 0);
+            session_start(); 
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
 
             //pour la combobox des préférences de contact
@@ -35,16 +32,16 @@
         ?>
       
         <div class="corps">
-            <h1>Formulaire de création du profil moniteur :</h1>
+            <h1>Formulaire de création du profil propriétaire :</h1>
             <p>* Champs obligatoires</p>
-            <form method="post" name="formulaire" novalidate="" class="form" action="creationProfilMoniteur.php">-
+            <form method="post" name="formulaire" novalidate="" class="form" action="creationProfilProprietaire.php">
 
-                <label for="NomMoniteur" class="label">NOM *</label><br>
-                <input type="text" id="NomMoniteur" name="NomMoniteur" placeholder="Ex : BOULANGER" required/>
+                <label for="NomProprietaire" class="label">NOM *</label><br>
+                <input type="text" id="NomProprietaire" name="NomProprietaire" placeholder="Ex : BOULANGER" required/>
                 <div id="nomError" class="error"></div><br>
                     
-                <label for="PrenomMoniteur">Prénom *</label><br>
-                <input type="text" id="PrenomMoniteur" name="PrenomMoniteur" placeholder="Ex : Jean Michel" required/>
+                <label for="PrenomProprietaire">Prénom *</label><br>
+                <input type="text" id="PrenomProprietaire" name="PrenomProprietaire" placeholder="Ex : Jean Michel" required/>
                 <div id="prenomError" class="error"></div><br>
                     
                 <label for="NomUtilisateur">Nom utilisateur *</label><br>
@@ -58,19 +55,19 @@
                     <div id="motDePasseError" class="error"></div><br>
                 </div>
 
-                <label for="DateNaissanceMoniteur">Date de naissance *</label><br>
-                <input type="date" id="DateNaissanceMoniteur" name= "DateNaissanceMoniteur" placeholder="Ex : 08/01/1975" required/>
+                <label for="DateNaissanceProprietaire">Date de naissance *</label><br>
+                <input type="date" id="DateNaissanceProprietaire" name= "DateNaissanceProprietaire" placeholder="Ex : 08/01/1975" required/>
                 <div id="dateNaisError" class="error"></div><br>
 
-                <label for="MailMoniteur">Email</label><br>
-                <input type="email" id="MailMoniteur" name="MailMoniteur" placeholder="Ex : boulangerjm@free.fr"/><br><br>
+                <label for="MailProprietaire">Email</label><br>
+                <input type="email" id="MailProprietaire" name="MailProprietaire" placeholder="Ex : boulangerjm@free.fr"/><br><br>
 
-                <label for="TelMoniteur" pattern="0[0-9]{9}">Numéro de téléphone</label><br>
-                <input type="text" id="TelMoniteur" name="TelMoniteur" placeholder="Ex : 0777764231"/><br><br>
+                <label for="TelProprietaire" pattern="0[0-9]{9}">Numéro de téléphone</label><br>
+                <input type="text" id="TelProprietaire" name="TelProprietaire" placeholder="Ex : 0777764231"/><br><br>
 
                 <div class="preferenceContactEmploye">
-                    <label for="PrefContactMoniteur">Préférence de contact *</label><br>
-                    <select name="PrefContactMoniteur" class="form-control" id="PrefContactMoniteur" required >
+                    <label for="PrefContactProprietaire">Préférence de contact *</label><br>
+                    <select name="PrefContactProprietaire" class="form-control" id="PrefContactProprietaire" required >
                         <option disabled selected value> -- Sélectionnez une option -- </option>
                         <?php echo $prefContact_combobox_php; ?>
                     </select>
@@ -78,21 +75,21 @@
                 </div><br>
 
                 <div class="DocumentPDFEmploye">
-                    <label>Diplôme</label><br><br>
+                    <label>Permis</label><br><br>
 
-                    <label for="DateObtentionDiplome">Date d'obtention du diplôme *</label><br>
-                    <input type="date" id="DateObtentionDiplome" name= "DateObtentionDiplome" placeholder="Ex : 08/01/1975" required/>
+                    <label for="DateObtentionPermis">Date d'obtention du permis bateau *</label><br>
+                    <input type="date" id="DateObtentionPermis" name= "DateObtentionPermis" placeholder="Ex : 08/01/1975" required/>
                     <div id="dateObtentionDipError" class="error"></div><br>
                     
-                    <label for="LienURLDiplome">Lien URL *</label>
+                    <label for="LienURLPermis">Lien URL *</label>
                     <p>Veuillez uploader le document PDF dans le <a href="https://drive.google.com/drive">compte Drive Les Abeilles</a> puis insérer le lien ci-dessous</p>
-                    <input type="text" id="LienURLDiplome" name="LienURLDiplome" placeholder="Ex : lien" required/>
-                    <div id="lienDiplomeError" class="error"></div>
+                    <input type="text" id="LienURLPermis" name="LienURLPermis" placeholder="Ex : lien" required/>
+                    <div id="lienPermisError" class="error"></div>
                 </div>    
                 <br><br>
 
                 <div>
-                    <button class = "button">Créer le moniteur</button>
+                    <button class = "button">Créer le propriétaire</button>
                 </div>
             </form>
         </div>
@@ -120,82 +117,70 @@
     formulaire.addEventListener("submit", (event) => {
         let isValid = true;
 
-        if((!formulaire.MailMoniteur.value) && (!formulaire.TelMoniteur.value)) {
+        if((!formulaire.MailProprietaire.value) && (!formulaire.TelProprietaire.value)) {
             alert("Il faut renseigner un email ou un numéro de téléphone.");
-            formulaire.MailMoniteur.className="invalid";
-            formulaire.TelMoniteur.className="invalid";
+            formulaire.MailProprietaire.className="invalid";
+            formulaire.TelProprietaire.className="invalid";
             isValid = false;
         }
 
         const nomError = document.getElementById("nomError");
-        if(formulaire.NomMoniteur.validity.valid) {
+        if(formulaire.NomProprietaire.validity.valid) {
             nomError.textContent = "";
             nomError.className = "error";
-            formulaire.NomMoniteur.className= "valid";
+            formulaire.NomProprietaire.className= "valid";
         } else {
-            nomError.textContent = "Veuillez renseigner le nom du moniteur.";
+            nomError.textContent = "Veuillez renseigner le nom du propriétaire.";
             nomError.className = "error active";
-            formulaire.NomMoniteur.className= "invalid";
+            formulaire.NomProprietaire.className= "invalid";
             isValid = false;
         }
 
         const prenomError = document.getElementById("prenomError")
-        if(formulaire.PrenomMoniteur.validity.valid) {
+        if(formulaire.PrenomProprietaire.validity.valid) {
             prenomError.textContent = "";
             prenomError.className = "error";
-            formulaire.PrenomMoniteur.className= "valid";
+            formulaire.PrenomProprietaire.className= "valid";
         } else {
-            prenomError.textContent = "Veuillez renseigner le prénom du moniteur."
+            prenomError.textContent = "Veuillez renseigner le prénom du propriétaire."
             prenomError.className = "error active"
-            formulaire.PrenomMoniteur.className= "invalid"
-            isValid = false;
-        }
-
-        const motDePasseError = document.getElementById("motDePasseError")
-        if(formulaire.MotDePasse.validity.valid) {
-            motDePasseError.textContent = "";
-            motDePasseError.className = "error";
-            formulaire.MotDePasse.className= "valid";
-        } else {
-            motDePasseError.textContent = "Veuillez renseigner le mot de passe du moniteur."
-            motDePasseError.className = "error active"
-            formulaire.MotDePasse.className= "invalid"
+            formulaire.PrenomProprietaire.className= "invalid"
             isValid = false;
         }
 
         const dateNaisError = document.getElementById("dateNaisError")
-        if(formulaire.DateNaissanceMoniteur.validity.valid) {
+        if(formulaire.DateNaissanceProprietaire.validity.valid) {
             dateNaisError.textContent = "";
             dateNaisError.className = "error";
-            formulaire.DateNaissanceMoniteur.className= "valid";
+            formulaire.DateNaissanceProprietaire.className= "valid";
         } else {
-            dateNaisError.textContent = "Veuillez renseigner la date de naissance du moniteur.";
+            dateNaisError.textContent = "Veuillez renseigner la date de naissance du propriétaire.";
             dateNaisError.className = "error active";
-            formulaire.DateNaissanceMoniteur.className= "invalid";
+            formulaire.DateNaissanceProprietaire.className= "invalid";
             isValid = false;
         }
 
         const dateObtentionDipError = document.getElementById("dateObtentionDipError")
-        if(formulaire.DateObtentionDiplome.validity.valid) {
+        if(formulaire.DateObtentionPermis.validity.valid) {
             dateObtentionDipError.textContent = "";
             dateObtentionDipError.className = "error";
-            formulaire.DateObtentionDiplome.className= "valid";
+            formulaire.DateObtentionPermis.className= "valid";
         } else {
-            dateObtentionDipError.textContent = "Veuillez renseigner la date d'obtention du diplôme du moniteur.";
+            dateObtentionDipError.textContent = "Veuillez renseigner la date d'obtention du permis bateau du propriétaire.";
             dateObtentionDipError.className = "error active";
-            formulaire.DateObtentionDiplome.className= "invalid";
+            formulaire.DateObtentionPermis.className= "invalid";
             isValid = false;
         }
 
-        const lienDiplomeError = document.getElementById("lienDiplomeError")
-        if(formulaire.LienURLDiplome.validity.valid) {
-            lienDiplomeError.textContent = "";
-            lienDiplomeError.className = "error";
-            formulaire.LienURLDiplome.className= "valid";
+        const lienPermisError = document.getElementById("lienPermisError")
+        if(formulaire.LienURLPermis.validity.valid) {
+            lienPermisError.textContent = "";
+            lienPermisError.className = "error";
+            formulaire.LienURLPermis.className= "valid";
         } else {
-            lienDiplomeError.textContent = "Veuillez renseigner le lien pour récupérer le diplôme du moniteur.";
-            lienDiplomeError.className = "error active";
-            formulaire.LienURLDiplome.className= "invalid";
+            lienPermisError.textContent = "Veuillez renseigner le lien pour récupérer le permis bateau du propriétaire.";
+            lienPermisError.className = "error active";
+            formulaire.LienURLPermis.className= "invalid";
             isValid = false;
         }
         // console.log("SFVDF");

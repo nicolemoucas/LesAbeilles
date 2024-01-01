@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html>
+<?php
+    // Start the session
+    session_start();
+?>
     <link rel="stylesheet" type="text/css" href="css/inscription.css" />
     <link rel="stylesheet" href="css/styles.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -15,10 +19,10 @@
         <?php
             // débogage, mettre en 1 pour afficher les erreurs, 0 pour les cacher
             header('Access-Control-Allow-Origin: *');
-            ini_set('display_errors', 0);
-            ini_set('display_startup_errors', 0);
-            session_start(); 
-            $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
+          
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=" .$_SESSION["identifiant"]." password=" . $_SESSION["motdepasse"]) or die("Impossible de se connecter : " . pg_result_error($connexion));
             
             //pour la combobox des noms de campings
             $requete = "SELECT unnest(enum_range(NULL::ECamping)) AS ECamp";
@@ -69,7 +73,7 @@
                 <input type="text" id="TelClient" name="TelClient" placeholder="Ex : 0777764231"/><br><br>
                 
                 <div>
-                <label for="PrefContactClient">Préférence de contact *</label><br>
+                    <label for="PrefContactClient">Préférence de contact *</label><br>
                     <select name="PrefContactClient" class="form-control" id="PrefContactClient" required >
                         <option disabled selected value> -- Sélectionnez une option -- </option>
                         <?php echo $prefContact_combobox_php; ?>
@@ -129,6 +133,7 @@
         if(formulaire.NomClient.validity.valid) {
             nomError.textContent = "";
             nomError.className = "error"
+            formulaire.NomClient.className= "valid"
         } else {
             nomError.textContent = "Veuillez renseigner le nom du client."
             nomError.className = "error active"
@@ -141,6 +146,7 @@
         if(formulaire.PrenomClient.validity.valid) {
             prenomError.textContent = "";
             prenomError.className = "error"
+            formulaire.PrenomClient.className= "valid"
         } else {
             prenomError.textContent = "Veuillez renseigner le prénom du client."
             prenomError.className = "error active"
@@ -153,6 +159,7 @@
         if(formulaire.DateNaissanceClient.validity.valid) {
             dateNaisError.textContent = "";
             dateNaisError.className = "error"
+            formulaire.DateNaissanceClient.className= "valid"
         } else {
             dateNaisError.textContent = "Veuillez renseigner la date de naissance du client."
             dateNaisError.className = "error active"
@@ -165,6 +172,7 @@
         if(formulaire.TailleClient.validity.valid) {
             tailleError.textContent = "";
             tailleError.className = "error"
+            formulaire.TailleClient.className= "valid"
         } else {
             tailleError.textContent = "Veuillez renseigner la taille du client."
             tailleError.className = "error active"
@@ -177,6 +185,7 @@
         if(formulaire.PoidsClient.validity.valid) {
             poidsError.textContent = "";
             poidsError.className = "error"
+            formulaire.PoidsClient.className= "valid"
         } else {
             poidsError.textContent = "Veuillez renseigner le poids du client."
             poidsError.className = "error active"
@@ -189,6 +198,7 @@
         if(formulaire.StatutClient.validity.valid) {
             statutError.textContent = "";
             statutError.className = "error"
+            formulaire.StatutClient.className= "valid"
         } else {
             statutError.textContent = "Veuillez sélectionner un niveau sportif."
             statutError.className = "error active"
@@ -201,6 +211,7 @@
         if(formulaire.PrefContactClient.validity.valid) {
             prefContactError.textContent = "";
             prefContactError.className = "error"
+            formulaire.PrefContactClient.className= "valid"
         } else {
             prefContactError.textContent = "Veuillez sélectionner une option."
             prefContactError.className = "error active"

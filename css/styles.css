@@ -13,7 +13,7 @@ body {
 }
 
 .corps {
-  height: 800px;
+  height: 75em;
   /* max-width: 1200px; */
   margin: 0px; /* vert hor */
   padding: 10px 10px 0px 10px; /* top right bottom left */
@@ -52,5 +52,11 @@ body {
 }
 
 input {
-  width: 100px;
+  width: 20em;
+}
+
+.error {
+  background-color: white;
+  color: red;
+  font-weight: bold;
 }

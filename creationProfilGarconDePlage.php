@@ -11,7 +11,7 @@ session_start();
         <script>
             function alertGarconDePlageExists() {
                 alert("Ce garçon de plage existe déjà.");
-                window.location.href= 'http://localhost/LesAbeilles';
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
         </script>
         <style>
@@ -100,8 +100,8 @@ session_start();
                 $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
     
                 // Vérification de l'existence du garçon de plage
-                $verifGarconDePlage = pg_prepare($connexion, "my_verif", 'SELECT recherche_employe($1, $2, $3)');
-                $verifGarconDePlage = pg_execute($connexion, "my_verif", array($nomGarconPlage, $prenomGarconPlage, $dateNaissanceGarconPlage));
+                $verifGarconDePlage = pg_prepare($connexion, "my_verif", 'SELECT f_rechercher_employe($1, $2, $3, $4, $5)');
+                $verifGarconDePlage = pg_execute($connexion, "my_verif", array('Garçon de Plage', $nomGarconPlage, $prenomGarconPlage, $dateNaissanceGarconPlage, $mailGarconPlage, $telGarconPlage));
     
                 // Vérification du succès de la requête
                 if ($verifGarconDePlage === false) {
@@ -126,7 +126,7 @@ session_start();
                         ));
     
                         // Redirection après l'insertion
-                        header('Location: http://localhost/LesAbeilles');
+                        header('Location: http://localhost/LesAbeilles/AccueilProprietaire.php');
                     }
                 }
     

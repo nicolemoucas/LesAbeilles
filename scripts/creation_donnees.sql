@@ -1,12 +1,12 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto; -- pour crypter les mots de passe
 
 -- Certificat Médical OK
-INSERT INTO CertificatMedical (IdCertificat, DateDelivrance, DocumentPDF, IdClient) VALUES
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),-- example random pour pouvoir insérer les données
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 13); 
+INSERT INTO CertificatMedical (IdCertificat, DateDelivrance, LienDocumentPDF, IdClient) VALUES
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1fbdICYRItidtTzYpYLW6ZWwdElZiG_-z/view?usp=drive_link', 13),-- example random pour pouvoir insérer les données
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1QlICJMIBRUyzmb50Bty8Jl8pqYZh2FnM/view?usp=drive_link', 14),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1NrU0QpN-17j-dyhuSIfgP4Ktff2X3cnW/view?usp=drive_link', 15),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1bdbLyyKGs9MPdf4hA1lj6g2vJgBwZiw2/view?usp=drive_link', 16),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1pYPuPtIbEho8oBHU9ZQyucOwM7YkT-uE/view?usp=drive_link', 17); 
 SELECT * FROM CertificatMedical;
 
 -- Type Forfait OK
@@ -36,19 +36,19 @@ INSERT INTO Paiement (IdPaiement, DateHeure, Montant, MoyenPaiement) VALUES
 SELECT * FROM Paiement;
 
 -- Diplôme OK
-INSERT INTO Diplome (IdDiplome, DateObtention, DocumentPDF, IdMoniteur) VALUES
-	(DEFAULT, '2021-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 3),-- example random pour pouvoir insérer les données
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 3),
-	(DEFAULT, '2020-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 4),
-	(DEFAULT, '2022-10-10', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 4); 
+INSERT INTO Diplome (IdDiplome, DateObtention, LienDocumentPDF, IdMoniteur) VALUES
+	(DEFAULT, '2021-10-10', 'https://drive.google.com/file/d/1QiXghjblbhdeyqIvnLT9n_trK4Io1OU7/view?usp=drive_link', 3),-- example random pour pouvoir insérer les données
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1b3xjlb21cCZA392lbzGPY0tsQkc4tSeF/view?usp=drive_link', 3),
+	(DEFAULT, '2020-10-10', 'https://drive.google.com/file/d/1JpNlpyos-tFZ3AGmVEeWsaoLTIzkg24b/view?usp=drive_link', 4),
+	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1BSGwX18SWwfXWR7w0b7Vc8L4jkx-ElkT/view?usp=drive_link', 4); 
 SELECT * FROM Diplome;
 SELECT * FROM CompteEmploye;
 
 -- Permis Bateau
-INSERT INTO PermisBateau (IdPermis, DateObtention, DocumentPDF, IdProprietaire) VALUES
-	(DEFAULT, '2022-01-02', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 1),
-	(DEFAULT, '2023-01-02', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 1),
-	(DEFAULT, '2023-01-02', decode('013d7d16d7ad4fefb61bd95b765c8ceb', 'hex'), 2);
+INSERT INTO PermisBateau (IdPermis, DateObtention, LienDocumentPDF, IdProprietaire) VALUES
+	(DEFAULT, '2022-01-02', 'https://drive.google.com/file/d/1RunXqNU_UQaShvsZp63I5Wcr0HOVDzYW/view?usp=drive_link', 1),
+	(DEFAULT, '2023-01-02', 'https://drive.google.com/file/d/1foUCZ4RWaPsM_lUN7tOtj2phqaQfzGYV/view?usp=drive_link', 1),
+	(DEFAULT, '2023-01-02', 'https://drive.google.com/file/d/14bj8lZfiRb4LHh8pOBEx-byt5pK_p_E0/view?usp=drive_link', 2);
 SELECT * FROM PermisBateau;
 	
 -- Location
@@ -90,50 +90,47 @@ INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Mail, NumTelephone, Ca
 	(DEFAULT, 'FERNANDEZ', 'Augustin', '1996-05-03', 'af@gmail.com', 0789456123, 'Autre', 'Sportif', 196, 80, 'Téléphone'),
 	(DEFAULT, 'FERNANDEZ', 'Julie', '1997-05-03', 'jf@gmail.com', 0684957138, 'Autre', 'Sportif', 196, 80, 'Téléphone'),
 	(DEFAULT, 'RODRIGUEZ', 'Julia', '1998-07-15', 'jr@icloud.com', 0756938517, 'Jolibois', 'Débutant', 165, 55, 'Mail');
-INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Camping, Statut, Taille, Poids, IdCertificat) VALUES
-	(DEFAULT, 'PETIT', 'Lola', '2013-04-18', 'Marande', 'Sportif', 138, 30, 1),
-	(DEFAULT, 'PETIT', 'Noah', '2012-01-04', 'Marande', 'Sportif', 145, 40, 2),
-	(DEFAULT, 'FERNANDEZ', 'Leo', '2015-06-30', 'Autre', 'Débutant', 143, 44, 3),
-	(DEFAULT, 'FERNANDEZ', 'Alice', '2014-03-15', 'Autre', 'Sportif', 140, 33, 4),
-	(DEFAULT, 'FRASELLE', 'Mochi', '2020-09-10', 'Autre', 'Débutant', 50, 5, 5);
+INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Camping, Statut, NumTelephone, Taille, Poids, IdCertificat) VALUES
+	(DEFAULT, 'PETIT', 'Lola', '2013-04-18', 'Marande', 'Sportif', 0682749174, 138, 30, 1),
+	(DEFAULT, 'PETIT', 'Noah', '2012-01-04', 'Marande', 'Sportif', 0682749174, 145, 40, 2),
+	(DEFAULT, 'FERNANDEZ', 'Leo', '2015-06-30', 'Autre', 'Débutant', 0684957138, 143, 44, 3),
+	(DEFAULT, 'FERNANDEZ', 'Alice', '2014-03-15', 'Autre', 'Sportif', 0684957138, 140, 33, 4);
+INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Camping, Statut, Mail, Taille, Poids, IdCertificat) VALUES
+	(DEFAULT, 'FRASELLE', 'Mochi', '2020-09-10', 'Autre', 'Débutant', 'nadege.fraselle@gmail.com', 50, 5, 5);
 SELECT * FROM Client;
-
--- Est Parent De OK
-INSERT INTO EstParentDe (IdParent, IdEnfant) VALUES
-	(1, 17),
-	(7, 13), (7, 14), (8, 13), (8, 14),
-	(10, 15), (10, 16), (11, 15), (11, 16);
-SELECT * FROM EstParentDe;
 
 -- Comptes Employé
 SELECT enum_range(null::ERoleEmploye); -- "{Propriétaire,Moniteur,""Garçon de Plage""}"
 -- Propriétaires OK
 INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye, IdPermis) VALUES
-	(DEFAULT, 'lfrottier', crypt('lfrottier', gen_salt('bf')), 'FROTTIER', 'Louis', '1980-11-15', 'lf15@gmail.com', '0795847645', 'Propriétaire', 2),
-	(DEFAULT, 'jfrottier', crypt('jfrottier', gen_salt('bf')), 'FROTTIER', 'Jeannette', '1981-11-15', 'jf15@gmail.com', '0795847646', 'Propriétaire', 3);
+	(DEFAULT, 'lfrottier', crypt('lfrottier', gen_salt('bf')), 'FROTTIER', 'Louis', '1980-11-15', 'lf15@lesabeilles.com', '0795847645', 'Propriétaire', 2),
+	(DEFAULT, 'jfrottier', crypt('jfrottier', gen_salt('bf')), 'FROTTIER', 'Jeannette', '1981-11-15', 'jf15@lesabeilles.com', '0795847646', 'Propriétaire', 3);
 -- Moniteurs OK
 INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye, IdDiplome) VALUES
-	(DEFAULT, 'jbond', crypt('jbond', gen_salt('bf')), 'BOND', 'James', '1996-08-04', 'jbond@yahoor.fr', '0699887766', 'Moniteur', 2),
-	(DEFAULT, 'ffleuriot', crypt('ffleuriot', gen_salt('bf')), 'FLEURIOT', 'Florent', '1980-05-29', 'ff@gmail.be', '0694857601', 4),
-	(DEFAULT, 'hmeyer', crypt('hmeyer', gen_salt('bf')), 'MEYER', 'Hugo', '2000-02-02', 'hmeyer@gmail.lu', '0785948372', 'Moniteur', 3);
+	(DEFAULT, 'jbond', crypt('jbond', gen_salt('bf')), 'BOND', 'James', '1996-08-04', 'jbond@lesabeilles.fr', '0699887766', 'Moniteur', 2),
+	(DEFAULT, 'ffleuriot', crypt('ffleuriot', gen_salt('bf')), 'FLEURIOT', 'Florent', '1980-05-29', 'ff@lesabeilles.be', '0694857601', 'Moniteur', 4),
+	(DEFAULT, 'hmeyer', crypt('hmeyer', gen_salt('bf')), 'MEYER', 'Hugo', '2000-02-02', 'hmeyer@lesabeilles.lu', '0785948372', 'Moniteur', 3);
 -- Garçons de plage OK
 INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
-	(DEFAULT, 'dlee', crypt('dlee', gen_salt('bf')), 'LEE', 'David', '1996-08-04', 'dlee@outlook.fr', '0649586700', 'Garçon de Plage'),
-	(DEFAULT, 'lpetit', crypt('lpetit', gen_salt('bf')), 'PETIT', 'Laura', '1993-06-04', 'lpetit@gmail.fr', '0766548392', 'Garçon de Plage');
-SELECT * FROM CompteEmploye;
+	(DEFAULT, 'dlee', crypt('dlee', gen_salt('bf')), 'LEE', 'David', '1996-08-04', 'dlee@lesabeilles.fr', '0649586700', 'Garçon de Plage'),
+	(DEFAULT, 'lpetit', crypt('lpetit', gen_salt('bf')), 'PETIT', 'Laura', '1993-06-04', 'lpetit@lesabeilles.fr', '0766548392', 'Garçon de Plage');
+--SELECT * FROM CompteEmploye where typeemploye = 'Propriétaire';
+--SELECT * FROM CompteEmploye where typeemploye = 'Moniteur';
 
 -- Cours de Planche à Voile
 SELECT * FROM Client;
 SELECT enum_range(null::EStatutClient); --"{Débutant,Sportif}"
-INSERT INTO CoursPlancheVoile (IdCours, DateHeure, Niveau, IdCompte) VALUES
-	(DEFAULT, '2023-08-21 14:00:00', 'Débutant', 1),
-	(DEFAULT, '2023-08-22 14:00:00', 'Débutant', 3),
-	(DEFAULT, '2023-08-23 14:00:00', 'Débutant', 6),
-	(DEFAULT, '2023-08-24 14:00:00', 'Sportif', 2),
-	(DEFAULT, '2023-08-25 14:00:00', 'Sportif', 4),
-	(DEFAULT, '2023-08-26 10:00:00', 'Sportif', 5),
-	(DEFAULT, '2023-08-26 14:00:00', 'Débutant', 4),
-	(DEFAULT, '2023-08-26 14:00:00', 'Sportif', 5);
+SELECT enum_range(null::EEtatCours); --"{Prévu,"En cours",Réalisé,Annulé}"
+INSERT INTO CoursPlancheVoile (IdCours, DateHeure, Niveau, EtatCours, IdCompte) VALUES
+	(DEFAULT, '2023-08-21 14:00:00', 'Débutant', 'Réalisé', 1),
+	(DEFAULT, '2023-08-22 14:00:00', 'Débutant', 'Réalisé', 3),
+	(DEFAULT, '2023-08-23 14:00:00', 'Débutant', 'Réalisé', 6),
+	(DEFAULT, '2023-08-24 14:00:00', 'Sportif', 'Annulé', 2),
+	(DEFAULT, '2023-08-25 14:00:00', 'Sportif', 'Réalisé', 4),
+	(DEFAULT, '2023-08-26 10:00:00', 'Sportif', 'Annulé', 5),
+	(DEFAULT, '2023-08-26 14:00:00', 'Débutant', 'Réalisé', 4),
+	(DEFAULT, '2023-08-26 14:00:00', 'Sportif', 'Annulé', 5),
+	(DEFAULT, '2024-08-26 14:00:00', 'Sportif', 'Prévu', 7);
 SELECT * FROM CoursPlancheVoile;
 
 -- Prix Matériel
@@ -253,9 +250,10 @@ INSERT INTO Voile (IdVoile, IdPlancheVoile, Taille) VALUES
 SELECT * FROM Voile;
 
 -- Pédalo (prix materiel 4) OK
+SELECT enum_range(null::EStatutMateriel); --"{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
 INSERT INTO Pedalo (IdPedalo, NbPlaces, Statut, IdPrixMateriel) VALUES
 	(DEFAULT, 4, 'Fonctionnel', 4),
-	(DEFAULT, 4, 'Fonctionnel', 4),
+	(DEFAULT, 4, 'Mis au rebut', 4),
 	(DEFAULT, 4, 'Fonctionnel', 4),
 	(DEFAULT, 4, 'Hors service', 4);
 SELECT * FROM Pedalo;
@@ -286,71 +284,67 @@ INSERT INTO Participation (IdClient, IdCours) VALUES
 SELECT * FROM Participation;
 
 -- Ajout des FK
-
-ALTER TABLE EstParentDe
-	ADD FOREIGN KEY (IdParent) REFERENCES Client(IdClient),
-	ADD FOREIGN KEY (IdEnfant) REFERENCES Client(IdClient);
 	 
 ALTER TABLE CertificatMedical 
-	ADD FOREIGN KEY (IdClient) REFERENCES Client(IdClient);
+	ADD FOREIGN KEY (IdClient) REFERENCES Client(IdClient) ON DELETE CASCADE;
 
 ALTER TABLE Forfait 
-	ADD FOREIGN KEY (IdClient) REFERENCES Client(IdClient),
-	ADD FOREIGN KEY (IdPaiement) REFERENCES Paiement(IdPaiement),
-	ADD FOREIGN KEY (IdTypeForfait) REFERENCES TypeForfait(IdTypeForfait);
+	ADD FOREIGN KEY (IdClient) REFERENCES Client(IdClient) ON DELETE CASCADE,
+	ADD FOREIGN KEY (IdPaiement) REFERENCES Paiement(IdPaiement) ON DELETE CASCADE,
+	ADD FOREIGN KEY (IdTypeForfait) REFERENCES TypeForfait(IdTypeForfait) ON DELETE CASCADE;
 
 ALTER TABLE Diplome 
-	ADD FOREIGN KEY (IdMoniteur) REFERENCES CompteEmploye(IdCompte);
+	ADD FOREIGN KEY (IdMoniteur) REFERENCES CompteEmploye(IdCompte) ON DELETE CASCADE;
 
 ALTER TABLE PermisBateau 
-	ADD FOREIGN KEY (IdPermis) REFERENCES PermisBateau(IdPermis);
+	ADD FOREIGN KEY (IdPermis) REFERENCES PermisBateau(IdPermis) ON DELETE CASCADE;
 
 ALTER TABLE Client
-	ADD FOREIGN KEY (IdCertificat) REFERENCES CertificatMedical(IdCertificat);
+	ADD FOREIGN KEY (IdCertificat) REFERENCES CertificatMedical(IdCertificat) ON DELETE CASCADE;
 
 ALTER TABLE CompteEmploye 
-	ADD FOREIGN KEY (IdDiplome) REFERENCES Diplome(IdDiplome),
-	ADD FOREIGN KEY (IdPermis) REFERENCES PermisBateau(IdPermis);
+	ADD FOREIGN KEY (IdDiplome) REFERENCES Diplome(IdDiplome) ON DELETE CASCADE,
+	ADD FOREIGN KEY (IdPermis) REFERENCES PermisBateau(IdPermis) ON DELETE CASCADE;
 
 ALTER TABLE Catamaran
-	ADD FOREIGN KEY (IdPrixMateriel) REFERENCES PrixMateriel(IdPrixMateriel);
+	ADD FOREIGN KEY (IdPrixMateriel) REFERENCES PrixMateriel(IdPrixMateriel) ON DELETE CASCADE;
 
 ALTER TABLE Flotteur
-	ADD FOREIGN KEY (IdPlancheVoile) REFERENCES PlancheAVoile(IdPlancheVoile);
+	ADD FOREIGN KEY (IdPlancheVoile) REFERENCES PlancheAVoile(IdPlancheVoile) ON DELETE CASCADE;
 
 ALTER TABLE Pedalo
-	ADD FOREIGN KEY (IdPrixMateriel) REFERENCES PrixMateriel(IdPrixMateriel);
+	ADD FOREIGN KEY (IdPrixMateriel) REFERENCES PrixMateriel(IdPrixMateriel) ON DELETE CASCADE;
 
 ALTER TABLE PiedDeMat
-	ADD FOREIGN KEY (IdPlancheVoile) REFERENCES PlancheAVoile(IdPlancheVoile);
+	ADD FOREIGN KEY (IdPlancheVoile) REFERENCES PlancheAVoile(IdPlancheVoile) ON DELETE CASCADE;
 
 ALTER TABLE PlancheAVoile
-	ADD FOREIGN KEY (IdPrixMateriel) REFERENCES PrixMateriel(IdPrixMateriel);
+	ADD FOREIGN KEY (IdPrixMateriel) REFERENCES PrixMateriel(IdPrixMateriel) ON DELETE CASCADE;
 
 ALTER TABLE StandUpPaddle
-	ADD FOREIGN KEY (IdPrixMateriel) REFERENCES PrixMateriel(IdPrixMateriel);
+	ADD FOREIGN KEY (IdPrixMateriel) REFERENCES PrixMateriel(IdPrixMateriel) ON DELETE CASCADE;
 	
 ALTER TABLE Voile
-	ADD FOREIGN KEY (IdPlancheVoile) REFERENCES PlancheAVoile(IdPlancheVoile);
+	ADD FOREIGN KEY (IdPlancheVoile) REFERENCES PlancheAVoile(IdPlancheVoile) ON DELETE CASCADE;
 
 ALTER TABLE Location
-	ADD FOREIGN KEY (IdClient) REFERENCES Client(IdClient),
-	ADD FOREIGN KEY (IdPaiement) REFERENCES Paiement(IdPaiement),
-	ADD FOREIGN KEY (IdPlancheVoile) REFERENCES PlancheAVoile(IdPlancheVoile),
-	ADD FOREIGN KEY (IdStandUpPaddle) REFERENCES StandUpPaddle(IdStandUpPaddle),
-	ADD FOREIGN KEY (IdPedalo) REFERENCES Pedalo(IdPedalo),
-	ADD FOREIGN KEY (IdCatamaran) REFERENCES Catamaran(IdCatamaran);
+	ADD FOREIGN KEY (IdClient) REFERENCES Client(IdClient) ON DELETE CASCADE,
+	ADD FOREIGN KEY (IdPaiement) REFERENCES Paiement(IdPaiement) ON DELETE CASCADE,
+	ADD FOREIGN KEY (IdPlancheVoile) REFERENCES PlancheAVoile(IdPlancheVoile) ON DELETE CASCADE,
+	ADD FOREIGN KEY (IdStandUpPaddle) REFERENCES StandUpPaddle(IdStandUpPaddle) ON DELETE CASCADE,
+	ADD FOREIGN KEY (IdPedalo) REFERENCES Pedalo(IdPedalo) ON DELETE CASCADE,
+	ADD FOREIGN KEY (IdCatamaran) REFERENCES Catamaran(IdCatamaran) ON DELETE CASCADE;
 	
 ALTER TABLE CoursPlancheVoile
-	ADD FOREIGN KEY (IdCompte) REFERENCES CompteEmploye(IdCompte);
+	ADD FOREIGN KEY (IdCompte) REFERENCES CompteEmploye(IdCompte) ON DELETE CASCADE;
 	
 ALTER TABLE Reservation
-	ADD FOREIGN KEY (IdCours) REFERENCES CoursPlancheVoile(IdCours),
-	ADD FOREIGN KEY (IdPlancheVoile) REFERENCES PlancheAVoile(IdPlancheVoile);
+	ADD FOREIGN KEY (IdCours) REFERENCES CoursPlancheVoile(IdCours) ON DELETE CASCADE,
+	ADD FOREIGN KEY (IdPlancheVoile) REFERENCES PlancheAVoile(IdPlancheVoile) ON DELETE CASCADE;
 	
 ALTER TABLE Participation
-	ADD FOREIGN Key (IdClient) REFERENCES Client(IdClient),
-	ADD FOREIGN Key (IdCours) REFERENCES CoursPlancheVoile(IdCours);
+	ADD FOREIGN Key (IdClient) REFERENCES Client(IdClient) ON DELETE CASCADE,
+	ADD FOREIGN Key (IdCours) REFERENCES CoursPlancheVoile(IdCours) ON DELETE CASCADE;
 	
 -- check constraints de Participation
 SELECT conname AS constraint_name, 

@@ -4,35 +4,76 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Les Abeilles</title>
-        <link rel="stylesheet" href="css/styles.css"/>
+        <link rel="stylesheet" href="css/connexion.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></head>
     </head>
     <body>
-        <?php $current_url = 'index.php'; ?>
         <header>
-            <?php include('header.php')?>
-        </header>
-
-        <div class="corps">
-            <h2>Bienvenue au Club Nautique Les Abeilles</h2>
-            <div class="fonctionnalites">
-                <a href="#" class="button">Créer un profil propriétaire</a>
-                <a href="inscriptionMoniteur.php" class="button">Créer un profil moniteur</a>
-                <a href="creationProfilGarconDePlage.php" class="button">Créer un profil garçon de plage</a>
-                <a href="inscriptionClient.php" class="button">Créer un profil client</a>
-                <a href="rechercherClient.php" class="button">Rechercher un client</a>
-                <a href="#" class="button">Rechercher un cours</a>
+            <div class="header">
+                <h1>Club Nautique Les Abeilles</h1>
             </div>
+            </header>
+        <div class="corps">
+                <h1>Connexion</h1>
+                <form method="post" name="formulaire" novalidate="" class="form" action="verifConnexion.php">
 
-            <br><br>
+                    <label for="identifiant" class="label">Identifiant</label><br>
+                    <input type="text" id="identifiant" name="identifiant"  required/>
+                    <div id="idError" class="error"></div><br>
+                    
+                    <label for="mdp" class="label">Mot de passe</label><br>
+                    <input type="password" id="mdp" name="mdp"  required/>
+                    <div id="mdpError" class="error"></div><br>
 
-            <img id="photoSurf" src="images/surf.jpg" alt="Personne qui fait du surf">
-
-            <p></p>
+                    <div>
+                        <button class = "button">Connexion</button>
+                    </div>
+                </form>
+                <img id="photoSurf" src="images/surf.jpg" alt="Personne qui fait du surf">
         </div>
-
         <footer>
             <?php include('footer.php')?>
         </footer>
     </body>
 </html>
+<script>
+    const formulaire = document.formulaire;
+    formulaire.addEventListener("submit", (event) => {
+        let isValid = true;
+
+        if((!formulaire.identifiant.value) &&(!formulaire.mdp.value)) {
+            alert("Il faut renseigner votre identifiant et votre mot de passe.")
+            formulaire.identifiant.className="invalid"
+            formulaire.mdp.className="invalid"
+            isValid = false;
+        }
+
+        const idError = document.getElementById("idError")
+
+        if(formulaire.identifiant.validity.valid) {
+            idError.textContent = "";
+            idError.className = "error"
+        } else {
+            idError.textContent = "Veuillez renseigner votre identifiant."
+            idError.className = "error active"
+            formulaire.identifiant.className= "invalid"
+            isValid = false;
+        }
+
+        const mdpError = document.getElementById("mdpError")
+
+        if(formulaire.mdp.validity.valid) {
+            mdpError.textContent = "";
+            mdpError.className = "error"
+        } else {
+            mdpError.textContent = "Veuillez renseigner votre mot de passe."
+            mdpError.className = "error active"
+            formulaire.mdp.className= "invalid"
+            isValid = false;
+        }
+
+        if(!isValid) {
+            event.preventDefault();
+        }
+});
+</script>

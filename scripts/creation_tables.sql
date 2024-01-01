@@ -31,6 +31,7 @@ CREATE TYPE EEtatCours AS ENUM ('Prévu', 'En cours', 'Réalisé', 'Annulé');
 DROP TYPE IF EXISTS ETypeEmploye CASCADE;
 CREATE TYPE ETypeEmploye AS ENUM ('Propriétaire', 'Moniteur', 'Garçon de Plage', 'Annulé');
 
+
 -- Création des tables
 DROP Table IF EXISTS Client CASCADE;
 CREATE TABLE Client(
@@ -42,24 +43,17 @@ Mail Varchar(50),
 NumTelephone Varchar(10),
 Camping ECamping,
 Statut EStatutClient,
-Taille float,
+Taille int, -- en centimètres
 Poids float,
 PreferenceContact EPreferenceContact,
 IdCertificat int
-);
-
-DROP TABLE IF EXISTS EstParentDe CASCADE;
-CREATE TABLE EstParentDe(
-IdParent int,
-IdEnfant int,
-PRIMARY KEY (IdParent, IdEnfant)
 );
 
 DROP TABLE IF EXISTS CertificatMedical CASCADE;
 CREATE TABLE CertificatMedical(
 IdCertificat SERIAL PRIMARY KEY,
 DateDelivrance Date,
-DocumentPDF bytea,
+LienDocumentPDF Varchar(120),
 IdClient int NOT NULL 
 );
 
@@ -109,6 +103,7 @@ CREATE TABLE CoursPlancheVoile(
 IdCours SERIAL PRIMARY KEY,
 DateHeure timestamp,
 Niveau EStatutClient,
+EtatCours EEtatCours,
 IdCompte int
 );
 
@@ -188,7 +183,7 @@ DROP TABLE IF EXISTS Diplome CASCADE;
 CREATE TABLE Diplome(
 IdDiplome SERIAL PRIMARY KEY,
 DateObtention Date,
-DocumentPDF bytea,
+LienDocumentPDF Varchar(120),
 IdMoniteur int
 );
 
@@ -211,7 +206,7 @@ DROP TABLE IF EXISTS PermisBateau CASCADE;
 CREATE TABLE PermisBateau(
 IdPermis SERIAL PRIMARY KEY,
 DateObtention Date,
-DocumentPDF bytea,
+LienDocumentPDF Varchar(120),
 IdProprietaire int
 );
 
@@ -221,3 +216,7 @@ IdCours int,
 IdPlancheVoile int,
 PRIMARY KEY (IdCours, IdPlancheVoile)
 );
+
+DROP VIEW IF EXISTS informations_connexion CASCADE;
+CREATE VIEW informations_connexion AS
+SELECT nomutilisateur, motdepasse, typeemploye FROM compteemploye;
