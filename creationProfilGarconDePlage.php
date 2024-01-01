@@ -100,7 +100,7 @@ session_start();
                 $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
     
                 // Vérification de l'existence du garçon de plage
-                $verifGarconDePlage = pg_prepare($connexion, "my_verif", 'SELECT f_rechercher_employe($1, $2, $3, $4, $5)');
+                $verifGarconDePlage = pg_prepare($connexion, "my_verif", 'SELECT f_rechercher_employe($1, $2, $3, $4, $5, $6)');
                 $verifGarconDePlage = pg_execute($connexion, "my_verif", array('Garçon de Plage', $nomGarconPlage, $prenomGarconPlage, $dateNaissanceGarconPlage, $mailGarconPlage, $telGarconPlage));
     
                 // Vérification du succès de la requête

@@ -177,86 +177,91 @@ INSERT INTO PlancheAVoile (IdPlancheVoile, NbPlaces, Statut, IdPrixMateriel) VAL
 	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --16
 	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --18
 	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2); --20
-SELECT * FROM PlancheAVoile;
+--SELECT * FROM PlancheAVoile;
 
 -- Flotteur (Planche à Voile) OK
-SELECT enum_range(null::ECapaciteFlotteur); -- "{150l,170l,190l,205l}"
-INSERT INTO Flotteur (IdFlotteur, IdPlancheVoile, Capacite) VALUES
+--SELECT enum_range(null::ECapaciteFlotteur); -- "{150l,170l,190l,205l}"
+--SELECT enum_range(null::EStatutMateriel); -- "{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
+INSERT INTO Flotteur (IdFlotteur, IdPlancheVoile, Capacite, Statut) VALUES
 	-- 7 de 150L
-	(DEFAULT, 1, '150l'),
-	(DEFAULT, 2, '150l'),
-	(DEFAULT, 3, '150l'),
-	(DEFAULT, 4, '150l'),
-	(DEFAULT, 5, '150l'),
-	(DEFAULT, 6, '150l'),
-	(DEFAULT, 7, '150l'),
+	(DEFAULT, 1, '150l', 'Reçu'),
+	(DEFAULT, 2, '150l', 'Reçu'),
+	(DEFAULT, 3, '150l', 'Fonctionnel'),
+	(DEFAULT, 4, '150l', 'Fonctionnel'),
+	(DEFAULT, 5, '150l', 'Hors service'),
+	(DEFAULT, 6, '150l', 'Fonctionnel'),
+	(DEFAULT, 7, '150l', 'Fonctionnel'),
 	-- 7 de 170L
-	(DEFAULT, 8, '170l'),
-	(DEFAULT, 9, '170l'),
-	(DEFAULT, 10, '170l'),
-	(DEFAULT, 11, '170l'),
-	(DEFAULT, 12, '170l'),
-	(DEFAULT, 13, '170l'),
-	(DEFAULT, 14, '170l'),
+	(DEFAULT, 8, '170l', 'Reçu'),
+	(DEFAULT, 9, '170l', 'Fonctionnel'),
+	(DEFAULT, 10, '170l', 'Fonctionnel'),
+	(DEFAULT, 11, '170l', 'Fonctionnel'),
+	(DEFAULT, 12, '170l', 'Fonctionnel'),
+	(DEFAULT, 13, '170l', 'Fonctionnel'),
+	(DEFAULT, 14, '170l', 'En location'),
 	-- 3 de 190L
-	(DEFAULT, 15, '190l'),
-	(DEFAULT, 16, '190l'),
-	(DEFAULT, 17, '190l'),
+	(DEFAULT, 15, '190l', 'Fonctionnel'),
+	(DEFAULT, 16, '190l', 'Fonctionnel'),
+	(DEFAULT, 17, '190l', 'Reçu'),
 	-- 3 de 205L
-	(DEFAULT, 18, '205l'),
-	(DEFAULT, 19, '205l'),
-	(DEFAULT, 20, '205l');
+	(DEFAULT, 18, '205l', 'Fonctionnel'),
+	(DEFAULT, 19, '205l', 'Fonctionnel'),
+	(DEFAULT, 20, '205l', 'Mis au rebut');
 SELECT * FROM Flotteur;
 
 -- Pied De Mat (Planche à Voile) OK
-INSERT INTO PiedDeMat (IdPiedDeMat, IdPlancheVoile) VALUES
+--SELECT enum_range(null::EStatutMateriel); -- "{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
+INSERT INTO PiedDeMat (IdPiedDeMat, IdPlancheVoile, Statut) VALUES
 	-- 25
-	(DEFAULT, 1), (DEFAULT, 10), (DEFAULT, 18), --3
-	(DEFAULT, 2), (DEFAULT, 11), (DEFAULT, 19), --6
-	(DEFAULT, 3), (DEFAULT, 12), (DEFAULT, 20), --9
-	(DEFAULT, 4), (DEFAULT, 13), (DEFAULT, 1), --12
-	(DEFAULT, 5), (DEFAULT, 14), (DEFAULT, 2), --15
-	(DEFAULT, 6), (DEFAULT, 15), (DEFAULT, 3), --18
-	(DEFAULT, 7), (DEFAULT, 16), (DEFAULT, 4), --21
-	(DEFAULT, 8), (DEFAULT, 17), (DEFAULT, 5), --24
-	(DEFAULT, 9);
-SELECT * FROM PiedDeMat;
+	(DEFAULT, 1, 'Reçu'), (DEFAULT, 10, 'Fonctionnel'), (DEFAULT, 18, 'Fonctionnel'), --3
+	(DEFAULT, 2, 'Reçu'), (DEFAULT, 11, 'Fonctionnel'), (DEFAULT, 19, 'Fonctionnel'), --6
+	(DEFAULT, 3, 'Reçu'), (DEFAULT, 12, 'Fonctionnel'), (DEFAULT, 20, 'Fonctionnel'), --9
+	(DEFAULT, 4, 'Fonctionnel'), (DEFAULT, 13, 'Fonctionnel'), (DEFAULT, 1, 'Hors service'), --12
+	(DEFAULT, 5, 'Fonctionnel'), (DEFAULT, 14, 'Fonctionnel'), (DEFAULT, 2, 'Hors service'), --15
+	(DEFAULT, 6, 'Fonctionnel'), (DEFAULT, 15, 'Fonctionnel'), (DEFAULT, 3, 'Hors service'), --18
+	(DEFAULT, 7, 'Fonctionnel'), (DEFAULT, 16, 'Fonctionnel'), (DEFAULT, 4, 'Hors service'), --21
+	(DEFAULT, 8, 'Fonctionnel'), (DEFAULT, 17, 'Fonctionnel'), (DEFAULT, 5, 'Mis au rebut'), --24
+	(DEFAULT, 9, 'Fonctionnel');
+--SELECT * FROM PiedDeMat;
 
 -- Voile (Planche à Voile) OK
-SELECT enum_range(null::ETailleVoile); -- "{3m2,4m2,4.5m2,4.9m2,5.4m2}"
-INSERT INTO Voile (IdVoile, IdPlancheVoile, Taille) VALUES
+--SELECT enum_range(null::ETailleVoile); -- "{3m2,4m2,4.5m2,4.9m2,5.4m2}"
+--SELECT enum_range(null::EStatutMateriel); -- "{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
+INSERT INTO Voile (IdVoile, IdPlancheVoile, Taille, Statut) VALUES
 	-- 7 de 3m2
-	(DEFAULT, 1, '3m2'),
-	(DEFAULT, 2, '3m2'),
-	(DEFAULT, 3, '3m2'),
-	(DEFAULT, 4, '3m2'),
-	(DEFAULT, 5, '3m2'),
-	(DEFAULT, 6, '3m2'),
-	(DEFAULT, 7, '3m2'),
+	(DEFAULT, 1, '3m2', 'Reçu'),
+	(DEFAULT, 2, '3m2', 'Reçu'),
+	(DEFAULT, 3, '3m2', 'Fonctionnel'),
+	(DEFAULT, 4, '3m2', 'Fonctionnel'),
+	(DEFAULT, 5, '3m2', 'Fonctionnel'),
+	(DEFAULT, 6, '3m2', 'Fonctionnel'),
+	(DEFAULT, 7, '3m2', 'Mis au rebut'),
 	-- 4 de 3m2
-	(DEFAULT, 5, '4m2'),
-	(DEFAULT, 6, '4m2'),
-	(DEFAULT, 7, '4m2'),
-	(DEFAULT, 8, '4m2'),
+	(DEFAULT, 5, '4m2', 'Fonctionnel'),
+	(DEFAULT, 6, '4m2', 'Fonctionnel'),
+	(DEFAULT, 7, '4m2', 'Fonctionnel'),
+	(DEFAULT, 8, '4m2', 'En location'),
 	-- 2 de 4.5m2
-	(DEFAULT, 9, '4.5m2'),
-	(DEFAULT, 10, '4.5m2'),
+	(DEFAULT, 9, '4.5m2', 'Fonctionnel'),
+	(DEFAULT, 10, '4.5m2', 'Fonctionnel'),
 	-- 2 de 4.9m2
-	(DEFAULT, 11, '4.9m2'),
-	(DEFAULT, 12, '4.9m2'),
+	(DEFAULT, 11, '4.9m2', 'Fonctionnel'),
+	(DEFAULT, 12, '4.9m2', 'Fonctionnel'),
 	-- 2 de 5.4m2
-	(DEFAULT, 13, '5.4m2'),
-	(DEFAULT, 14, '5.4m2');
-SELECT * FROM Voile;
+	(DEFAULT, 13, '5.4m2', 'En location'),
+	(DEFAULT, 14, '5.4m2', 'Mis au rebut');
+--SELECT * FROM Voile;
 
 -- Pédalo (prix materiel 4) OK
-SELECT enum_range(null::EStatutMateriel); --"{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
+--SELECT enum_range(null::EStatutMateriel); --"{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
 INSERT INTO Pedalo (IdPedalo, NbPlaces, Statut, IdPrixMateriel) VALUES
 	(DEFAULT, 4, 'Fonctionnel', 4),
 	(DEFAULT, 4, 'Mis au rebut', 4),
 	(DEFAULT, 4, 'Fonctionnel', 4),
-	(DEFAULT, 4, 'Hors service', 4);
-SELECT * FROM Pedalo;
+	(DEFAULT, 4, 'Hors service', 4),
+	(DEFAULT, 4, 'En location', 4),
+	(DEFAULT, 4, 'Mis au rebut', 4);
+--SELECT * FROM Pedalo;
 	 
 -- Réservation
 SELECT * FROM CoursPlancheVoile;

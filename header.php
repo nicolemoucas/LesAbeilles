@@ -52,8 +52,8 @@
                     <li <?php if($current_url == 'cours_de_voile.php'){ echo 'class="current"';}?>>
                         <a href="menu_cours_voile.php">Cours de Voile</a>
                     </li>
-                    <li <?php if($current_url == 'gestion_materiel.php'){ echo 'class="current"';}?>>
-                        <a href="gestion_materiel.php">Gestion du Matériel</a>
+                    <li <?php if($current_url == 'gestionMateriel.php'){ echo 'class="current"';}?>>
+                        <a href="gestionMateriel.php">Gestion du Matériel</a>
                     </li>
                     <li>
                         <a href="index.php">Déconnexion</a>

@@ -10,6 +10,16 @@
                 alert("Ce moniteur existe déjà.");
                 window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
+
+            function alertMoniteurCree() {
+                alert("Le moniteur a été créé. Vous serez redigiré vers l'accueil.");
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
+            }
+
+            function alertMoniteurNonCree() {
+                alert("Le moniteur n'a pas pu être créé. Vous serez redigiré vers l'accueil.");
+                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
+            }
         </script>
     </head>
     <body>
@@ -19,7 +29,6 @@
         <?php
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
-
             
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
     
@@ -53,17 +62,23 @@
                     $mailMoniteur, 
                     $telMoniteur
                 ));
-                $row = pg_fetch_row($result);
-                // echo '<script>console.log("id compte : ' . $row[0] . '"); </script>'; // idCompte
+                if(!$result) {
+                    echo '$result, <script type="text/javascript"> alertMoniteurNonCree(); </script>';
+                }
+                else {
+                    $row = pg_fetch_row($result);
+                    // echo '<script>console.log("id compte : ' . $row[0] . '"); </script>'; // idCompte
 
-                $requete = pg_prepare($connexion, "inserer_diplome", 'CALL p_creer_diplome($1, $2, $3)');
-                $result = pg_execute($connexion, "inserer_diplome", array(
-                    $dateObtentionDiplome,
-                    $lienURLDiplome,
-                    $row[0]
-                ));
-                // alert("Le compte moniteur pour $prenomMoniteur $nomMoniteur a été créé.");
-                header('Location: http://localhost/LesAbeilles/AccueilProprietaire.php');
+                    $requete = pg_prepare($connexion, "inserer_diplome", 'CALL p_creer_diplome($1, $2, $3)');
+                    $result = pg_execute($connexion, "inserer_diplome", array(
+                        $dateObtentionDiplome,
+                        $lienURLDiplome,
+                        $row[0]
+                    ));
+                    echo '<script type="text/javascript"> alertMoniteurCree(); </script>';
+                    // header('Location: http://localhost/LesAbeilles/AccueilProprietaire.php');
+                }
+                
             }
         ?>
     </body>

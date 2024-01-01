@@ -31,7 +31,7 @@
                 }
             }
             function alertClientExists(role) {
-                alert("Ce client n'existe pas.. Vous serez redirigé sur l'écran d'accueil.");
+                alert("Ce client n'existe pas. Vous serez redirigé sur l'écran d'accueil.");
                 switch (role) {
                     case 'Propriétaire':
                         redirectionProprietaire();
