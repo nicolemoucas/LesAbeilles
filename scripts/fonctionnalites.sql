@@ -4,7 +4,7 @@
 DROP FUNCTION IF EXISTS recherche_client;
 CREATE OR REPLACE FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE)
 RETURNS TABLE (idpers INTEGER, nomCl VARCHAR, prenomCl VARCHAR, dateNaissanceCl DATE, mailCl VARCHAR, numTelephoneCl VARCHAR,
-campingCl ECamping, statutCl EStatutClient, tailleCl INTEGER, poidsCl FLOAT, preferenceContactCl EPreferenceContact, idCertificatCl INTEGER) AS $$
+campingCl ECamping, statutCl EStatutClient, poidsCl FLOAT, tailleCl int, preferenceContactCl EPreferenceContact, idCertificatCl INTEGER) AS $$
 
 BEGIN
     RETURN QUERY SELECT * FROM client WHERE lower(Nom) = lower($1) AND lower(Prenom) = lower($2) AND DateNaissance = $3;
@@ -14,7 +14,7 @@ $$ Language PlpgSQL;
 /* 2 - Créer un client */
 DROP PROCEDURE IF EXISTS creer_client;
 CREATE OR REPLACE PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
-camping ECamping, statut EStatutClient, poids FLOAT, taille INTEGER, preferenceContact EPreferenceContact) AS $BODY$
+camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) AS $BODY$
 BEGIN
     INSERT INTO Client(nom, prenom, datenaissance, mail, numtelephone, camping, statut, poids, taille, preferenceContact) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);
 END;
@@ -337,20 +337,24 @@ END;
 $$ LANGUAGE plpgsql;
 
 /* 15 - Consulter le planning des cours de voile */
-
+--SELECT * FROM CoursPlancheVoile;
 CREATE OR REPLACE FUNCTION consulter_cours_voile()
 RETURNS TABLE (
+	IdCours int,
     DateHeure timestamp,
     Niveau EStatutclient,
-    NomMoniteur text
+    NomMoniteur text,
+	EtatCours Varchar(30)
 )
 AS $$
 BEGIN
     RETURN QUERY
     SELECT
+		cpv.IdCours,
         cpv.DateHeure,
         cpv.Niveau,
-        ce.Nom || ' ' || ce.Prenom AS NomMoniteur
+        ce.Nom || ' ' || ce.Prenom AS NomMoniteur,
+		cpv.etatcours::varchar
     FROM
         CoursPlancheVoile cpv
     JOIN
@@ -504,39 +508,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-/* 21- Consulter les cours de voile pour inscription client */
-/* C'est-à-dire les cours dont il reste encore de la place pour s'inscrire*/
 
-CREATE OR REPLACE FUNCTION consulter_cours_voile_pour_inscription()
-RETURNS TABLE (
-    dateheure timestamp,
-    niveau EStatutClient,
-    nommoniteur text,
-    nbplacesrestantes bigint
-)
-AS $$
+/* 22 - Annuler un cours */
+SELECT * FROM CoursPlancheVoile;
+DROP PROCEDURE IF EXISTS p_annuler_cours;
+CREATE OR REPLACE PROCEDURE p_annuler_cours(idCoursAnnule int) 
+	AS $BODY$
 BEGIN
-    RETURN QUERY
-    SELECT
-        cpv.dateheure,
-        cpv.niveau,
-        ce.nom || ' ' || ce.prenom AS nommoniteur,
-        15 - COUNT(icv.idclient) AS nbplacesrestantes
-    FROM
-        coursplanchevoile cpv
-    JOIN
-        compteemploye ce ON cpv.idcompte = ce.idcompte
-    LEFT JOIN
-        participation icv ON cpv.idcours = icv.idcours
-    WHERE
-        cpv.etatcours = 'Prévu'
-    GROUP BY
-        cpv.dateheure, cpv.niveau, ce.nom, ce.prenom;
+	UPDATE CoursPlancheVoile
+		SET etatCours = 'Annulé' WHERE idCours = idCoursAnnule;
 END;
-$$ LANGUAGE plpgsql;
-
-
-
-
-
+$BODY$
+LANGUAGE PlpgSQL;
+CALL p_annuler_cours(9);
 
