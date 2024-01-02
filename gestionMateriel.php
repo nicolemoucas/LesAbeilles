@@ -7,7 +7,8 @@
     <head>
         <link rel="stylesheet" type="text/css" href="css/inscription.css" />
         <link rel="stylesheet" href="css/styles.css"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">   
         <title>Gestion du matériel</title>
@@ -61,7 +62,7 @@
             
             <h2>Stock de matériel</h2>
 
-            <div class='table_stock_materiel'>
+            <div class='div_stock_materiel'>
                 <form action="" method="post">
                     <select name="filter">
                         <option value="">Choisir...</option>
@@ -115,7 +116,7 @@
                     }
                     $col=0;
                     // table header
-                    echo "<table border='1'";
+                    echo "<table border='1' id='table_stock'";
                     echo "<tr>";
 
                     // get column names
@@ -130,9 +131,9 @@
                     
                     while ($row = pg_fetch_row($result)) 
                     {
-                        echo '<tr>';
                         $count = count($row);
                         $y = 0;
+                        echo '<tr>';
                         while ($y < $count)
                         {
                             $c_row = current($row);
@@ -140,18 +141,14 @@
                             next($row);
                             $y = $y + 1;
                         }
+                        echo '<td><button class="btnModifMateriel">Modifier</button></td>';
                         echo '</tr>';
                         $col = $col + 1;
                     }
                     echo "</table>";
                     // Free resultset
                     pg_free_result($result);
-                ?>
-
-            </div>
-            
-
-            
+                ?>            
             </div>
         </div>
     
@@ -159,4 +156,33 @@
             <?php include('footer.php') ?>
         </footer>
     </body>
+<script>
+    $(document).ready(function(){
+
+        // code to read selected table row cell data (values)
+        $("#table_stock").on('click','.btnModifMateriel',function(){
+
+            // get the current row
+            var currentRow=$(this).closest("tr"); 
+            
+            var IdMateriel = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+            var TypeMateriel = currentRow.find("td:eq(1)").text(); // get current row 2nd TD
+            var EtatMateriel = currentRow.find("td:eq(6)").text(); // get current row 6th TD
+
+            // modif d'équipement au rebut possible que si propio
+            if (EtatMateriel == 'Mis au rebut' && '<?php echo $_SESSION["role"]?>' != 'Propriétaire') {
+                alert("Vous n'avez pas le droit de modifier cet équipement.");
+            }
+            else {
+                //var data=IdMateriel+""+TypeMateriel+""+EtatMateriel;
+                //alert(data);
+                // redirection to modifier matériel
+                window.location.href= '';
+                const url = 'http://localhost/LesAbeilles/changer_etat_materiel.php?IdMateriel=' + IdMateriel + '&TypeMateriel=' + TypeMateriel + '&EtatMateriel=' + EtatMateriel;
+                document.location = url;
+            }
+            
+        });
+    });
+</script>
 </html>

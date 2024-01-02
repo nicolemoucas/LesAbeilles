@@ -291,10 +291,9 @@ CREATE OR REPLACE VIEW v_stock_materiel_raw AS
 
 DROP VIEW IF EXISTS v_stock_materiel;
 CREATE OR REPLACE VIEW v_stock_materiel AS
-	SELECT nommateriel AS "Nom matériel", prixHeure AS "Prix heure (€)", prixHeureSupp AS "Prix heure supplémentaire (€)", 
+	SELECT idmatos AS "ID", nommateriel AS "Nom matériel", prixHeure AS "Prix heure (€)", prixHeureSupp AS "Prix heure supplémentaire (€)", 
 		prixDemiHeure AS "Prix demi-heure (€)", nbPlaces AS "Nombre de places", statut AS "Statut", capacite AS "Capacité",
 		taille AS "Taille"
 		FROM v_stock_materiel_raw
 		ORDER BY nommateriel;
---SELECT * FROM v_stock_materiel;
 --SELECT DISTINCT "Nom matériel" FROM v_stock_materiel;

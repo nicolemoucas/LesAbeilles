@@ -24,7 +24,7 @@
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=" .$_SESSION["identifiant"]." password=" . $_SESSION["motdepasse"]) or die("Impossible de se connecter : " . pg_result_error($connexion));
             
 
-            $idEmploye = $_GET["idEpmloye"];
+            $idEmploye = $_GET["idEmploye"];
             $NomEmploye = $_GET["NomEmploye"];
             $PrenomEmploye = $_GET["PrenomEmploye"];
             $DateNaissEmploye = $_GET["DateNaissEmploye"];

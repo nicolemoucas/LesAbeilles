@@ -22,12 +22,6 @@ DROP OWNED BY proprietaires_abeilles;
 DROP GROUP IF EXISTS proprietaires_abeilles;
 CREATE GROUP proprietaires_abeilles;
 
--- superuser
-DROP OWNED BY super_role;
-DROP ROLE IF EXISTS super_role;
-CREATE ROLE super_role WITH SUPERUSER;
-GRANT CREATE ON SCHEMA public TO super_role;
-
 GRANT super_role TO proprietaires_abeilles;
 
 GRANT SELECT ON Client TO proprietaires_abeilles;
@@ -40,7 +34,7 @@ GRANT SELECT, INSERT ON coursplanchevoile TO proprietaires_abeilles;
 GRANT SELECT ON v_stock_materiel_raw TO proprietaires_abeilles;
 GRANT SELECT ON v_stock_materiel TO proprietaires_abeilles;
 GRANT SELECT ON v_Planche_a_voile TO proprietaires_abeilles;
-GRANT UPDATE ON compteemploye TO proprietaires_abeilles;
+GRANT UPDATE ON CompteEmploye TO proprietaires_abeilles;
 
 GRANT USAGE ON TYPE ECamping TO proprietaires_abeilles;
 GRANT USAGE ON TYPE EPreferenceContact TO proprietaires_abeilles;

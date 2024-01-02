@@ -16,6 +16,7 @@ body {
   height: 100%;
   /* max-width: 1200px; */
   margin: 0px; /* vert hor */
+  min-height: 50em;
   padding: 10px 10px 0px 10px; /* top right bottom left */
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -61,7 +62,11 @@ input {
   font-weight: bold;
 }
 
-.table_stock_materiel {
+.div_stock_materiel {
   margin-left: auto;
   margin-right: auto;
+}
+
+.div_stock_materiel tr:hover {
+  cursor: pointer;
 }
