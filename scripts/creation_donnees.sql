@@ -118,7 +118,7 @@ INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, Da
 --SELECT * FROM CompteEmploye where typeemploye = 'Moniteur';
 
 -- Cours de Planche à Voile
-SELECT * FROM Client;
+--SELECT * FROM Client;
 SELECT enum_range(null::EStatutClient); --"{Débutant,Sportif}"
 SELECT enum_range(null::EEtatCours); --"{Prévu,"En cours",Réalisé,Annulé}"
 INSERT INTO CoursPlancheVoile (IdCours, DateHeure, Niveau, EtatCours, IdCompte) VALUES
@@ -130,6 +130,7 @@ INSERT INTO CoursPlancheVoile (IdCours, DateHeure, Niveau, EtatCours, IdCompte) 
 	(DEFAULT, '2023-08-26 10:00:00', 'Sportif', 'Annulé', 5),
 	(DEFAULT, '2023-08-26 14:00:00', 'Débutant', 'Réalisé', 4),
 	(DEFAULT, '2023-08-26 14:00:00', 'Sportif', 'Annulé', 5),
+	(DEFAULT, '2024-08-28 14:00:00', 'Débutant', 'Prévu', 4),
 	(DEFAULT, '2024-08-26 14:00:00', 'Sportif', 'Prévu', 7);
 SELECT * FROM CoursPlancheVoile;
 
