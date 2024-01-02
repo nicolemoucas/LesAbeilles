@@ -144,7 +144,7 @@
         if(verifFormulaire()) {
             const formulaire = document.formulaire;
             if(confirm("Voulez-vous vraiment modifier le profil de cet employé ?")) {
-                const url = 'modifierProfileEmploye.php?idEpmloye=' + idEmploye + '&NomEmploye=' + formulaire.NomEmploye.value + '&PrenomEmploye=' + formulaire.PrenomEmploye.value + '&DateNaissEmploye=' + formulaire.DateNaissanceEmploye.value + '&MailEmploye=' + formulaire.MailEmploye.value  + '&TelEmploye=' + formulaire.TelEmploye.value;
+                const url = 'modifierProfileEmploye.php?idEmploye=' + idEmploye + '&NomEmploye=' + formulaire.NomEmploye.value + '&PrenomEmploye=' + formulaire.PrenomEmploye.value + '&DateNaissEmploye=' + formulaire.DateNaissanceEmploye.value + '&MailEmploye=' + formulaire.MailEmploye.value  + '&TelEmploye=' + formulaire.TelEmploye.value;
                 document.location = url;
             }
         }
