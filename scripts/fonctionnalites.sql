@@ -536,7 +536,76 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+DROP FUNCTION IF EXISTS f_rechercher_catamaran;
+CREATE OR REPLACE FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval)
+RETURNS TABLE (idMatos INTEGER) AS $$
+DECLARE
+	minTime timestamp;
+	maxTime timestamp;
+BEGIN
+
+	SELECT INTO minTime dateLoc - dureeLoc;
+	SELECT INTO maxTime dateLoc + dureeLoc;
+
+	RETURN QUERY SELECT idcatamaran as idMatos
+					  FROM catamaran t_mat WHERE statut = 'Fonctionnel' AND NOT EXISTS(
+							SELECT idcatamaran FROM location t_loc 
+							WHERE t_loc.idcatamaran = t_mat.idcatamaran 
+							AND t_loc.etatlocation = 'En cours' 
+							AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+								OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+								OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+								OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+							);
+END;
+$$ Language PlpgSQL;
+
+DROP FUNCTION IF EXISTS f_rechercher_pedalo;
+CREATE OR REPLACE FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval)
+RETURNS TABLE (idMatos INTEGER) AS $$
+DECLARE
+	minTime timestamp;
+	maxTime timestamp;
+BEGIN
+
+	SELECT INTO minTime dateLoc - dureeLoc;
+	SELECT INTO maxTime dateLoc + dureeLoc;
+
+	RETURN QUERY SELECT idpedalo as idMatos
+					  FROM pedalo t_mat WHERE statut = 'Fonctionnel' AND NOT EXISTS(
+							SELECT idpedalo FROM location t_loc 
+							WHERE t_loc.idpedalo = t_mat.idpedalo 
+							AND t_loc.etatlocation = 'En cours' 
+							AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+								OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+								OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+								OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+							);
+END;
+$$ Language PlpgSQL;
 
 
+DROP FUNCTION IF EXISTS f_rechercher_standuppaddle;
+CREATE OR REPLACE FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval)
+RETURNS TABLE (idMatos INTEGER) AS $$
+DECLARE
+	minTime timestamp;
+	maxTime timestamp;
+BEGIN
 
+	SELECT INTO minTime dateLoc - dureeLoc;
+	SELECT INTO maxTime dateLoc + dureeLoc;
+
+	RETURN QUERY SELECT idstanduppaddle as idMatos
+					  FROM standuppaddle t_mat WHERE statut = 'Fonctionnel' AND NOT EXISTS(
+							SELECT idstanduppaddle FROM location t_loc 
+							WHERE t_loc.idstanduppaddle = t_mat.idstanduppaddle 
+							AND t_loc.etatlocation = 'En cours' 
+							AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+								OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+								OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+								OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+							);
+END;
+$$ Language PlpgSQL;
 

@@ -45,12 +45,17 @@ GRANT UPDATE ON compteemploye TO proprietaires_abeilles;
 GRANT USAGE ON TYPE ECamping TO proprietaires_abeilles;
 GRANT USAGE ON TYPE EPreferenceContact TO proprietaires_abeilles;
 GRANT USAGE ON TYPE EStatutClient TO proprietaires_abeilles;
+GRANT USAGE ON TYPE ECapaciteFlotteur TO proprietaires_abeilles;
+GRANT USAGE ON TYPE ETailleVoile TO proprietaires_abeilles;
 
 GRANT EXECUTE ON FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION fetch_nom_moniteur() TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION verification_moniteur_disponible(idMoniteur INT, dateHeureCours TIMESTAMP) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_creer_moniteur(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles; 
+GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
 
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille INTEGER, preferenceContact EPreferenceContact) TO proprietaires_abeilles;
@@ -88,10 +93,16 @@ GRANT SELECT ON v_Planche_a_voile TO moniteurs_abeilles;
 GRANT USAGE ON TYPE ECamping TO moniteurs_abeilles;
 GRANT USAGE ON TYPE EPreferenceContact TO moniteurs_abeilles;
 GRANT USAGE ON TYPE EStatutClient TO moniteurs_abeilles;
+GRANT USAGE ON TYPE ECapaciteFlotteur TO moniteurs_abeilles;
+GRANT USAGE ON TYPE ETailleVoile TO moniteurs_abeilles;
 
 GRANT EXECUTE ON FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE) TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO moniteurs_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles; 
+GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
+
 GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteurs_abeilles;
 
 DROP USER IF EXISTS jbond;
