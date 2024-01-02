@@ -56,6 +56,7 @@ GRANT EXECUTE ON FUNCTION f_creer_moniteur(nomUtilisateur VARCHAR, motdepasse VA
 GRANT EXECUTE ON FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles; 
 GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile) TO proprietaires_abeilles;
 
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille INTEGER, preferenceContact EPreferenceContact) TO proprietaires_abeilles;
@@ -102,6 +103,8 @@ camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceCon
 GRANT EXECUTE ON FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles; 
 GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile) TO proprietaires_abeilles;
+
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteurs_abeilles;
 

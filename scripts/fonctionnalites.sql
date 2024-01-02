@@ -609,3 +609,88 @@ BEGIN
 END;
 $$ Language PlpgSQL;
 
+DROP FUNCTION IF EXISTS f_rechercher_planchevoile;
+CREATE OR REPLACE FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile)
+RETURNS TABLE (idFloteur INTEGER, idPiedMat INTEGER, idDeVoile INTEGER) AS $$
+DECLARE
+	minTime timestamp;
+	maxTime timestamp;
+	idFloteur INTEGER;
+	idPiedMat INTEGER;
+	idDeVoile INTEGER;
+BEGIN
+
+	SELECT INTO minTime dateLoc - dureeLoc;
+	SELECT INTO maxTime dateLoc + dureeLoc;
+
+	SELECT INTO idFloteur idflotteur FROM flotteur t_flot
+	WHERE statut = 'Fonctionnel' 
+	AND capacite = capaciteFlot
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM coursplanchevoile t_cours LEFT JOIN reservation t_res ON t_cours.idcours = t_res.idcours
+			WHERE t_res.idplanchevoile = t_flot.idplanchevoile
+			AND t_cours.etatcours = 'Prévu'
+			AND ((t_cours.dateheure BETWEEN minTime AND maxTime)
+				OR ((t_cours.dateheure + interval '2 hours' BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours'))
+				OR (maxTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours')))
+				))
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM location t_loc 
+			WHERE t_loc.idplanchevoile = t_flot.idplanchevoile
+			AND t_loc.etatlocation = 'En cours' 
+			AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+				OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+				OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+	)
+	LIMIT 1;
+	
+	SELECT INTO idPiedMat idpieddemat FROM pieddemat t_mat
+	WHERE statut = 'Fonctionnel' 
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM coursplanchevoile t_cours LEFT JOIN reservation t_res ON t_cours.idcours = t_res.idcours
+			WHERE t_res.idplanchevoile = t_mat.idplanchevoile
+			AND t_cours.etatcours = 'Prévu'
+			AND ((t_cours.dateheure BETWEEN minTime AND maxTime)
+				OR ((t_cours.dateheure + interval '2 hours' BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours'))
+				OR (maxTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours')))
+				))
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM location t_loc 
+			WHERE t_loc.idplanchevoile = t_mat.idplanchevoile
+			AND t_loc.etatlocation = 'En cours' 
+			AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+				OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+				OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+	)
+	LIMIT 1;
+	
+	SELECT INTO idDeVoile idvoile FROM voile t_voi
+	WHERE statut = 'Fonctionnel' 
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM coursplanchevoile t_cours LEFT JOIN reservation t_res ON t_cours.idcours = t_res.idcours
+			WHERE t_res.idplanchevoile = t_voi.idplanchevoile
+			AND t_cours.etatcours = 'Prévu'
+			AND ((t_cours.dateheure BETWEEN minTime AND maxTime)
+				OR ((t_cours.dateheure + interval '2 hours' BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours'))
+				OR (maxTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours')))
+				))
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM location t_loc 
+			WHERE t_loc.idplanchevoile = t_voi.idplanchevoile
+			AND t_loc.etatlocation = 'En cours' 
+			AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+				OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+				OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+	)
+	LIMIT 1;
+	
+	
+	RETURN QUERY SELECT idFloteur,idPiedMat, idDeVoile;
+END;
+$$ Language PlpgSQL;
