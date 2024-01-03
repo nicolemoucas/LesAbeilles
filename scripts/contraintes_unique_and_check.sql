@@ -16,13 +16,6 @@ ADD CONSTRAINT unique_nom_prenom_date_naissance UNIQUE (Nom, Prenom, DateNaissan
 ALTER TABLE Client
 ADD CONSTRAINT check_date_naissance CHECK (DateNaissance <= CURRENT_DATE - INTERVAL '8 years');
 
-/* 5- Vérification format Numéro */
-ALTER TABLE telephone
-ADD CONSTRAINT check_numero CHECK (numero ~ '^[0-9]{10}$');
-
-/* 6- Contrainte UNIQUE sur l'email des clients : */
-ALTER TABLE Client ADD CONSTRAINT unique_email UNIQUE (Mail);
-
 
 
 /* Constraintes check */
@@ -41,8 +34,6 @@ ALTER TABLE Client ADD CONSTRAINT check_taille CHECK (Taille >= 0);
 /* 4- Contrainte de vérification sur la date d'obtention des diplômes : */
 ALTER TABLE Diplome ADD CONSTRAINT check_date_obtention CHECK (DateObtention <= CURRENT_DATE);
 
-/* 5- Contrainte de vérification sur les dates de réservation des cours de planche à voile : */
-ALTER TABLE CoursPlancheVoile ADD CONSTRAINT check_date_cours CHECK (DateHeure >= CURRENT_DATE);
 
 /* Contraintes avec Trigger */
 
@@ -65,7 +56,26 @@ ON Forfait
 FOR EACH ROW
 EXECUTE FUNCTION check_forfait_nbseances();
 
-/* 2- Lorsqu’un materiel est au rebut ou hors service  la location de ce matériel doit-être impossible:*/
+/* 2- La dateheure du cours nouvellement créé ne peux pas avec dateheure passée c'est-à-dire inférieur à la dateheure courante */
+CREATE OR REPLACE FUNCTION check_date_cours()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.DateHeure < CURRENT_TIMESTAMP THEN
+        RAISE EXCEPTION 'La date du cours ne peut pas être passée.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Le trigger se déclenche à chaque insertion dans la table CoursPlancheVoile
+CREATE TRIGGER check_date_cours_trigger
+BEFORE INSERT ON CoursPlancheVoile
+FOR EACH ROW
+EXECUTE FUNCTION check_date_cours();
+
+
+
+/* 3- Lorsqu’un materiel est au rebut ou hors service  la location de ce matériel doit-être impossible:*/
 CREATE OR REPLACE FUNCTION check_location_materiel()
 RETURNS TRIGGER AS $$
 BEGIN
