@@ -126,7 +126,7 @@
                         echo '<td>' . $fieldName . '</td>';
                         $col = $col + 1;
                     }
-                    echo '</tr>';
+                    echo '<td>Action</td></tr>';
                     $col = 0;
                     
                     while ($row = pg_fetch_row($result)) 

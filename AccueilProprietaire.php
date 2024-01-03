@@ -35,7 +35,6 @@
 
             <img id="photoSurf" src="images/surf.jpg" alt="Personne qui fait du surf">
 
-            <p></p>
         </div>
 
         <footer>

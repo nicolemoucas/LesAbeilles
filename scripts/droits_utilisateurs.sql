@@ -46,6 +46,8 @@ GRANT EXECUTE ON FUNCTION fetch_nom_moniteur() TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION verification_moniteur_disponible(idMoniteur INT, dateHeureCours TIMESTAMP) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_creer_moniteur(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION f_annuler_cours(idCoursSupp int) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO proprietaires_abeilles;
 
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO proprietaires_abeilles;
@@ -53,7 +55,6 @@ GRANT EXECUTE ON PROCEDURE supprimer_client(nom VARCHAR, prenom VARCHAR, dateNai
 GRANT EXECUTE ON PROCEDURE creer_cours(horaireCours TIMESTAMP, nivCours EStatutClient, idMoniteur INT) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE p_supprimer_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE modifier_employe(idEmp INT, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, telEmploye VARCHAR)  TO proprietaires_abeilles;
-GRANT EXECUTE ON PROCEDURE p_annuler_cours(idCoursSupp int) TO proprietaires_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO proprietaires_abeilles;
@@ -86,6 +87,7 @@ GRANT USAGE ON TYPE EPreferenceContact TO moniteurs_abeilles;
 GRANT USAGE ON TYPE EStatutClient TO moniteurs_abeilles;
 
 GRANT EXECUTE ON FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE) TO moniteurs_abeilles;
+GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteurs_abeilles;
@@ -114,6 +116,8 @@ CREATE USER lpetit WITH ENCRYPTED PASSWORD 'lpetit';
 GRANT SELECT ON v_stock_materiel_raw TO garcons_de_plage_abeilles;
 GRANT SELECT ON v_stock_materiel TO garcons_de_plage_abeilles;
 GRANT SELECT ON v_Planche_a_voile TO garcons_de_plage_abeilles;
+
+GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO garcons_de_plage_abeilles;
 
 GRANT garcons_de_plage_abeilles TO dlee;
 GRANT garcons_de_plage_abeilles TO lpetit;

@@ -7,6 +7,15 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">   
         <title>Suppression cours de voile</title>
+        <script>
+            function alertCoursNonAnnulable() {
+                if(confirm("Le cours n'est pas annulable.")) {
+                    document.location = 'http://localhost/LesAbeilles/cours_de_voile.php';
+                }
+                // alert("Le cours n'est pas annulable.");
+                // window.location.href= 'http://localhost/LesAbeilles/cours_de_voile.php';
+            }
+        </script>
     </head>
     
     <body>
@@ -22,12 +31,25 @@
 
             $idCours = $_GET["IdCours"];
 
-            $suppCours = pg_prepare($connexion, "annuler_cours", 'CALL p_annuler_cours($1)');
-            $suppCours = pg_execute($connexion, "annuler_cours", array($idCours));
+            $requete = pg_prepare($connexion, "supprimer_cours", 'SELECT f_annuler_cours($1)');
+            $res = pg_execute($connexion, "supprimer_cours", array($idCours));
 
-            // Redirection après suppression
-            header('Location: http://localhost/LesAbeilles/cours_de_voile.php');
+            if(!$res) {
+                echo '<script type="text/javascript"> alertCoursNonAnnulable(); </script>';
+            }
+            else {
+                // Redirection après échec d'annulation
+                header('Location: http://localhost/LesAbeilles/cours_de_voile.php');
+            }
+            
             exit();
         ?>
     </body>
 </html>
+
+<!--
+rech_typesign
+rech_avancementsign
+rech_niveauUrgencesign
+rech_ruesign
+rech_habsign-->

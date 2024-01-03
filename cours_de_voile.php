@@ -7,20 +7,6 @@
         <link rel="stylesheet" href="css/styles.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- pour jQuery -->
-        <style>
-            .container {
-                text-align: center;
-                max-width: 800px;
-                margin: 20px auto; 
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px; 
-            }
-
-        </style>
     </head>
     <body>
         <?php $current_url = 'cours_de_voile.php'; ?>
@@ -28,7 +14,7 @@
             <?php include('header.php') ?>
         </header>
 
-        <div class="container">
+        <div class="corps" id="container_cours">
             <h2>Cours de Voile</h2>
 
             <?php
@@ -48,9 +34,11 @@
                                 <th>Date et Heure</th>
                                 <th>Niveau</th>
                                 <th>Nom Moniteur</th>
-                                <th>Etat Cours</th>
-                                <th>Action</th>
-                            </tr>";
+                                <th>Etat Cours</th>";
+                    if ($_SESSION["role"] == 'Propriétaire') {
+                        echo "<th>Action</th>";
+                    }
+                    echo "</tr>";
 
                     while ($row = pg_fetch_assoc($result)) {
                         echo "<tr>
@@ -58,9 +46,11 @@
                                 <td>".$row['dateheure']."</td>
                                 <td>".$row['niveau']."</td>
                                 <td>".$row['nommoniteur']."</td>
-                                <td>".$row['etatcours']."</td>
-                                <td><button class='btnAnnulerCours'>Annuler</button></td>
-                            </tr>";
+                                <td>".$row['etatcours']."</td>";
+                        if ($_SESSION["role"] == 'Propriétaire') {
+                            echo "<td><button class='btnAnnulerCours'>Annuler</button></td>";
+                        } 
+                        echo "</tr>";
                     }
                     echo "</table>";
                 }

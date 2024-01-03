@@ -90,13 +90,14 @@ INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Mail, NumTelephone, Ca
 	(DEFAULT, 'FERNANDEZ', 'Augustin', '1996-05-03', 'af@gmail.com', 0789456123, 'Autre', 'Sportif', 196, 80, 'Téléphone'),
 	(DEFAULT, 'FERNANDEZ', 'Julie', '1997-05-03', 'jf@gmail.com', 0684957138, 'Autre', 'Sportif', 196, 80, 'Téléphone'),
 	(DEFAULT, 'RODRIGUEZ', 'Julia', '1998-07-15', 'jr@icloud.com', 0756938517, 'Jolibois', 'Débutant', 165, 55, 'Mail');
+-- Enfants
 INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Camping, Statut, NumTelephone, Taille, Poids, IdCertificat) VALUES
 	(DEFAULT, 'PETIT', 'Lola', '2013-04-18', 'Marande', 'Sportif', 0682749174, 138, 30, 1),
 	(DEFAULT, 'PETIT', 'Noah', '2012-01-04', 'Marande', 'Sportif', 0682749174, 145, 40, 2),
 	(DEFAULT, 'FERNANDEZ', 'Leo', '2015-06-30', 'Autre', 'Débutant', 0684957138, 143, 44, 3),
 	(DEFAULT, 'FERNANDEZ', 'Alice', '2014-03-15', 'Autre', 'Sportif', 0684957138, 140, 33, 4);
 INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Camping, Statut, Mail, Taille, Poids, IdCertificat) VALUES
-	(DEFAULT, 'FRASELLE', 'Mochi', '2020-09-10', 'Autre', 'Débutant', 'nadege.fraselle@gmail.com', 50, 5, 5);
+	(DEFAULT, 'FRASELLE', 'Mochi', '2015-09-10', 'Autre', 'Débutant', 'nadege.fraselle@gmail.com', 50, 5, 5);
 SELECT * FROM Client;
 
 -- Comptes Employé
@@ -119,8 +120,8 @@ INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, Da
 
 -- Cours de Planche à Voile
 --SELECT * FROM Client;
-SELECT enum_range(null::EStatutClient); --"{Débutant,Sportif}"
-SELECT enum_range(null::EEtatCours); --"{Prévu,"En cours",Réalisé,Annulé}"
+--SELECT enum_range(null::EStatutClient); --"{Débutant,Sportif}"
+--SELECT enum_range(null::EEtatCours); --"{Prévu,"En cours",Réalisé,Annulé}"
 INSERT INTO CoursPlancheVoile (IdCours, DateHeure, Niveau, EtatCours, IdCompte) VALUES
 	(DEFAULT, '2023-08-21 14:00:00', 'Débutant', 'Réalisé', 1),
 	(DEFAULT, '2023-08-22 14:00:00', 'Débutant', 'Réalisé', 3),
@@ -131,7 +132,9 @@ INSERT INTO CoursPlancheVoile (IdCours, DateHeure, Niveau, EtatCours, IdCompte) 
 	(DEFAULT, '2023-08-26 14:00:00', 'Débutant', 'Réalisé', 4),
 	(DEFAULT, '2023-08-26 14:00:00', 'Sportif', 'Annulé', 5),
 	(DEFAULT, '2024-08-28 14:00:00', 'Débutant', 'Prévu', 4),
-	(DEFAULT, '2024-08-26 14:00:00', 'Sportif', 'Prévu', 7);
+	(DEFAULT, '2024-08-26 14:00:00', 'Sportif', 'Prévu', 7),
+	(DEFAULT, '2024-06-28 14:00:00', 'Débutant', 'Prévu', 4),
+	(DEFAULT, '2024-07-26 14:00:00', 'Sportif', 'Prévu', 7);
 SELECT * FROM CoursPlancheVoile;
 
 -- Prix Matériel

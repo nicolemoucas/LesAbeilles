@@ -1,6 +1,7 @@
 /* FONCTIONNALITÉS */
 
 /* 1 - Retrouver un client */
+--SELECT * FROM Client;
 DROP FUNCTION IF EXISTS recherche_client;
 CREATE OR REPLACE FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE)
 RETURNS TABLE (idpers INTEGER, nomCl VARCHAR, prenomCl VARCHAR, dateNaissanceCl DATE, mailCl VARCHAR, numTelephoneCl VARCHAR,
@@ -358,12 +359,12 @@ BEGIN
     FROM
         CoursPlancheVoile cpv
     JOIN
-        CompteEmploye ce ON cpv.IdCompte = ce.IdCompte;
+        CompteEmploye ce ON cpv.IdCompte = ce.IdCompte
+	ORDER BY cpv.IdCours;
 END;
 $$ LANGUAGE plpgsql;
 
 /* 16 - Modifier le profil d'un client */
-
 CREATE OR REPLACE PROCEDURE modifier_profil_client(
     IN client_id INT,
     IN nouveau_nom VARCHAR(30),
@@ -510,15 +511,21 @@ $$ LANGUAGE plpgsql;
 
 
 /* 22 - Annuler un cours */
-SELECT * FROM CoursPlancheVoile;
+--SELECT * FROM CoursPlancheVoile;
+--SELECT enum_range(null::EEtatCours); --"{Prévu,"En cours",Réalisé,Annulé}"
 DROP PROCEDURE IF EXISTS p_annuler_cours;
-CREATE OR REPLACE PROCEDURE p_annuler_cours(idCoursAnnule int) 
-	AS $BODY$
+CREATE OR REPLACE PROCEDURE p_annuler_cours(idCoursAnnule int)
+	--RETURNS int 
+	AS $$
+--DECLARE idCoursModif Varchar;
 BEGIN
 	UPDATE CoursPlancheVoile
-		SET etatCours = 'Annulé' WHERE idCours = idCoursAnnule;
+		SET etatCours = 'Annulé' 
+		WHERE idCours = idCoursAnnule;
+--		RETURNING idCours INTO idCoursModif;
+--	RETURN idCoursModif;
 END;
-$BODY$
+$$
 LANGUAGE PlpgSQL;
 CALL p_annuler_cours(9);
 

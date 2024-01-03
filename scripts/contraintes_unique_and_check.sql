@@ -17,15 +17,16 @@ ALTER TABLE Client
 ADD CONSTRAINT check_date_naissance CHECK (DateNaissance <= CURRENT_DATE - INTERVAL '8 years');
 
 /* 5- Vérification format Numéro */
-ALTER TABLE telephone
-ADD CONSTRAINT check_numero CHECK (numero ~ '^[0-9]{10}$');
+/*ALTER TABLE telephone
+ADD CONSTRAINT check_numero CHECK (numero ~ '^[0-9]{10}$');*/
 
 /* 6- Contrainte UNIQUE sur l'email des clients : */
-ALTER TABLE Client ADD CONSTRAINT unique_email UNIQUE (Mail);
+/*ALTER TABLE Client 
+ADD CONSTRAINT unique_email CHECUNIQUE (Mail);*/
 
 
 
-/* Constraintes check */
+/* Contraintes check */
 
 /* 1- Contrainte de vérification prix dans un type de forfait doit être positif :  */
 ALTER TABLE TypeForfait
@@ -36,16 +37,29 @@ ALTER TABLE TypeForfait
 ADD CONSTRAINT check_nb_seances_positive CHECK (NbSeances >= 0);
 
 /* 3- Contrainte de vérification sur la plage de taille des clients */
-ALTER TABLE Client ADD CONSTRAINT check_taille CHECK (Taille >= 0);
+ALTER TABLE Client 
+ADD CONSTRAINT check_taille CHECK (Taille >= 0);
 
 /* 4- Contrainte de vérification sur la date d'obtention des diplômes : */
-ALTER TABLE Diplome ADD CONSTRAINT check_date_obtention CHECK (DateObtention <= CURRENT_DATE);
+ALTER TABLE Diplome 
+ADD CONSTRAINT check_date_obtention CHECK (DateObtention <= CURRENT_DATE);
 
 /* 5- Contrainte de vérification sur les dates de réservation des cours de planche à voile : */
-ALTER TABLE CoursPlancheVoile ADD CONSTRAINT check_date_cours CHECK (DateHeure >= CURRENT_DATE);
+/*ALTER TABLE CoursPlancheVoile 
+ADD CONSTRAINT check_date_cours CHECK (DateHeure >= CURRENT_DATE);*/
+
+/* 6- Contrainte vérification états des cours */
+--SELECT * FROM CoursPlancheVoile;
+--SELECT enum_range(null::EEtatCours); --"{Prévu,"En cours",Réalisé,Annulé}"
+-- les cours passés sont soit réalisés, soit annulés
+ALTER TABLE CoursPlancheVoile 
+ADD CONSTRAINT check_etat_cours CHECK (
+	(DateHeure >= CURRENT_DATE AND (etatCours = 'Réalisé' OR etatCours = 'Annulé'))
+	OR
+	(DateHeure < CURRENT_DATE));
+
 
 /* Contraintes avec Trigger */
-
 
 /* 1- Le Nombre de séances restantes doi être <= nb séances du forfait */
 CREATE OR REPLACE FUNCTION check_forfait_nbseances()
@@ -58,14 +72,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Trigger avant chaque insertion ou updte de la table Forfait
+-- Trigger avant chaque insertion ou update de la table Forfait
 CREATE TRIGGER check_forfait_nbseances_trigger
 BEFORE INSERT OR UPDATE
 ON Forfait
 FOR EACH ROW
 EXECUTE FUNCTION check_forfait_nbseances();
 
-/* 2- Lorsqu’un materiel est au rebut ou hors service  la location de ce matériel doit-être impossible:*/
+/* 2- Lorsqu’un materiel est au rebut ou hors service la location de ce matériel doit-être impossible:*/
 CREATE OR REPLACE FUNCTION check_location_materiel()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -125,7 +139,24 @@ ON Location
 FOR EACH ROW
 EXECUTE FUNCTION check_location_materiel();
 
+/* 3- L'état du cours ne peut passer à annulé que s'il est prévu */
+CREATE OR REPLACE FUNCTION check_annulation_cours()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF OLD.etatCours != 'Prévu' AND NEW.etatCours = 'Annulé' THEN
+        RAISE EXCEPTION 'Erreur : le cours ne peut pas être annulé.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
+-- Trigger avant chaque update de la table Cours planche à voile
+DROP TRIGGER IF EXISTS check_annulation_cours ON CoursPlancheVoile;
+CREATE TRIGGER check_annulation_cours
+BEFORE UPDATE
+ON CoursPlancheVoile
+FOR EACH ROW
+EXECUTE FUNCTION check_annulation_cours();
 
 
 
