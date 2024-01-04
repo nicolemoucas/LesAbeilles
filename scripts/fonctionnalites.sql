@@ -1,7 +1,7 @@
 /* FONCTIONNALITÉS */
 
 /* 1 - Retrouver un client */
---SELECT * FROM Client;
+SELECT * FROM Client;
 DROP FUNCTION IF EXISTS recherche_client;
 CREATE OR REPLACE FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE)
 RETURNS TABLE (idpers INTEGER, nomCl VARCHAR, prenomCl VARCHAR, dateNaissanceCl DATE, mailCl VARCHAR, numTelephoneCl VARCHAR,
@@ -505,21 +505,21 @@ $$ LANGUAGE plpgsql;
 /* 22 - Annuler un cours */
 --SELECT * FROM CoursPlancheVoile;
 --SELECT enum_range(null::EEtatCours); --"{Prévu,"En cours",Réalisé,Annulé}"
-DROP PROCEDURE IF EXISTS p_annuler_cours;
-CREATE OR REPLACE PROCEDURE p_annuler_cours(idCoursAnnule int)
-	--RETURNS int 
+DROP FUNCTION IF EXISTS f_annuler_cours;
+CREATE OR REPLACE FUNCTION f_annuler_cours(idCoursAnnule int)
+	RETURNS int 
 	AS $$
---DECLARE idCoursModif Varchar;
+DECLARE idCoursModif Varchar;
 BEGIN
 	UPDATE CoursPlancheVoile
 		SET etatCours = 'Annulé' 
-		WHERE idCours = idCoursAnnule;
---		RETURNING idCours INTO idCoursModif;
---	RETURN idCoursModif;
+		WHERE idCours = idCoursAnnule
+		RETURNING idCours INTO idCoursModif;
+	RETURN idCoursModif;
 END;
 $$
 LANGUAGE PlpgSQL;
-CALL p_annuler_cours(9);
+--SELECT f_annuler_cours(36);
 
 /* 23 - Consulter les cours dans lesquels le client peut s'inscrire */
 DROP FUNCTION consulter_cours_voile_pour_inscription();
@@ -615,8 +615,3 @@ BEGIN
 END;
 $BODY$
 LANGUAGE PlpgSQL;
-
-
-
-
-

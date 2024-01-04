@@ -49,7 +49,7 @@
     
         <div class="corps">
             <div class="fonctionnalites">
-                    <a href="#.php" class="button">Recevoir du matériel</a>
+                    <a href="inscriptionMateriel.php" class="button">Recevoir du matériel</a>
                     <a href="changer_etat_materiel.php" class="button">Gestion de l'état du matériel</a>
             </div>
             <?php 
@@ -116,7 +116,7 @@
                     }
                     $col=0;
                     // table header
-                    echo "<table border='1' id='table_stock'";
+                    echo "<table border='1' class='table_cours_stock'";
                     echo "<tr>";
 
                     // get column names

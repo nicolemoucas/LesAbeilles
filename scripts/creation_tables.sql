@@ -229,30 +229,30 @@ SELECT nomutilisateur, motdepasse, typeemploye FROM compteemploye;
 --SELECT * FROM PiedDeMat;
 --SELECT * FROM PlancheAVoile;
 --SELECT * FROM Voile;
-DROP VIEW IF EXISTS v_Planche_a_voile;
+DROP VIEW IF EXISTS v_Planche_a_voile CASCADE;
 CREATE OR REPLACE VIEW v_Planche_a_voile AS
 	SELECT m.idPrixMateriel, 'Flotteur' AS nomMateriel, m.prixHeure, m.prixHeureSupp, 
 			m.prixDemiHeure, f.idFlotteur AS IdMatos, 0 as nbPlaces, f.statut,
 			f.Capacite::text, null AS Taille, f.idPlancheVoile
 			FROM Flotteur f
-			LEFT JOIN PlancheAVoile p ON p.IdPlancheVoile = f.IdPlancheVoile
-			LEFT JOIN PrixMateriel m ON m.idPrixMateriel = p.idPrixMateriel
+			LEFT JOIN PlancheAVoile pv ON pv.IdPlancheVoile = f.IdPlancheVoile
+			LEFT JOIN PrixMateriel m ON m.idPrixMateriel = pv.idPrixMateriel
 	UNION
 	SELECT m.idPrixMateriel, 'Pied de mat' AS nomMateriel, m.prixHeure, m.prixHeureSupp, 
 			m.prixDemiHeure, pm.idPiedDeMat AS IdMatos, 0 as nbPlaces, pm.statut, 
 			null AS Capacite, null AS Taille, pm.idPlancheVoile
 			FROM PiedDeMat pm
-			LEFT JOIN PlancheAVoile p ON p.IdPlancheVoile = pm.IdPiedDeMat
-			LEFT JOIN PrixMateriel m ON m.idPrixMateriel = p.idPrixMateriel
+			LEFT JOIN PlancheAVoile pv ON pv.IdPlancheVoile = pm.IdPlancheVoile
+			LEFT JOIN PrixMateriel m ON m.idPrixMateriel = pv.idPrixMateriel
 	UNION
 	SELECT m.idPrixMateriel, 'Voile' AS nomMateriel, m.prixHeure, m.prixHeureSupp, 
 			m.prixDemiHeure, v.idVoile AS IdMatos, 0 as nbPlaces, v.statut, 
 			null AS Capacite, v.taille::text AS Taille, v.idPlancheVoile
 			FROM Voile v
-			LEFT JOIN PlancheAVoile p ON p.IdPlancheVoile = v.IdVoile
-			LEFT JOIN PrixMateriel m ON m.idPrixMateriel = p.idPrixMateriel
+			LEFT JOIN PlancheAVoile pv ON pv.IdPlancheVoile = v.IdPlancheVoile
+			LEFT JOIN PrixMateriel m ON m.idPrixMateriel = pv.idPrixMateriel
 			ORDER BY nomMateriel, idMatos;
---SELECT * FROM v_Planche_a_voile.
+SELECT * FROM v_Planche_a_voile;
 
 /* View stock de matériel */
 --c.IdPrixMateriel, NomMateriel, PrixHeure, PrixHeureSupp, PrixDemiHeure, IdMatos, NbPlaces, Statut, Capacite
@@ -287,13 +287,14 @@ CREATE OR REPLACE VIEW v_stock_materiel_raw AS
 				LEFT JOIN PlancheAVoile p ON p.IdPlancheVoile = pv.IdPlancheVoile
 				LEFT JOIN PrixMateriel m ON m.idPrixMateriel = pv.idPrixMateriel
 	ORDER BY NomMateriel, IdMatos;
---SELECT * FROM v_stock_materiel_raw;
+--SELECT * FROM v_stock_materiel_raw where nommateriel LIKE 'Pied de mat';
 
-DROP VIEW IF EXISTS v_stock_materiel;
+DROP VIEW IF EXISTS v_stock_materiel CASCADE;
 CREATE OR REPLACE VIEW v_stock_materiel AS
 	SELECT idmatos AS "ID", nommateriel AS "Nom matériel", prixHeure AS "Prix heure (€)", prixHeureSupp AS "Prix heure supplémentaire (€)", 
 		prixDemiHeure AS "Prix demi-heure (€)", nbPlaces AS "Nombre de places", statut AS "Statut", capacite AS "Capacité",
 		taille AS "Taille"
 		FROM v_stock_materiel_raw
 		ORDER BY nommateriel;
---SELECT DISTINCT "Nom matériel" FROM v_stock_materiel;
+SELECT * FROM v_stock_materiel;
+--SELECT DISTINCT "Nom matériel" AS nomMat FROM v_stock_materiel;

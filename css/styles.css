@@ -5,7 +5,7 @@ body {
   background-color: #f0f8ff;
   color: #333;
   font-family: 'Barlow', sans-serif;
-  height: 100%;
+  height: 100vh;
   margin: 0;
   overflow-x: hidden;
   padding: 0;
@@ -48,6 +48,7 @@ body {
   height: auto;
   margin-left: auto;
   margin-right: auto;
+  margin-top: auto;
   max-width: 800px;
   padding: 0 5em;
   width: 100%;
@@ -72,18 +73,17 @@ input {
   cursor: pointer;
 }
 
-#table_cours, #table_stock {
+.table_cours_stock {
   border-collapse: collapse;
   margin-right: auto;
   margin-left: auto;
   margin-top: 20px;
+  padding: 10px;
   width: 100%;
 }
 
-#container_cours {
-  text-align: center;
-  max-width: 800px;
-  margin: 20px auto; 
+.table_cours_stock td {
+  padding: 5px;
 }
 
 .btnModifMateriel {
@@ -92,4 +92,8 @@ input {
 }
 .btnModif:hover {
   background-color: orange;
+}
+
+.formHiddenField {
+  display: none;
 }
