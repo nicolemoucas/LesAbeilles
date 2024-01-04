@@ -7,14 +7,14 @@ INSERT INTO CertificatMedical (IdCertificat, DateDelivrance, LienDocumentPDF, Id
 	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1NrU0QpN-17j-dyhuSIfgP4Ktff2X3cnW/view?usp=drive_link', 15),
 	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1bdbLyyKGs9MPdf4hA1lj6g2vJgBwZiw2/view?usp=drive_link', 16),
 	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1pYPuPtIbEho8oBHU9ZQyucOwM7YkT-uE/view?usp=drive_link', 17); 
-SELECT * FROM CertificatMedical;
+--SELECT * FROM CertificatMedical;
 
 -- Type Forfait OK
 INSERT INTO TypeForfait (IdTypeForfait, NbSeances, Prix) VALUES 
 	(DEFAULT, 1, 25),
 	(DEFAULT, 2, 42),
 	(DEFAULT, 5, 100);
-SELECT * FROM TypeForfait;
+--SELECT * FROM TypeForfait;
 
 -- Forfait OK
 INSERT INTO Forfait (IdForfait, DateFin, NbSeancesRestantes, ForfaitEnfant, IdClient, IdTypeForfait, IdPaiement) VALUES
@@ -24,7 +24,7 @@ INSERT INTO Forfait (IdForfait, DateFin, NbSeancesRestantes, ForfaitEnfant, IdCl
 	(DEFAULT, '2024-10-10', 5, TRUE, 16, 3, 4),
 	(DEFAULT, '2024-10-10', 0, FALSE, 1, 3, 4),
 	(DEFAULT, '2024-10-10', 1, FALSE, 2, 3, 4);
-SELECT * FROM Forfait;
+--SELECT * FROM Forfait;
 
 -- Paiement OK
 SELECT enum_range(null::EMoyenPaiement);
@@ -33,7 +33,7 @@ INSERT INTO Paiement (IdPaiement, DateHeure, Montant, MoyenPaiement) VALUES
 	(DEFAULT, '2023-08-12 11:20:00', 42, 'Espèces'),
 	(DEFAULT, '2023-07-28 15:30:00', 100, 'Carte'),
 	(DEFAULT, '2023-10-10 15:15:50', 300, 'Carte');
-SELECT * FROM Paiement;
+--SELECT * FROM Paiement;
 
 -- Diplôme OK
 INSERT INTO Diplome (IdDiplome, DateObtention, LienDocumentPDF, IdMoniteur) VALUES
@@ -41,19 +41,19 @@ INSERT INTO Diplome (IdDiplome, DateObtention, LienDocumentPDF, IdMoniteur) VALU
 	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1b3xjlb21cCZA392lbzGPY0tsQkc4tSeF/view?usp=drive_link', 3),
 	(DEFAULT, '2020-10-10', 'https://drive.google.com/file/d/1JpNlpyos-tFZ3AGmVEeWsaoLTIzkg24b/view?usp=drive_link', 4),
 	(DEFAULT, '2022-10-10', 'https://drive.google.com/file/d/1BSGwX18SWwfXWR7w0b7Vc8L4jkx-ElkT/view?usp=drive_link', 4); 
-SELECT * FROM Diplome;
-SELECT * FROM CompteEmploye;
+--SELECT * FROM Diplome;
+--SELECT * FROM CompteEmploye;
 
 -- Permis Bateau
 INSERT INTO PermisBateau (IdPermis, DateObtention, LienDocumentPDF, IdProprietaire) VALUES
 	(DEFAULT, '2022-01-02', 'https://drive.google.com/file/d/1RunXqNU_UQaShvsZp63I5Wcr0HOVDzYW/view?usp=drive_link', 1),
 	(DEFAULT, '2023-01-02', 'https://drive.google.com/file/d/1foUCZ4RWaPsM_lUN7tOtj2phqaQfzGYV/view?usp=drive_link', 1),
 	(DEFAULT, '2023-01-02', 'https://drive.google.com/file/d/14bj8lZfiRb4LHh8pOBEx-byt5pK_p_E0/view?usp=drive_link', 2);
-SELECT * FROM PermisBateau;
+--SELECT * FROM PermisBateau;
 	
 -- Location
-SELECT * FROM PrixMateriel;
-SELECT enum_range(null::EEtatLocation); --"{Terminée,""En cours"",Annulée}"
+--SELECT * FROM PrixMateriel;
+--SELECT enum_range(null::EEtatLocation); --"{Terminée,""En cours"",Annulée}"
 INSERT INTO Location (DateHeureLocation, Duree, TarifLocation, EtatLocation, IdClient, IdPaiement, IdCatamaran) VALUES
 	('2023-08-10 10:00:00', '01:00:00', 45, 'Terminée', 1, 1, 1);
 INSERT INTO Location (DateHeureLocation, Duree, TarifLocation, EtatLocation, IdClient, IdPaiement, IdPlancheVoile) VALUES
@@ -69,10 +69,10 @@ INSERT INTO Location (DateHeureLocation, Duree, TarifLocation, EtatLocation, IdC
 SELECT * FROM Location;
 
 -- Personne 
-SELECT enum_range(null::ECamping);
-SELECT enum_range(null::EStatutClient);
-SELECT enum_range(null::EPreferenceContact);
-SELECT enum_range(null::ERoleEmploye);
+--SELECT enum_range(null::ECamping);
+--SELECT enum_range(null::EStatutClient);
+--SELECT enum_range(null::EPreferenceContact);
+--SELECT enum_range(null::ERoleEmploye);
 
 -- Client OK
 INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Mail, Camping, Statut, Taille, Poids, PreferenceContact) VALUES
@@ -90,17 +90,18 @@ INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Mail, NumTelephone, Ca
 	(DEFAULT, 'FERNANDEZ', 'Augustin', '1996-05-03', 'af@gmail.com', 0789456123, 'Autre', 'Sportif', 196, 80, 'Téléphone'),
 	(DEFAULT, 'FERNANDEZ', 'Julie', '1997-05-03', 'jf@gmail.com', 0684957138, 'Autre', 'Sportif', 196, 80, 'Téléphone'),
 	(DEFAULT, 'RODRIGUEZ', 'Julia', '1998-07-15', 'jr@icloud.com', 0756938517, 'Jolibois', 'Débutant', 165, 55, 'Mail');
+-- Enfants
 INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Camping, Statut, NumTelephone, Taille, Poids, IdCertificat) VALUES
 	(DEFAULT, 'PETIT', 'Lola', '2013-04-18', 'Marande', 'Sportif', 0682749174, 138, 30, 1),
 	(DEFAULT, 'PETIT', 'Noah', '2012-01-04', 'Marande', 'Sportif', 0682749174, 145, 40, 2),
 	(DEFAULT, 'FERNANDEZ', 'Leo', '2015-06-30', 'Autre', 'Débutant', 0684957138, 143, 44, 3),
 	(DEFAULT, 'FERNANDEZ', 'Alice', '2014-03-15', 'Autre', 'Sportif', 0684957138, 140, 33, 4);
 INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Camping, Statut, Mail, Taille, Poids, IdCertificat) VALUES
-	(DEFAULT, 'FRASELLE', 'Mochi', '2020-09-10', 'Autre', 'Débutant', 'nadege.fraselle@gmail.com', 50, 5, 5);
-SELECT * FROM Client;
+	(DEFAULT, 'FRASELLE', 'Mochi', '2015-09-10', 'Autre', 'Débutant', 'nadege.fraselle@gmail.com', 50, 5, 5);
+--SELECT * FROM Client;
 
 -- Comptes Employé
-SELECT enum_range(null::ERoleEmploye); -- "{Propriétaire,Moniteur,""Garçon de Plage""}"
+--SELECT enum_range(null::ERoleEmploye); -- "{Propriétaire,Moniteur,""Garçon de Plage""}"
 -- Propriétaires OK
 INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye, IdPermis) VALUES
 	(DEFAULT, 'lfrottier', crypt('lfrottier', gen_salt('bf')), 'FROTTIER', 'Louis', '1980-11-15', 'lf15@lesabeilles.com', '0795847645', 'Propriétaire', 2),
@@ -118,9 +119,9 @@ INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, Da
 --SELECT * FROM CompteEmploye where typeemploye = 'Moniteur';
 
 -- Cours de Planche à Voile
-SELECT * FROM Client;
-SELECT enum_range(null::EStatutClient); --"{Débutant,Sportif}"
-SELECT enum_range(null::EEtatCours); --"{Prévu,"En cours",Réalisé,Annulé}"
+--SELECT * FROM Client;
+--SELECT enum_range(null::EStatutClient); --"{Débutant,Sportif}"
+--SELECT enum_range(null::EEtatCours); --"{Prévu,"En cours",Réalisé,Annulé}"
 INSERT INTO CoursPlancheVoile (IdCours, DateHeure, Niveau, EtatCours, IdCompte) VALUES
 	(DEFAULT, '2023-08-21 14:00:00', 'Débutant', 'Réalisé', 1),
 	(DEFAULT, '2023-08-22 14:00:00', 'Débutant', 'Réalisé', 3),
@@ -130,8 +131,12 @@ INSERT INTO CoursPlancheVoile (IdCours, DateHeure, Niveau, EtatCours, IdCompte) 
 	(DEFAULT, '2023-08-26 10:00:00', 'Sportif', 'Annulé', 5),
 	(DEFAULT, '2023-08-26 14:00:00', 'Débutant', 'Réalisé', 4),
 	(DEFAULT, '2023-08-26 14:00:00', 'Sportif', 'Annulé', 5),
-	(DEFAULT, '2024-08-26 14:00:00', 'Sportif', 'Prévu', 7);
-SELECT * FROM CoursPlancheVoile;
+	(DEFAULT, '2024-08-28 14:00:00', 'Débutant', 'Prévu', 4),
+	(DEFAULT, '2024-08-26 14:00:00', 'Sportif', 'Prévu', 7),
+	(DEFAULT, '2024-06-28 14:00:00', 'Débutant', 'Prévu', 4),
+	(DEFAULT, '2024-07-26 14:00:00', 'Sportif', 'Prévu', 7);
+--SELECT * FROM CoursPlancheVoile;
+--delete from coursPlancheVoile
 
 -- Prix Matériel
 INSERT INTO PrixMateriel (IdPrixMateriel, NomMateriel, PrixHeure, PrixHeureSupp) VALUES
@@ -140,16 +145,16 @@ INSERT INTO PrixMateriel (IdPrixMateriel, NomMateriel, PrixHeure, PrixHeureSupp)
 	(DEFAULT, 'Stand Up Paddle', 20.0, 15.0);
 INSERT INTO PrixMateriel (IdPrixMateriel, NomMateriel, PrixDemiHeure, PrixHeure) VALUES
 	(DEFAULT, 'Pédalo', 10.0, 15.0);
-SELECT * FROM PrixMateriel;
+--SELECT * FROM PrixMateriel;
 
 -- Materiel
-SELECT enum_range(null::EStatutMateriel); --"{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
+--SELECT enum_range(null::EStatutMateriel); --"{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
 
 --- Catamaran Hobie Cart 15 (prix materiel 1) OK
 INSERT INTO Catamaran (IdCatamaran, NbPlaces, Statut, IdPrixMateriel) VALUES
 	(DEFAULT, 4, 'Fonctionnel', 1),
 	(DEFAULT, 4, 'Fonctionnel', 1);
-SELECT * FROM Catamaran;
+--SELECT * FROM Catamaran;
 
 -- Stand Up Paddle (prix materiel 3) OK
 INSERT INTO StandUpPaddle (IdStandUpPaddle, NbPlaces, Statut, Capacite, IdPrixMateriel) VALUES
@@ -163,20 +168,21 @@ INSERT INTO StandUpPaddle (IdStandUpPaddle, NbPlaces, Statut, Capacite, IdPrixMa
 	(DEFAULT, 4, 'Hors service', '200l', 3),
 	(DEFAULT, 4, 'Hors service', '200l', 3),
 	(DEFAULT, 4, 'Hors service', '200l', 3);
-SELECT * FROM StandUpPaddle;
+--SELECT * FROM StandUpPaddle;
 
 --- Planche A Voile (prix materiel 2) OK
+--SELECT enum_range(null::EStatutMateriel); -- "{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
 INSERT INTO PlancheAVoile (IdPlancheVoile, NbPlaces, Statut, IdPrixMateriel) VALUES
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --2 
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --4
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --6
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --8 
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --10
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --12
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --14
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --16
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --18
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2); --20
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Reçu', 2), --2 
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Reçu', 2), --4
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Reçu', 2), --6
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Hors service', 2), --8 
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Hors service', 2), --10
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Hors service', 2), --12
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Reçu', 2), --14
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'En location', 2), --16
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Reçu', 2), --18
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Mis au rebut', 2); --20
 --SELECT * FROM PlancheAVoile;
 
 -- Flotteur (Planche à Voile) OK
@@ -207,7 +213,7 @@ INSERT INTO Flotteur (IdFlotteur, IdPlancheVoile, Capacite, Statut) VALUES
 	(DEFAULT, 18, '205l', 'Fonctionnel'),
 	(DEFAULT, 19, '205l', 'Fonctionnel'),
 	(DEFAULT, 20, '205l', 'Mis au rebut');
-SELECT * FROM Flotteur;
+--SELECT * FROM Flotteur;
 
 -- Pied De Mat (Planche à Voile) OK
 --SELECT enum_range(null::EStatutMateriel); -- "{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
@@ -264,8 +270,8 @@ INSERT INTO Pedalo (IdPedalo, NbPlaces, Statut, IdPrixMateriel) VALUES
 --SELECT * FROM Pedalo;
 	 
 -- Réservation
-SELECT * FROM CoursPlancheVoile;
-SELECT * FROM PlancheAVoile;
+--SELECT * FROM CoursPlancheVoile;
+--SELECT * FROM PlancheAVoile;
 INSERT INTO Reservation (IdCours, IdPlancheVoile) VALUES
 	(1, 1),
 	(2, 2),
@@ -274,10 +280,10 @@ INSERT INTO Reservation (IdCours, IdPlancheVoile) VALUES
 	(5, 5),
 	(6, 6),
 	(7, 7);
-SELECT * FROM Reservation;
+--SELECT * FROM Reservation;
 
 -- Participation
-SELECT * FROM CoursPlancheVoile;
+--SELECT * FROM CoursPlancheVoile;
 INSERT INTO Participation (IdClient, IdCours) VALUES
 	(1, 1),
 	(2, 2),
@@ -286,7 +292,7 @@ INSERT INTO Participation (IdClient, IdCours) VALUES
 	(5, 5),
 	(6, 6),
 	(7, 7);
-SELECT * FROM Participation;
+--SELECT * FROM Participation;
 
 -- Ajout des FK
 	 

@@ -16,13 +16,19 @@
             <?php include('header.php') ?>
         </header>
     
-        <div class="container">
+        <div class="container corps">
             <h2>Cours de voile</h2>
             <div class="fonctionnalites">
-            <?php if ($_SESSION["role"] === 'Propriétaire') 
-                    echo '<a href="organiser_cours_voile.php" class="button">Organiser un cours de voile</a>' ?>
-                    <a href="cours_de_voile.php" class="button">Consulter les cours de voile</a>
+                <?php 
+                    if ($_SESSION["role"] === 'Propriétaire') 
+                    echo '<a href="organiser_cours_voile.php" class="button">Organiser un cours de voile</a>' 
+                ?>
+                <a href="cours_de_voile.php" class="button">Consulter les cours de voile</a>
             </div>
+
+        <br><br>
+
+         <img id="photoSurf" src="images/surf.jpg" alt="Personne qui fait du surf">
         </div>
     
         <footer>

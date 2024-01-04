@@ -1,7 +1,13 @@
-
 <?php
 session_start();
 $showForm = isset($_POST['recherche_client']) && $_POST['recherche_client'] === 'Oui';
+$previousPage = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+$showQuestionAndButtons = strpos($previousPage, 'rechercher_client.php') !== false;
+$idClientFromURL = isset($_GET['idClient']) ? $_GET['idClient'] : '';
+$connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14")
+    or die("Impossible de se connecter : " . pg_result_error($connexion));
+
+$result = pg_query($connexion, 'SELECT * FROM consulter_cours_voile_pour_inscription()');
 ?>
 
 <!DOCTYPE html>
@@ -18,81 +24,54 @@ $showForm = isset($_POST['recherche_client']) && $_POST['recherche_client'] === 
             max-width: 800px;
             margin: 20px auto;
         }
+
         table {
             width: 100%;
             margin-top: 30px;
             border: 1px solid #ddd;
         }
+
         .buttons-container {
             margin-bottom: 20px;
             display: flex;
             flex-wrap: wrap;
         }
+
         .form-container {
             display: <?php echo $showForm ? 'block' : 'none'; ?>;
             text-align: left;
+        }
+
+        td:first-child {
+            display: none;
         }
     </style>
 </head>
 
 <body>
-    <?php $current_url = 'inscription_client_cours_voile.php'; ?>
     <header>
         <?php include('header.php') ?>
     </header>
 
     <div class="container">
-        <h2>Inscription Cours de Voile</h2>
+        <h1>Inscription à un cours</h1>
 
-        <div class="buttons-container">
-                
-            <h3>La personne est-elle déjà cliente?</h3>
-
-            <form method="post" action="">
-                <button class="button" name="recherche_client" value="Oui">Oui</button>
-            </form>
-
-            <button class="button" onclick="window.location.href='InscriptionClient.php';">Non</button>
-        </div>
-
-        <div class="form-container">
-            <?php
-            if ($showForm) {
-                echo '
-                <form method="post" name="formulaire" novalidate="" class="form" action="afficherProfilClient.php">
-                    <label for="NomClient" class="label">NOM</label><br>
-                    <input type="text" id="NomClient" name="NomClient" placeholder="Ex : BOULANGER" required/>
-                    <div id="nomError" class="error"></div><br>
-
-                    <label for="PrenomClient">Prénom</label><br>
-                    <input type="text" id="PrenomClient" name="PrenomClient" placeholder="Ex : Jean Michel" required/>
-                    <div id="prenomError" class="error"></div><br>
-
-                    <label for="DateNaissanceClient">Date de naissance</label><br>
-                    <input type="date" id="DateNaissanceClient" name= "DateNaissanceClient" placeholder="Ex : 08/01/1975" required/>
-                    <div id="dateNaisError" class="error"></div><br>
-
-                    <div>
-                        <button class="button">Rechercher</button>
-                    </div>
-                </form>';
-            }
-            ?>
-        </div>
+        <?php if ($showQuestionAndButtons): ?>
+            <div class="buttons-container">
+                <h3>La personne est-elle déjà cliente?</h3>
+                <button class="button" onclick="window.location.href='rechercherClient.php';" value="Oui">Oui</button>
+                <button class="button" onclick="window.location.href='InscriptionClient.php';">Non</button>
+            </div>
+        <?php endif; ?>
 
         <?php
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-      
-
-        $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
-        $result = pg_query($connexion, 'SELECT * FROM consulter_cours_voile_pour_inscription()');
 
         if (!$result) {
             echo "Erreur lors de l'exécution de la fonction.";
         } else {
             echo "<table>
                     <tr>
+                        <th>ID Cours</th>
                         <th>Date et Heure</th>
                         <th>Niveau</th>
                         <th>Nom Moniteur</th>
@@ -100,15 +79,25 @@ $showForm = isset($_POST['recherche_client']) && $_POST['recherche_client'] === 
                         <th class='button-col'></th>
                     </tr>";
 
-            while ($row = pg_fetch_assoc($result)) {
-                echo "<tr>
-                        <td>" . $row['dateheure'] . "</td>
-                        <td>" . $row['niveau'] . "</td>
-                        <td>" . $row['nommoniteur'] . "</td>
-                        <td>" . $row['nbplacesrestantes'] . "</td>
-                        <td class='button-col'><button class='button'>Inscrire à ce cours</button></td>
-                    </tr>";
-            }
+                    while ($row = pg_fetch_assoc($result)) {
+                        echo "<tr>
+                                <td></td>
+                                <td>" . $row['idcours'] . "</td>
+                                <td>" . $row['dateheure'] . "</td>
+                                <td>" . $row['niveau'] . "</td>
+                                <td>" . $row['nommoniteur'] . "</td>
+                                <td>" . $row['nbplacesrestantes'] . "</td>
+                                <td class='button-col'>
+                                    <form method='post' action='inscription_client_cours_action.php'>
+                                        <input type='hidden' name='idClient' value='$idClientFromURL'>
+                                        <input type='hidden' name='idCours' value='" . $row['idcours'] . "'>
+                                        <button type='submit' class='button' name='inscrireCours'>Inscrire à ce cours</button>
+                                    </form>
+                                </td>
+                              </tr>";
+                    }
+                    
+                    
 
             echo "</table>";
         }

@@ -3,7 +3,7 @@
 
 header {
   background-color: rgba(0, 102, 204, 1);
-  height: 200px;
+  height: 20em;
   padding: 10px;
   /* max-width: 1200px; */
   text-align: center;
@@ -20,7 +20,7 @@ header {
 .header li {
   display: inline;
   float: left;
-  padding: 0px 10px;
+  padding: 10px 10px;
 }
 
   /* Style the header links */
