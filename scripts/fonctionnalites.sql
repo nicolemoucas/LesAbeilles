@@ -607,7 +607,7 @@ BEGIN
     INSERT INTO CompteEmploye (NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
 		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Garçon de plage')        
 		RETURNING IdCompte INTO nouvIdGarcon;
-    EXECUTE FORMAT('REASSIGN OWNED BY %I TO garcons_de_plage_abeilles', nomUtil);
+    --EXECUTE FORMAT('REASSIGN OWNED BY %I TO garcons_de_plage_abeilles', nomUtil);
     EXECUTE FORMAT('DROP USER IF EXISTS %I', nomUtil);
     EXECUTE FORMAT('CREATE USER "%I" WITH ENCRYPTED PASSWORD ''%s''', nomUtil, mdp);
     EXECUTE FORMAT('GRANT garcons_de_plage_abeilles TO %I', nomUtil);
