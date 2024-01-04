@@ -65,6 +65,7 @@
                 echo '<script type="text/javascript"> alertClientExists("'.$_SESSION["role"].'"); </script>';
             } else {
                 $row = pg_fetch_object($recupClient);
+                $idClient=$row->idpers;
                 
             }
             //pour la combobox des noms des campings
@@ -101,10 +102,14 @@
             <form method="post" name="formulaire" novalidate="" class="form">
             <div>
                 <button class="button" formaction="javascript:redirection('<?php echo $_SESSION["role"]?>')">Retour</a>
-                <button class="button" formaction="#">Modifier le profil</button>
                 <?php if ($_SESSION["role"] === 'Propriétaire') 
                 echo '<button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>'?>
+                <button class="button" formaction="javascript:confirmerModification()"> Modifier le profil</button>
+                <button class= "button" formaction="javascript:confirmerInscription()">Inscrire à un cours</button>
+        
             </div>
+                <input type="hidden" id="idpers" name="idpers" value="<?php echo $row->idpers; ?>" />
+
                 <label for="NomClient" class="label">NOM</label><br>
                 <input type="text" id="NomClient" name="NomClient" placeholder="Ex : BOULANGER" value= "<?php echo $row->nomcl ?>" required/>
                 <div id="nomError" class="error"></div><br>
@@ -173,4 +178,32 @@
             document.location= url;
         }
     }
+    function confirmerModification() {
+        const formulaire = document.formulaire;
+        if (confirm("Voulez-vous vraiment modifier le profil de ce client ?")) {
+            const url = 'modifier_profil_client.php?' +
+                    'idClient=' + formulaire.idpers.value +
+                    '&NomClient=' + encodeURIComponent(formulaire.NomClient.value) +
+                    '&PrenomClient=' + encodeURIComponent(formulaire.PrenomClient.value) +
+                    '&DateNaissanceClient=' + formulaire.DateNaissanceClient.value +
+                    '&MailClient=' + encodeURIComponent(formulaire.MailClient.value) +
+                    '&TelClient=' + formulaire.TelClient.value +
+                    '&PrefContactClient=' + encodeURIComponent(formulaire.PrefContactClient.value) +
+                    '&CampingClient=' + encodeURIComponent(formulaire.CampingClient.value) +
+                    '&TailleClient=' + formulaire.TailleClient.value +
+                    '&PoidsClient=' + formulaire.PoidsClient.value +
+                    '&StatutClient=' + encodeURIComponent(formulaire.StatutClient.value);
+            document.location = url;
+        }
+        
+    }
+
+    function confirmerInscription() {
+        const formulaire = document.formulaire;
+        if(confirm("Voulez-vous inscrire ce client à un cours ?")) {
+            const url = 'inscription_client_cours_voile.php?idClient=' + formulaire.idpers.value;
+            document.location = url;
+        }
+    }
+
 </script>
