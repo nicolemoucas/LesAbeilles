@@ -28,7 +28,7 @@
                 if (!$result) {
                     echo "Erreur lors de l'exécution de la fonction.";
                 } else {
-                    echo "<table border='1' id='table_cours'>
+                    echo "<table border='1' class='table_cours_stock'>
                             <tr>
                                 <th>ID Cours</th>
                                 <th>Date et Heure</th>

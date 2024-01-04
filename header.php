@@ -46,8 +46,8 @@
                     <li <?php if($current_url == 'index.php'){ echo 'class="current"';}?>>
                         <a href="javascript:redirection('<?php echo $_SESSION["role"]?>')" class="logo-home"><i class="fa fa-home"></i>&nbsp; Les Abeilles</a>
                     </li>
-                    <li <?php if($current_url == 'planning.php'){ echo 'class="current"';}?>>
-                        <a href="#.php">Planning</a>
+                    <li <?php if($current_url == 'planning_location.php'){ echo 'class="current"';}?>>
+                        <a href="cours_de_voile.php">Planning Locations</a>
                     </li>
                     <li <?php if($current_url == 'cours_de_voile.php'){ echo 'class="current"';}?>>
                         <a href="menu_cours_voile.php">Cours de Voile</a>
