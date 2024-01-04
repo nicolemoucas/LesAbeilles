@@ -1,11 +1,10 @@
 /* FONCTIONNALITÉS */
 
 /* 1 - Retrouver un client */
-SELECT * FROM Client;
 DROP FUNCTION IF EXISTS recherche_client;
 CREATE OR REPLACE FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE)
 RETURNS TABLE (idpers INTEGER, nomCl VARCHAR, prenomCl VARCHAR, dateNaissanceCl DATE, mailCl VARCHAR, numTelephoneCl VARCHAR,
-campingCl ECamping, statutCl EStatutClient, poidsCl FLOAT, tailleCl int, preferenceContactCl EPreferenceContact, idCertificatCl INTEGER) AS $$
+campingCl ECamping, statutCl EStatutClient, tailleCl INTEGER, poidsCl FLOAT, preferenceContactCl EPreferenceContact, idCertificatCl INTEGER) AS $$
 
 BEGIN
     RETURN QUERY SELECT * FROM client WHERE lower(Nom) = lower($1) AND lower(Prenom) = lower($2) AND DateNaissance = $3;
@@ -15,7 +14,7 @@ $$ Language PlpgSQL;
 /* 2 - Créer un client */
 DROP PROCEDURE IF EXISTS creer_client;
 CREATE OR REPLACE PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
-camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) AS $BODY$
+camping ECamping, statut EStatutClient, poids FLOAT, taille INTEGER, preferenceContact EPreferenceContact) AS $BODY$
 BEGIN
     INSERT INTO Client(nom, prenom, datenaissance, mail, numtelephone, camping, statut, poids, taille, preferenceContact) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);
 END;
@@ -344,7 +343,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 /* 15 - Consulter le planning des cours de voile */
---SELECT * FROM CoursPlancheVoile;
+
 CREATE OR REPLACE FUNCTION consulter_cours_voile()
 RETURNS TABLE (
 	IdCours int,
@@ -371,6 +370,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 /* 16 - Modifier le profil d'un client */
+
 CREATE OR REPLACE PROCEDURE modifier_profil_client(
     IN client_id INT,
     IN nouveau_nom VARCHAR(30),
@@ -513,12 +513,12 @@ $$ LANGUAGE plpgsql;
 --SELECT enum_range(null::EEtatCours); --"{Prévu,"En cours",Réalisé,Annulé}"
 DROP FUNCTION IF EXISTS f_annuler_cours;
 CREATE OR REPLACE FUNCTION f_annuler_cours(idCoursAnnule int)
-	RETURNS int 
+	RETURNS int
 	AS $$
 DECLARE idCoursModif Varchar;
 BEGIN
 	UPDATE CoursPlancheVoile
-		SET etatCours = 'Annulé' 
+		SET etatCours = 'Annulé'
 		WHERE idCours = idCoursAnnule
 		RETURNING idCours INTO idCoursModif;
 	RETURN idCoursModif;
@@ -565,39 +565,197 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+DROP FUNCTION IF EXISTS f_rechercher_catamaran;
+CREATE OR REPLACE FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval)
+RETURNS TABLE (idMatos INTEGER) AS $$
+DECLARE
+	minTime timestamp;
+	maxTime timestamp;
+BEGIN
+
+	SELECT INTO minTime dateLoc - dureeLoc;
+	SELECT INTO maxTime dateLoc + dureeLoc;
+
+	RETURN QUERY SELECT idcatamaran as idMatos
+					  FROM catamaran t_mat WHERE statut = 'Fonctionnel' AND NOT EXISTS(
+							SELECT idcatamaran FROM location t_loc
+							WHERE t_loc.idcatamaran = t_mat.idcatamaran
+							AND t_loc.etatlocation = 'En cours'
+							AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+								OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+								OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+								OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+							);
+END;
+$$ Language PlpgSQL;
+
+DROP FUNCTION IF EXISTS f_rechercher_pedalo;
+CREATE OR REPLACE FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval)
+RETURNS TABLE (idMatos INTEGER) AS $$
+DECLARE
+	minTime timestamp;
+	maxTime timestamp;
+BEGIN
+
+	SELECT INTO minTime dateLoc - dureeLoc;
+	SELECT INTO maxTime dateLoc + dureeLoc;
 /* 23 - Modifier le profil d'un client */
 DROP PROCEDURE IF EXISTS modifier_profil_client;
 CREATE OR REPLACE PROCEDURE modifier_profil_client(
-    idCli INT, 
-    nomClient VARCHAR, 
-    prenomClient VARCHAR, 
-    dateNaissanceClient DATE, 
-    mailClient VARCHAR, 
+    idCli INT,
+    nomClient VARCHAR,
+    prenomClient VARCHAR,
+    dateNaissanceClient DATE,
+    mailClient VARCHAR,
     telClient VARCHAR,
-    prefContactClient EPreferenceContact, 
-    campingClient ECamping, 
-    tailleClient INT, 
-    poidsClient INT, 
+    prefContactClient EPreferenceContact,
+    campingClient ECamping,
+    tailleClient INT,
+    poidsClient INT,
     statutClient EStatutClient
 ) AS $BODY$
 BEGIN
-    UPDATE Client 
-    SET 
-        nom = nomClient, 
-        prenom = prenomClient, 
-        datenaissance = dateNaissanceClient, 
-        mail = mailClient, 
+    UPDATE Client
+    SET
+        nom = nomClient,
+        prenom = prenomClient,
+        datenaissance = dateNaissanceClient,
+        mail = mailClient,
         numtelephone = telClient,
-        preferencecontact = prefContactClient, 
-        camping = campingClient, 
-        taille = tailleClient, 
-        poids = poidsClient, 
+        preferencecontact = prefContactClient,
+        camping = campingClient,
+        taille = tailleClient,
+        poids = poidsClient,
         statut = statutClient
     WHERE idclient = idCli;
 END;
 $BODY$
 LANGUAGE PlpgSQL;
 
+	RETURN QUERY SELECT idpedalo as idMatos
+					  FROM pedalo t_mat WHERE statut = 'Fonctionnel' AND NOT EXISTS(
+							SELECT idpedalo FROM location t_loc
+							WHERE t_loc.idpedalo = t_mat.idpedalo
+							AND t_loc.etatlocation = 'En cours'
+							AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+								OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+								OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+								OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+							);
+END;
+$$ Language PlpgSQL;
+
+
+DROP FUNCTION IF EXISTS f_rechercher_standuppaddle;
+CREATE OR REPLACE FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval)
+RETURNS TABLE (idMatos INTEGER) AS $$
+DECLARE
+	minTime timestamp;
+	maxTime timestamp;
+BEGIN
+
+	SELECT INTO minTime dateLoc - dureeLoc;
+	SELECT INTO maxTime dateLoc + dureeLoc;
+
+	RETURN QUERY SELECT idstanduppaddle as idMatos
+					  FROM standuppaddle t_mat WHERE statut = 'Fonctionnel' AND NOT EXISTS(
+							SELECT idstanduppaddle FROM location t_loc
+							WHERE t_loc.idstanduppaddle = t_mat.idstanduppaddle
+							AND t_loc.etatlocation = 'En cours'
+							AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+								OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+								OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+								OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+							);
+END;
+$$ Language PlpgSQL;
+
+DROP FUNCTION IF EXISTS f_rechercher_planchevoile;
+CREATE OR REPLACE FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile)
+RETURNS TABLE (idFloteur INTEGER, idPiedMat INTEGER, idDeVoile INTEGER) AS $$
+DECLARE
+	minTime timestamp;
+	maxTime timestamp;
+	idFloteur INTEGER;
+	idPiedMat INTEGER;
+	idDeVoile INTEGER;
+BEGIN
+
+	SELECT INTO minTime dateLoc - dureeLoc;
+	SELECT INTO maxTime dateLoc + dureeLoc;
+
+	SELECT INTO idFloteur idflotteur FROM flotteur t_flot
+	WHERE statut = 'Fonctionnel'
+	AND capacite = capaciteFlot
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM coursplanchevoile t_cours LEFT JOIN reservation t_res ON t_cours.idcours = t_res.idcours
+			WHERE t_res.idplanchevoile = t_flot.idplanchevoile
+			AND t_cours.etatcours = 'Prévu'
+			AND ((t_cours.dateheure BETWEEN minTime AND maxTime)
+				OR ((t_cours.dateheure + interval '2 hours' BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours'))
+				OR (maxTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours')))
+				))
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM location t_loc
+			WHERE t_loc.idplanchevoile = t_flot.idplanchevoile
+			AND t_loc.etatlocation = 'En cours'
+			AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+				OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+				OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+	)
+	LIMIT 1;
+
+	SELECT INTO idPiedMat idpieddemat FROM pieddemat t_mat
+	WHERE statut = 'Fonctionnel'
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM coursplanchevoile t_cours LEFT JOIN reservation t_res ON t_cours.idcours = t_res.idcours
+			WHERE t_res.idplanchevoile = t_mat.idplanchevoile
+			AND t_cours.etatcours = 'Prévu'
+			AND ((t_cours.dateheure BETWEEN minTime AND maxTime)
+				OR ((t_cours.dateheure + interval '2 hours' BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours'))
+				OR (maxTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours')))
+				))
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM location t_loc
+			WHERE t_loc.idplanchevoile = t_mat.idplanchevoile
+			AND t_loc.etatlocation = 'En cours'
+			AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+				OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+				OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+	)
+	LIMIT 1;
+
+	SELECT INTO idDeVoile idvoile FROM voile t_voi
+	WHERE statut = 'Fonctionnel'
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM coursplanchevoile t_cours LEFT JOIN reservation t_res ON t_cours.idcours = t_res.idcours
+			WHERE t_res.idplanchevoile = t_voi.idplanchevoile
+			AND t_cours.etatcours = 'Prévu'
+			AND ((t_cours.dateheure BETWEEN minTime AND maxTime)
+				OR ((t_cours.dateheure + interval '2 hours' BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours'))
+				OR (maxTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours')))
+				))
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM location t_loc
+			WHERE t_loc.idplanchevoile = t_voi.idplanchevoile
+			AND t_loc.etatlocation = 'En cours'
+			AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+				OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+				OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+	)
+	LIMIT 1;
+
+
+	RETURN QUERY SELECT idFloteur,idPiedMat, idDeVoile;
+END;
+$$ Language PlpgSQL;
 /* 24 - Création d'un garçon de plage */
 DROP FUNCTION IF EXISTS creer_garcon;
 CREATE OR REPLACE FUNCTION creer_garcon(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
@@ -611,7 +769,7 @@ BEGIN
     nomUtil := $1;
     mdp := $2;
     INSERT INTO CompteEmploye (NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
-		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Garçon de plage')        
+		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Garçon de plage')
 		RETURNING IdCompte INTO nouvIdGarcon;
     --EXECUTE FORMAT('REASSIGN OWNED BY %I TO garcons_de_plage_abeilles', nomUtil);
     EXECUTE FORMAT('DROP USER IF EXISTS %I', nomUtil);
