@@ -9,7 +9,7 @@
         <title>Suppression cours de voile</title>
         <script>
             function alertCoursNonAnnulable() {
-                if(confirm("Le cours n'est pas annulable.")) {
+                if(confirm("Le cours n'est pas annulable, la date de celui-ci est déjà passée.")) {
                     document.location = 'http://localhost/LesAbeilles/cours_de_voile.php';
                 }
                 // alert("Le cours n'est pas annulable.");

@@ -154,7 +154,7 @@
                     pg_free_result($result);
                 ?>            
             </div>
-                </article>
+        </article>
     
         <footer>
             <?php include('footer.php') ?>

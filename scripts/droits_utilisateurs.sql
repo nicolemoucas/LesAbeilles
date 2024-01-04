@@ -54,6 +54,7 @@ GRANT EXECUTE ON FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCH
 GRANT EXECUTE ON FUNCTION fetch_nom_moniteur() TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION verification_moniteur_disponible(idMoniteur INT, dateHeureCours TIMESTAMP) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION f_creer_proprietaire(nomUtilisateur VARCHAR, motDePasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_creer_moniteur(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_annuler_cours(idCoursSupp int) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO proprietaires_abeilles;
@@ -122,7 +123,6 @@ GRANT USAGE ON SEQUENCE pedalo_idpedalo_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE pieddemat_idpieddemat_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE standuppaddle_idstanduppaddle_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE voile_idvoile_seq TO moniteurs_abeilles;
-
 
 DROP USER IF EXISTS jbond;
 CREATE USER jbond WITH ENCRYPTED PASSWORD 'jbond';

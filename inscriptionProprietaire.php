@@ -82,7 +82,7 @@
                     <div id="dateObtentionDipError" class="error"></div><br>
                     
                     <label for="LienURLPermis">Lien URL *</label>
-                    <p>Veuillez uploader le document PDF dans le <a href="https://drive.google.com/drive">compte Drive Les Abeilles</a> puis insérer le lien ci-dessous</p>
+                    <p>Veuillez uploader le document PDF dans le <a href="https://drive.google.com/drive" target="_blank">compte Drive Les Abeilles</a> puis insérer le lien ci-dessous</p>
                     <input type="text" id="LienURLPermis" name="LienURLPermis" placeholder="Ex : lien" required/>
                     <div id="lienPermisError" class="error"></div>
                 </div>    

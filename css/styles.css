@@ -19,9 +19,10 @@ body {
   display: flex;
   flex-direction: column;
   height: auto;
+  min-height: 50em;
   /* max-width: 1200px; */
   margin: 0px; /* vert hor */
-  overflow-y: auto;
+  overflow: hidden;
   padding: 10px 10px 10px 10px; /* top right bottom left */
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -92,6 +93,12 @@ input {
 
 .table_cours_stock td {
   padding: 5px;
+}
+
+.btnAnnulerCours {
+  margin:auto;
+  display:block;
+
 }
 
 .btnModifMateriel {
