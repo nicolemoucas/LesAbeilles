@@ -85,7 +85,7 @@
                     <div id="dateObtentionDipError" class="error"></div><br>
                     
                     <label for="LienURLDiplome">Lien URL *</label>
-                    <p>Veuillez uploader le document PDF dans le <a href="https://drive.google.com/drive">compte Drive Les Abeilles</a> puis insérer le lien ci-dessous</p>
+                    <p>Veuillez uploader le document PDF dans le <a href="https://drive.google.com/drive" target="_blank">compte Drive Les Abeilles</a> puis insérer le lien ci-dessous</p>
                     <input type="text" id="LienURLDiplome" name="LienURLDiplome" placeholder="Ex : lien" required/>
                     <div id="lienDiplomeError" class="error"></div>
                 </div>    

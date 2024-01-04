@@ -42,11 +42,10 @@ ADD CONSTRAINT check_date_obtention CHECK (DateObtention <= CURRENT_DATE);
 -- les cours passés sont soit réalisés, soit annulés
 ALTER TABLE CoursPlancheVoile 
 ADD CONSTRAINT check_etat_cours CHECK (
-	(DateHeure >= CURRENT_DATE AND (etatCours = 'Réalisé' OR etatCours = 'Annulé'))
+	(DateHeure < CURRENT_DATE AND (etatCours = 'Réalisé' OR etatCours = 'Annulé'))
 	OR
-	(DateHeure < CURRENT_DATE));
-
-
+	(DateHeure >= CURRENT_DATE));
+	
 /* Contraintes avec Trigger */
 
 /* 1- Le Nombre de séances restantes doi être <= nb séances du forfait */

@@ -35,7 +35,7 @@
 
             <img id="photoSurf" src="images/surf.jpg" alt="Personne qui fait du surf">
 
-        </div>
+        </div> <!-- end corps -->
 
         <footer>
             <?php include('footer.php')?>

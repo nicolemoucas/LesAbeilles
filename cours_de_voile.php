@@ -1,3 +1,7 @@
+<?php
+    // Start the session
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -35,6 +39,7 @@
                                 <th>Niveau</th>
                                 <th>Nom Moniteur</th>
                                 <th>Etat Cours</th>";
+                    // que le propriétaire peut annuler des cours
                     if ($_SESSION["role"] == 'Propriétaire') {
                         echo "<th>Action</th>";
                     }
@@ -47,9 +52,10 @@
                                 <td>".$row['niveau']."</td>
                                 <td>".$row['nommoniteur']."</td>
                                 <td>".$row['etatcours']."</td>";
+                        // que le propriétaire peut annuler des cours
                         if ($_SESSION["role"] == 'Propriétaire') {
-                            echo "<td><button class='btnAnnulerCours'>Annuler</button></td>";
-                        } 
+                            echo "<td><button class='btnAnnulerCours' onclick=\"annulerCours()\">Annuler</button></td>";
+                        }
                         echo "</tr>";
                     }
                     echo "</table>";
@@ -58,26 +64,28 @@
                 pg_free_result($result);
                 pg_close($connexion);
             ?>
-        </div>
+        </div> <!-- end corps -->
 
         <footer>
             <?php include('footer.php') ?>
         </footer>
     </body>
 <script>
-    $(document).ready(function(){
+    // $(document).ready(function(){
 
         // code to read selected table row cell data (values)
-        $("#table_cours").on('click','.btnAnnulerCours',function(){
+        // $("#table_cours_stock").on('click','.btnAnnulerCours',function(){
+            function annulerCours() {
+                console.log("here");
+                // get the current row
+                var currentRow=$(this).closest("tr"); 
+                var IdCours = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
 
-            // get the current row
-            var currentRow=$(this).closest("tr"); 
-            var IdCours = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
-
-            if(confirm("Voulez-vous vraiment annuler le cours n°" + IdCours + " ?")) {
-                location.replace('http://localhost/LesAbeilles/annulerCoursVoile.php?IdCours=' + IdCours);
+                if(confirm("Voulez-vous vraiment annuler le cours n°" + IdCours + " ?")) {
+                    location.replace('http://localhost/LesAbeilles/annulerCoursVoile.php?IdCours=' + IdCours);
+                }
             }
-        });
-    });
+            
+        // });
 </script>
 </html>

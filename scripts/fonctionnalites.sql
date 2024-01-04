@@ -110,7 +110,7 @@ $$ Language PlpgSQL;
 --SELECT f_rechercher_employe('Moniteur', 'BOND', 'James', '1996-08-04', 'jbond@lesabeilles.fr', null); -- test
 
 /* 8- Créer un propriétaire */
-SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Propriétaire';
+--SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Propriétaire';
 DROP FUNCTION IF EXISTS f_creer_proprietaire;
 CREATE OR REPLACE FUNCTION f_creer_proprietaire(nomUtilisateur VARCHAR, motDePasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
 	RETURNS int
@@ -126,13 +126,17 @@ BEGIN
 		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Propriétaire')
 		RETURNING IdCompte INTO nouvIdProprietaire;
 	-- créer user et ajout au groupe de propriétaires
+	IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = $1) THEN
+		EXECUTE FORMAT('REASSIGN OWNED BY %I TO proprietaires_abeilles', nomUtil);
+	END IF;
+	EXECUTE FORMAT('DROP USER IF EXISTS %I', nomUtil);
     EXECUTE FORMAT('CREATE USER "%I" WITH ENCRYPTED PASSWORD ''%s''', nomUtil, mdp);
 	EXECUTE FORMAT('GRANT proprietaires_abeilles TO %I', nomUtil);
 	RETURN nouvIdProprietaire;
 END;
 $BODY$
 LANGUAGE PlpgSQL;
---SELECT f_creer_proprietaire('kfrottier', 'kfrottiermdp', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
+SELECT f_creer_proprietaire('kfrottier', 'kfrottiermdp', 'FROTTIER', 'Kylie', '1996-08-04', 'kfrottier@lesabeilles.fr', null); --test
 
 /* Créer un profil moniteur (Propriétaire) */
 --SELECT * FROM CompteEmploye WHERE TypeEmploye = 'Moniteur';
@@ -152,7 +156,9 @@ BEGIN
 		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Moniteur')
 		RETURNING IdCompte INTO nouvIdMoniteur;
 	-- créer user et ajout au groupe de moniteurs
-	EXECUTE FORMAT('REASSIGN OWNED BY %I TO moniteurs_abeilles', nomUtil);
+	IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = $1) THEN
+		EXECUTE FORMAT('REASSIGN OWNED BY %I TO moniteurs_abeilles', nomUtil);
+	END IF;
 	EXECUTE FORMAT('DROP USER IF EXISTS %I', nomUtil);
     EXECUTE FORMAT('CREATE USER "%I" WITH ENCRYPTED PASSWORD ''%s''', nomUtil, mdp);
 	EXECUTE FORMAT('GRANT moniteurs_abeilles TO %I', nomUtil);
@@ -160,7 +166,7 @@ BEGIN
 END;
 $BODY$
 LANGUAGE PlpgSQL;
---SELECT f_creer_moniteur('batman', 'batmanmdp', 'WAYNE', 'Bruce', '1996-08-04', 'bwayne@batman.com', null); --test
+SELECT f_creer_moniteur('batman', 'batmanmdp', 'WAYNE', 'Bruce', '1996-08-04', 'bwayne@batman.com', null); --test
 
 /* Supprimer un employé (Propriétaire) */
 DROP PROCEDURE IF EXISTS p_supprimer_employe;
@@ -522,7 +528,7 @@ LANGUAGE PlpgSQL;
 --SELECT f_annuler_cours(36);
 
 /* 23 - Consulter les cours dans lesquels le client peut s'inscrire */
-DROP FUNCTION consulter_cours_voile_pour_inscription();
+DROP FUNCTION IF EXISTS consulter_cours_voile_pour_inscription();
 CREATE OR REPLACE FUNCTION consulter_cours_voile_pour_inscription()
 RETURNS TABLE (
     idCours INT,

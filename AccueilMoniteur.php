@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></head>
     </head>
     <body>
-        <?php $current_url = 'index.php'; ?>
+        <?php $current_url = 'AccueilMoniteur.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>
@@ -30,8 +30,7 @@
 
             <img id="photoSurf" src="images/surf.jpg" alt="Personne qui fait du surf">
 
-            <p></p>
-        </div>
+        </div> <!-- end corps -->
 
         <footer>
             <?php include('footer.php')?>

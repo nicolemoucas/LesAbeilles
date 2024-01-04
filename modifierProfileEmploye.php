@@ -33,17 +33,17 @@
 
 
             $requete = pg_prepare($connexion, "modifier_employe", 'CALL modifier_employe($1, $2, $3, $4, $5, $6)');
-                $result = pg_execute($connexion, "modifier_employe", array(
-                    $idEmploye,
-                    $NomEmploye,
-                    $PrenomEmploye, 
-                    $DateNaissEmploye, 
-                    $MailEmploye,  
-                    $TelEmploye
-                ));
-                $row = pg_fetch_row($result);
-                // echo '<script>console.log("id compte : ' . $row[0] . '"); </script>'; // idCompte
-                // alert("Le compte moniteur pour $prenomMoniteur $nomMoniteur a été créé.");
-                header('Location: http://localhost/LesAbeilles/AccueilProprietaire.php');
-    
+            $result = pg_execute($connexion, "modifier_employe", array(
+                $idEmploye,
+                $NomEmploye,
+                $PrenomEmploye, 
+                $DateNaissEmploye, 
+                $MailEmploye,  
+                $TelEmploye
+            ));
+            $row = pg_fetch_row($result);
+            // echo '<script>console.log("id compte : ' . $row[0] . '"); </script>'; // idCompte
+            // alert("Le compte moniteur pour $prenomMoniteur $nomMoniteur a été créé.");
+            header('Location: http://localhost/LesAbeilles/AccueilProprietaire.php');
+
 ?>
