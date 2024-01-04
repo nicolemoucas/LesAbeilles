@@ -467,27 +467,19 @@ END;
 $$;
 
 /* 20- Inscription d'un client à un cours de planche à voile */
-CREATE OR REPLACE FUNCTION InscrireClientAuCours(client_id INT,cours_id INT)
-RETURNS VOID AS $$
+DROP FUNCTION IF EXISTS inscrireclientaucours(INT, INT);
+
+-- Créer la nouvelle fonction
+CREATE OR REPLACE FUNCTION inscrireclientaucours(p_idcours INT, p_idclient INT)
+RETURNS VOID
+AS $$
 BEGIN
-    -- si le client n'existe pas
-    IF NOT EXISTS (SELECT 1 FROM Client WHERE IdPersonne = client_id) THEN
-        RAISE EXCEPTION 'Le client avec l''ID % n''existe pas.', client_id;
+    -- Vérifier si le client n'est pas déjà inscrit à ce cours
+    IF NOT EXISTS (SELECT 1 FROM participation WHERE idcours = p_idcours AND idclient = p_idclient) THEN
+        -- Insérer l'inscription
+        INSERT INTO participation(idcours, idclient)
+        VALUES (p_idclient,p_idcours);
     END IF;
-
-    -- si le cours n'existe pas
-    IF NOT EXISTS (SELECT 1 FROM CoursPlancheVoile WHERE IdCours = cours_id) THEN
-        RAISE EXCEPTION 'Le cours avec l''ID % n''existe pas.', cours_id;
-    END IF;
-	
-	--voir pour faire le cas où le client n'a pas de forfait
-	-- on ne traite pas ce cas car il y a une vérification qui est faite directement sur le site
-
-    -- sinon si tout est bon
-    INSERT INTO Participe (IdCours, IdPersonne)
-    VALUES (cours_id, client_id);
-
-    RAISE NOTICE 'Le client avec l''ID % a été inscrit au cours avec l''ID %.', client_id, cours_id;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -528,4 +520,103 @@ END;
 $$
 LANGUAGE PlpgSQL;
 CALL p_annuler_cours(9);
+
+/* 23 - Consulter les cours dans lesquels le client peut s'inscrire */
+DROP FUNCTION consulter_cours_voile_pour_inscription();
+CREATE OR REPLACE FUNCTION consulter_cours_voile_pour_inscription()
+RETURNS TABLE (
+    idCours INT,
+    dateheure TIMESTAMP,
+    niveau EStatutClient,
+    nommoniteur text,
+    nbplacesrestantes bigint
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        cpv.IdCours,
+        cpv.dateheure,
+        cpv.niveau,
+        c.nom || ' ' || c.prenom AS nommoniteur,
+        15 - COUNT(p.IdCours) AS nbplacesrestantes
+    FROM
+        CoursPlancheVoile cpv
+    LEFT JOIN
+        CompteEmploye c ON cpv.IdCompte = c.IdCompte
+    LEFT JOIN
+        Participation p ON cpv.IdCours = p.IdCours
+    WHERE
+        cpv.EtatCours = 'Prévu'
+    GROUP BY
+        cpv.IdCours,
+        cpv.dateheure,
+        cpv.niveau,
+        c.nom,
+        c.prenom
+    ORDER BY
+        cpv.dateheure;
+END;
+$$ LANGUAGE plpgsql;
+
+/* 23 - Modifier le profil d'un client */
+DROP PROCEDURE IF EXISTS modifier_profil_client;
+CREATE OR REPLACE PROCEDURE modifier_profil_client(
+    idCli INT, 
+    nomClient VARCHAR, 
+    prenomClient VARCHAR, 
+    dateNaissanceClient DATE, 
+    mailClient VARCHAR, 
+    telClient VARCHAR,
+    prefContactClient EPreferenceContact, 
+    campingClient ECamping, 
+    tailleClient INT, 
+    poidsClient INT, 
+    statutClient EStatutClient
+) AS $BODY$
+BEGIN
+    UPDATE Client 
+    SET 
+        nom = nomClient, 
+        prenom = prenomClient, 
+        datenaissance = dateNaissanceClient, 
+        mail = mailClient, 
+        numtelephone = telClient,
+        preferencecontact = prefContactClient, 
+        camping = campingClient, 
+        taille = tailleClient, 
+        poids = poidsClient, 
+        statut = statutClient
+    WHERE idclient = idCli;
+END;
+$BODY$
+LANGUAGE PlpgSQL;
+
+/* 24 - Création d'un garçon de plage */
+DROP FUNCTION IF EXISTS creer_garcon;
+CREATE OR REPLACE FUNCTION creer_garcon(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
+    RETURNS int
+    AS $BODY$
+DECLARE
+    nouvIdGarcon int;
+    nomUtil VARCHAR;
+    mdp VARCHAR;
+BEGIN
+    nomUtil := $1;
+    mdp := $2;
+    INSERT INTO CompteEmploye (NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
+		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Garçon de plage')        
+		RETURNING IdCompte INTO nouvIdGarcon;
+    EXECUTE FORMAT('REASSIGN OWNED BY %I TO garcons_de_plage_abeilles', nomUtil);
+    EXECUTE FORMAT('DROP USER IF EXISTS %I', nomUtil);
+    EXECUTE FORMAT('CREATE USER "%I" WITH ENCRYPTED PASSWORD ''%s''', nomUtil, mdp);
+    EXECUTE FORMAT('GRANT garcons_de_plage_abeilles TO %I', nomUtil);
+    RETURN nouvIdGarcon;
+END;
+$BODY$
+LANGUAGE PlpgSQL;
+
+
+
+
 
