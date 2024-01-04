@@ -18,8 +18,15 @@
             border-collapse: collapse;
             margin-top: 20px; 
         }
-
     </style>
+    <script>
+        function afficherParticipants(dateHeureCours) {
+            var confirmation = confirm("Voulez-vous afficher les participants à ce cours le " + dateHeureCours + " ?");
+            if (confirmation) {
+                window.location.href = 'consulter_liste_participants.php?dateheure=' + encodeURIComponent(dateHeureCours);
+            }
+        }
+    </script>
 </head>
 <body>
     <?php $current_url = 'cours_de_voile.php'; ?>
@@ -46,14 +53,19 @@
                             <th>Date et Heure</th>
                             <th>Niveau</th>
                             <th>Nom Moniteur</th>
+                            <th>Action</th>
                         </tr>";
 
                 while ($row = pg_fetch_assoc($result)) {
+                    // Déclaration et initialisation de $dateHeure à l'intérieur de la boucle
+                    $dateHeure = $row['dateheure'];
+
                     echo "<tr>
-                            <td>".$row['dateheure']."</td>
+                            <td>".$dateHeure."</td>
                             <td>".$row['niveau']."</td>
                             <td>".$row['nommoniteur']."</td>
-                        </tr>";
+                            <td><button class='button' onclick='afficherParticipants(\"".$dateHeure."\")'>Afficher les participants</button></td>
+                          </tr>";
                 }
 
                 echo "</table>";

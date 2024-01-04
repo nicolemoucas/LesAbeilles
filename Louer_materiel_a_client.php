@@ -13,18 +13,16 @@
     </head>
     <body>
         <?php $current_url = 'index.php'; ?>
-        <header>
-            <?php include('header.php')?>
-        </header>
+        
 
         <div class="corps">
-            <h2>Bienvenue au Club Nautique Les Abeilles</h2>
+            <h2>Location d'un matériel</h2>
             <div class="fonctionnalites">
-                <a href="inscriptionClient.php" class="button">Créer un profil client</a>
-                <a href="rechercherClient.php" class="button">Rechercher un client</a>
-                <a href="#" class="button">Rechercher un cours</a>
-                <a href="inscription_client_cours_voile.php" class="button">Inscription d'un Client à un cours</a>
-                <a href="Louer_materiel_a_client.php" class="button">Louer du materiel à un client</a>
+                <a href="Louer_planche_a_voile.php" class="button">Louer une planche à voile</a>
+                <a href="Louer_catamaran.php" class="button">Louer un catamaran</a>
+                <a href="Louer_stand_up_paddle.php" class="button">Louer un stand up paddle</a>
+                <a href="Louer_pedalo.php" class="button">Louer un pédalo</a>
+            
 
             </div>
 
