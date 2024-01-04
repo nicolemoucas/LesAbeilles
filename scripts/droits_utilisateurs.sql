@@ -61,6 +61,13 @@ GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc
 GRANT EXECUTE ON FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_annuler_cours(idCoursSupp int) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION creer_garcon(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION Consulterlisteemploye() TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION AfficherProfilEmploye(Nom VARCHAR(30), Prenom VARCHAR(30)) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION listeInscritsCoursVoile(DateCours timestamp)TO moniteurs_abeilles;
+
+
+
 
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO proprietaires_abeilles;
@@ -68,6 +75,11 @@ GRANT EXECUTE ON PROCEDURE supprimer_client(nom VARCHAR, prenom VARCHAR, dateNai
 GRANT EXECUTE ON PROCEDURE creer_cours(horaireCours TIMESTAMP, nivCours EStatutClient, idMoniteur INT) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE p_supprimer_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE modifier_employe(idEmp INT, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, telEmploye VARCHAR)  TO proprietaires_abeilles;
+GRANT EXECUTE ON procedure modifier_profil_client( idCli INT, nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE, mailClient VARCHAR, telClient VARCHAR, prefContactClient EPreferenceContact,
+    campingClient ECamping, tailleClient INT, poidsClient INT, statutClient EStatutClient) TO moniteurs_abeilles;
+GRANT EXECUTE ON PROCEDURE mettre_hors_service(IN materiel_id INT) TO moniteurs_abeilles;
+GRANT EXECUTE ON PROCEDURE mettre_hors_service(IN materiel_id INT) TO proprietaires_abeilles;
+
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO proprietaires_abeilles;
@@ -119,6 +131,8 @@ GRANT EXECUTE ON FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCH
 GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO moniteurs_abeilles;
+GRANT EXECUTE ON FUNCTION inscrireclientaucours(p_idcours INT, p_idclient INT) TO moniteurs_abeilles;
+
 GRANT EXECUTE ON FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
