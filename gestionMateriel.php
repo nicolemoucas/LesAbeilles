@@ -164,7 +164,7 @@
     $(document).ready(function(){
 
         // code to read selected table row cell data (values)
-        $("#table_stock").on('click','.btnModifMateriel',function(){
+        $(".table_cours_stock").on('click','.btnModifMateriel',function(){
 
             // get the current row
             var currentRow=$(this).closest("tr"); 
