@@ -4,7 +4,7 @@
 html, body {
   height: 100%;
   margin: 0;
-  padding: 0; 
+  padding: 0;
 }
 
 body {
@@ -73,6 +73,20 @@ input {
 .div_stock_materiel {
   margin-left: auto;
   margin-right: auto;
+}
+
+.form-container {
+  display: none;
+}
+
+.form-row{
+  width: 100%;
+  overflow: hidden;
+}
+
+.form-column{
+  width: 50%;
+  float : left;
 }
 
 .div_stock_materiel tr:hover {
