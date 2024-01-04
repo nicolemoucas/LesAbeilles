@@ -224,11 +224,45 @@ DROP VIEW IF EXISTS informations_connexion CASCADE;
 CREATE VIEW informations_connexion AS
 SELECT nomutilisateur, motdepasse, typeemploye FROM compteemploye;
 
+
+/* VIEWS STOCK MATÉRIEL */ 
 /* View planche à voile */
 --SELECT * FROM Flotteur;
 --SELECT * FROM PiedDeMat;
 --SELECT * FROM PlancheAVoile;
 --SELECT * FROM Voile;
+--SELECT * FROM PrixMateriel;
+
+DROP VIEW IF EXISTS v_Planche_a_voile_compo_raw CASCADE;
+CREATE OR REPLACE VIEW v_Planche_a_voile_compo_raw AS
+	SELECT m.idPrixMateriel, pv.idPlancheVoile, m.nomMateriel, m.prixHeure, m.prixHeureSupp,
+		pv.nbPlaces, pv.statut AS StatutPlancheAVoile, 
+		f.idFlotteur, f.capacite AS capaciteFlotteur, f.statut AS StatutFlotteur, 
+		pm.idPiedDeMat, pm.statut AS statutPiedDeMat,
+		v.idVoile, v.taille AS tailleVoile, v.statut AS statutVoile
+		FROM PlancheAVoile pv
+		LEFT JOIN PrixMateriel m ON pv.idPrixMateriel = m.idPrixMateriel
+		LEFT JOIN Flotteur f ON pv.idPlancheVoile = f.idPlancheVoile
+		LEFT JOIN PiedDeMat pm ON pv.idPlancheVoile = pm.idPlancheVoile
+		LEFT JOIN Voile v ON pv.idPlancheVoile = v.idPlancheVoile
+	ORDER BY pv.idPlancheVoile;
+--SELECT * FROM v_Planche_a_voile_compo_raw;
+
+DROP VIEW IF EXISTS v_Planche_a_voile_compo CASCADE;
+CREATE OR REPLACE VIEW v_Planche_a_voile_compo AS
+	SELECT pv.idPlancheVoile, m.nomMateriel, m.prixHeure, m.prixHeureSupp,
+		pv.nbPlaces, pv.statut AS StatutPlancheAVoile, 
+		f.idFlotteur, f.capacite AS capaciteFlotteur, f.statut AS StatutFlotteur, 
+		pm.idPiedDeMat, pm.statut AS statutPiedDeMat,
+		v.idVoile, v.taille AS tailleVoile, v.statut AS statutVoile
+		FROM PlancheAVoile pv
+		LEFT JOIN PrixMateriel m ON pv.idPrixMateriel = m.idPrixMateriel
+		LEFT JOIN Flotteur f ON pv.idPlancheVoile = f.idPlancheVoile
+		LEFT JOIN PiedDeMat pm ON pv.idPlancheVoile = pm.idPlancheVoile
+		LEFT JOIN Voile v ON pv.idPlancheVoile = v.idPlancheVoile
+	ORDER BY pv.idPlancheVoile;
+--SELECT * FROM v_Planche_a_voile_compo;
+	
 DROP VIEW IF EXISTS v_Planche_a_voile CASCADE;
 CREATE OR REPLACE VIEW v_Planche_a_voile AS
 	SELECT m.idPrixMateriel, 'Flotteur' AS nomMateriel, m.prixHeure, m.prixHeureSupp, 
@@ -252,14 +286,14 @@ CREATE OR REPLACE VIEW v_Planche_a_voile AS
 			LEFT JOIN PlancheAVoile pv ON pv.IdPlancheVoile = v.IdPlancheVoile
 			LEFT JOIN PrixMateriel m ON m.idPrixMateriel = pv.idPrixMateriel
 			ORDER BY nomMateriel, idMatos;
-SELECT * FROM v_Planche_a_voile;
+--SELECT * FROM v_Planche_a_voile;
 
 /* View stock de matériel */
 --c.IdPrixMateriel, NomMateriel, PrixHeure, PrixHeureSupp, PrixDemiHeure, IdMatos, NbPlaces, Statut, Capacite
-SELECT * FROM PrixMateriel;
-SELECT * FROM Catamaran;
-SELECT * FROM Pedalo;
-SELECT * FROM StandUpPaddle;
+--SELECT * FROM PrixMateriel;
+--SELECT * FROM Catamaran;
+--SELECT * FROM Pedalo;
+--SELECT * FROM StandUpPaddle;
 DROP VIEW IF EXISTS v_stock_materiel_raw CASCADE;
 CREATE OR REPLACE VIEW v_stock_materiel_raw AS
 	SELECT m.idPrixMateriel, m.nomMateriel, m.prixHeure, m.prixHeureSupp, 
@@ -296,5 +330,5 @@ CREATE OR REPLACE VIEW v_stock_materiel AS
 		taille AS "Taille"
 		FROM v_stock_materiel_raw
 		ORDER BY nommateriel;
-SELECT * FROM v_stock_materiel;
+--SELECT * FROM v_stock_materiel;
 --SELECT DISTINCT "Nom matériel" AS nomMat FROM v_stock_materiel;

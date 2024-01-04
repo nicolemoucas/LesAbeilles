@@ -171,19 +171,19 @@ INSERT INTO StandUpPaddle (IdStandUpPaddle, NbPlaces, Statut, Capacite, IdPrixMa
 --SELECT * FROM StandUpPaddle;
 
 --- Planche A Voile (prix materiel 2) OK
+--SELECT enum_range(null::EStatutMateriel); -- "{Reçu,Fonctionnel,""Hors service"",""Mis au rebut"",""En location""}"
 INSERT INTO PlancheAVoile (IdPlancheVoile, NbPlaces, Statut, IdPrixMateriel) VALUES
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --2 
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --4
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --6
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --8 
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --10
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --12
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --14
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --16
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2), --18
-	(DEFAULT, 1, 'Reçu', 2), (DEFAULT, 1, 'Reçu', 2); --20
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Reçu', 2), --2 
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Reçu', 2), --4
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Reçu', 2), --6
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Hors service', 2), --8 
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Hors service', 2), --10
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Hors service', 2), --12
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Reçu', 2), --14
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'En location', 2), --16
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Reçu', 2), --18
+	(DEFAULT, 1, 'Fonctionnel', 2), (DEFAULT, 1, 'Mis au rebut', 2); --20
 --SELECT * FROM PlancheAVoile;
-select pm.idpieddemat, pm.idplanchevoile, pm.statut, pv.idprixmateriel from pieddemat pm left join plancheavoile pv on pv.idplanchevoile = pm.idplanchevoile;
 
 -- Flotteur (Planche à Voile) OK
 --SELECT enum_range(null::ECapaciteFlotteur); -- "{150l,170l,190l,205l}"
@@ -271,7 +271,7 @@ INSERT INTO Pedalo (IdPedalo, NbPlaces, Statut, IdPrixMateriel) VALUES
 	 
 -- Réservation
 --SELECT * FROM CoursPlancheVoile;
-SELECT * FROM PlancheAVoile;
+--SELECT * FROM PlancheAVoile;
 INSERT INTO Reservation (IdCours, IdPlancheVoile) VALUES
 	(1, 1),
 	(2, 2),
@@ -280,10 +280,10 @@ INSERT INTO Reservation (IdCours, IdPlancheVoile) VALUES
 	(5, 5),
 	(6, 6),
 	(7, 7);
-SELECT * FROM Reservation;
+--SELECT * FROM Reservation;
 
 -- Participation
-SELECT * FROM CoursPlancheVoile;
+--SELECT * FROM CoursPlancheVoile;
 INSERT INTO Participation (IdClient, IdCours) VALUES
 	(1, 1),
 	(2, 2),
@@ -292,7 +292,7 @@ INSERT INTO Participation (IdClient, IdCours) VALUES
 	(5, 5),
 	(6, 6),
 	(7, 7);
-SELECT * FROM Participation;
+--SELECT * FROM Participation;
 
 -- Ajout des FK
 	 

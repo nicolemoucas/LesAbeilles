@@ -14,7 +14,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- pour jQuery -->
         <script>
             function redirectionProprietaire() {
-                window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
+                // window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
 
             function redirectionMoniteur() {
@@ -41,13 +41,13 @@
             }
         </script>
     </head>
-    <body>
+    <section>
         <?php $current_url = 'gestionMateriel.php'; ?>
         <header>
             <?php include('header.php') ?>
         </header>
     
-        <div class="corps">
+        <article class="corps">
             <div class="fonctionnalites">
                     <a href="inscriptionMateriel.php" class="button">Recevoir du matériel</a>
                     <a href="changer_etat_materiel.php" class="button">Gestion de l'état du matériel</a>
@@ -70,6 +70,7 @@
                         <option value="Catamaran">Catamaran</option>
                         <option value="Flotteur">Flotteur</option>
                         <option value="Pédalo">Pédalo</option>
+                        <option value="Planche à voile">Planche à voile</option>
                         <option value="Pied de mat">Pied de mat</option>
                         <option value="Stand Up Paddle">Stand Up Paddle</option>
                         <option value="Voile">Voile</option>
@@ -104,6 +105,9 @@
                             case "Hors service":
                             case "Mis au rebut":
                                 $query = 'SELECT * FROM v_stock_materiel WHERE "Statut" = \''.$filterValue.'\'';
+                                break;
+                            case "Planche à voile":
+                                $query ='SELECT * FROM v_Planche_a_voile_compo;';
                                 break;
                         }
                     }
@@ -150,12 +154,12 @@
                     pg_free_result($result);
                 ?>            
             </div>
-        </div>
+                </article>
     
         <footer>
             <?php include('footer.php') ?>
         </footer>
-    </body>
+    </section>
 <script>
     $(document).ready(function(){
 
