@@ -1,22 +1,29 @@
 /* top right bottom left */
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300&display=swap');
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: #f0f8ff;
   color: #333;
   font-family: 'Barlow', sans-serif;
-  height: 100%;
-  margin: 0;
-  overflow-x: hidden;
-  padding: 0;
+  position: relative;
   width: 100%;
 }
 
 .corps {
-  height: 75em;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 50em;
   /* max-width: 1200px; */
   margin: 0px; /* vert hor */
-  padding: 10px 10px 0px 10px; /* top right bottom left */
+  overflow: hidden;
+  padding: 10px 10px 10px 10px; /* top right bottom left */
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -47,7 +54,9 @@ body {
   height: auto;
   margin-left: auto;
   margin-right: auto;
+  margin-top: auto;
   max-width: 800px;
+  padding: 5em 5em;
   width: 100%;
 }
 
@@ -59,4 +68,61 @@ input {
   background-color: white;
   color: red;
   font-weight: bold;
+}
+
+.div_stock_materiel {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-container {
+  display: none;
+}
+
+.form-row{
+  width: 100%;
+  overflow: hidden;
+}
+
+.form-column{
+  width: 50%;
+  float : left;
+}
+
+.div_stock_materiel tr:hover {
+  cursor: pointer;
+}
+
+.table_cours_stock {
+  border-collapse: collapse;
+  flex-grow:1;
+  height:100%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20px;
+  overflow: auto;
+  padding: 10px;
+  width: 100%;
+}
+
+.table_cours_stock td {
+  padding: 5px;
+}
+
+.btnAnnulerCours {
+  margin:auto;
+  display:block;
+
+}
+
+.btnModifMateriel {
+  padding: 4px;
+  width: auto;
+}
+.btnModif:hover {
+  background-color: orange;
+}
+
+.formHiddenField {
+  display: none;
 }

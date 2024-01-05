@@ -11,7 +11,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> Création d'un profil moniteur</title>
+        <title> Création d'un profil Garçon de plage</title>
     </head>
     <body>
         <header>
@@ -35,16 +35,16 @@
         ?>
       
         <div class="corps">
-            <h1>Formulaire de création du profil moniteur :</h1>
+            <h1>Formulaire de création du profil Garçon de plage :</h1>
             <p>* Champs obligatoires</p>
-            <form method="post" name="formulaire" novalidate="" class="form" action="creationProfilMoniteur.php">-
+            <form method="post" name="formulaire" novalidate="" class="form" action="creationProfilGarconDePlage.php">-
 
-                <label for="NomMoniteur" class="label">NOM *</label><br>
-                <input type="text" id="NomMoniteur" name="NomMoniteur" placeholder="Ex : BOULANGER" required/>
+                <label for="NomGarconPlage" class="label">NOM *</label><br>
+                <input type="text" id="NomGarconPlage" name="NomGarconPlage" placeholder="Ex : BOULANGER" required/>
                 <div id="nomError" class="error"></div><br>
                     
-                <label for="PrenomMoniteur">Prénom *</label><br>
-                <input type="text" id="PrenomMoniteur" name="PrenomMoniteur" placeholder="Ex : Jean Michel" required/>
+                <label for="PrenomGarconPlage">Prénom *</label><br>
+                <input type="text" id="PrenomGarconPlage" name="PrenomGarconPlage" placeholder="Ex : Jean Michel" required/>
                 <div id="prenomError" class="error"></div><br>
                     
                 <label for="NomUtilisateur">Nom utilisateur *</label><br>
@@ -58,19 +58,19 @@
                     <div id="motDePasseError" class="error"></div><br>
                 </div>
 
-                <label for="DateNaissanceMoniteur">Date de naissance *</label><br>
-                <input type="date" id="DateNaissanceMoniteur" name= "DateNaissanceMoniteur" placeholder="Ex : 08/01/1975" required/>
+                <label for="DateNaissanceGarconPlage">Date de naissance *</label><br>
+                <input type="date" id="DateNaissanceGarconPlage" name= "DateNaissanceGarconPlage" placeholder="Ex : 08/01/1975" required/>
                 <div id="dateNaisError" class="error"></div><br>
 
-                <label for="MailMoniteur">Email</label><br>
-                <input type="email" id="MailMoniteur" name="MailMoniteur" placeholder="Ex : boulangerjm@free.fr"/><br><br>
+                <label for="MailGarconPlage">Email</label><br>
+                <input type="email" id="MailGarconPlage" name="MailGarconPlage" placeholder="Ex : boulangerjm@free.fr"/><br><br>
 
-                <label for="TelMoniteur" pattern="0[0-9]{9}">Numéro de téléphone</label><br>
-                <input type="text" id="TelMoniteur" name="TelMoniteur" placeholder="Ex : 0777764231"/><br><br>
+                <label for="TelGarconPlage" pattern="0[0-9]{9}">Numéro de téléphone</label><br>
+                <input type="text" id="TelGarconPlage" name="TelGarconPlage" placeholder="Ex : 0777764231"/><br><br>
 
                 <div class="preferenceContactEmploye">
-                    <label for="PrefContactMoniteur">Préférence de contact *</label><br>
-                    <select name="PrefContactMoniteur" class="form-control" id="PrefContactMoniteur" required >
+                    <label for="PrefContactGarconPlage">Préférence de contact *</label><br>
+                    <select name="PrefContactGarconPlage" class="form-control" id="PrefContactGarconPlage" required >
                         <option disabled selected value> -- Sélectionnez une option -- </option>
                         <?php echo $prefContact_combobox_php; ?>
                     </select>
@@ -78,21 +78,12 @@
                 </div><br>
 
                 <div class="DocumentPDFEmploye">
-                    <label>Diplôme</label><br><br>
-
-                    <label for="DateObtentionDiplome">Date d'obtention du diplôme *</label><br>
-                    <input type="date" id="DateObtentionDiplome" name= "DateObtentionDiplome" placeholder="Ex : 08/01/1975" required/>
-                    <div id="dateObtentionDipError" class="error"></div><br>
                     
-                    <label for="LienURLDiplome">Lien URL *</label>
-                    <p>Veuillez uploader le document PDF dans le <a href="https://drive.google.com/drive" target="_blank">compte Drive Les Abeilles</a> puis insérer le lien ci-dessous</p>
-                    <input type="text" id="LienURLDiplome" name="LienURLDiplome" placeholder="Ex : lien" required/>
-                    <div id="lienDiplomeError" class="error"></div>
                 </div>    
                 <br><br>
 
                 <div>
-                    <button class = "button">Créer le moniteur</button>
+                    <button class = "button">Créer le garçon de plage</button>
                 </div>
             </form>
         </div>
@@ -120,34 +111,34 @@
     formulaire.addEventListener("submit", (event) => {
         let isValid = true;
 
-        if((!formulaire.MailMoniteur.value) && (!formulaire.TelMoniteur.value)) {
+        if((!formulaire.MailGarconPlage.value) && (!formulaire.TelGarconPlage.value)) {
             alert("Il faut renseigner un email ou un numéro de téléphone.");
-            formulaire.MailMoniteur.className="invalid";
-            formulaire.TelMoniteur.className="invalid";
+            formulaire.MailGarconPlage.className="invalid";
+            formulaire.TelGarconPlage.className="invalid";
             isValid = false;
         }
 
         const nomError = document.getElementById("nomError");
-        if(formulaire.NomMoniteur.validity.valid) {
+        if(formulaire.NomGarconPlage.validity.valid) {
             nomError.textContent = "";
             nomError.className = "error";
-            formulaire.NomMoniteur.className= "valid";
+            formulaire.NomGarconPlage.className= "valid";
         } else {
-            nomError.textContent = "Veuillez renseigner le nom du moniteur.";
+            nomError.textContent = "Veuillez renseigner le nom du garçon de plage.";
             nomError.className = "error active";
-            formulaire.NomMoniteur.className= "invalid";
+            formulaire.NomGarconPlage.className= "invalid";
             isValid = false;
         }
 
         const prenomError = document.getElementById("prenomError")
-        if(formulaire.PrenomMoniteur.validity.valid) {
+        if(formulaire.PrenomGarconPlage.validity.valid) {
             prenomError.textContent = "";
             prenomError.className = "error";
-            formulaire.PrenomMoniteur.className= "valid";
+            formulaire.PrenomGarconPlage.className= "valid";
         } else {
-            prenomError.textContent = "Veuillez renseigner le prénom du moniteur."
+            prenomError.textContent = "Veuillez renseigner le prénom du garçon de plage."
             prenomError.className = "error active"
-            formulaire.PrenomMoniteur.className= "invalid"
+            formulaire.PrenomGarconPlage.className= "invalid"
             isValid = false;
         }
 
@@ -157,53 +148,30 @@
             motDePasseError.className = "error";
             formulaire.MotDePasse.className= "valid";
         } else {
-            motDePasseError.textContent = "Veuillez renseigner le mot de passe du moniteur."
+            motDePasseError.textContent = "Veuillez renseigner le mot de passe du garçon de plage."
             motDePasseError.className = "error active"
             formulaire.MotDePasse.className= "invalid"
             isValid = false;
         }
 
         const dateNaisError = document.getElementById("dateNaisError")
-        if(formulaire.DateNaissanceMoniteur.validity.valid) {
+        if(formulaire.DateNaissanceGarconPlage.validity.valid) {
             dateNaisError.textContent = "";
             dateNaisError.className = "error";
-            formulaire.DateNaissanceMoniteur.className= "valid";
+            formulaire.DateNaissanceGarconPlage.className= "valid";
         } else {
-            dateNaisError.textContent = "Veuillez renseigner la date de naissance du moniteur.";
+            dateNaisError.textContent = "Veuillez renseigner la date de naissance du garçon de plage.";
             dateNaisError.className = "error active";
-            formulaire.DateNaissanceMoniteur.className= "invalid";
+            formulaire.DateNaissanceGarconPlage.className= "invalid";
             isValid = false;
         }
 
-        const dateObtentionDipError = document.getElementById("dateObtentionDipError")
-        if(formulaire.DateObtentionDiplome.validity.valid) {
-            dateObtentionDipError.textContent = "";
-            dateObtentionDipError.className = "error";
-            formulaire.DateObtentionDiplome.className= "valid";
-        } else {
-            dateObtentionDipError.textContent = "Veuillez renseigner la date d'obtention du diplôme du moniteur.";
-            dateObtentionDipError.className = "error active";
-            formulaire.DateObtentionDiplome.className= "invalid";
-            isValid = false;
-        }
-
-        const lienDiplomeError = document.getElementById("lienDiplomeError")
-        if(formulaire.LienURLDiplome.validity.valid) {
-            lienDiplomeError.textContent = "";
-            lienDiplomeError.className = "error";
-            formulaire.LienURLDiplome.className= "valid";
-        } else {
-            lienDiplomeError.textContent = "Veuillez renseigner le lien pour récupérer le diplôme du moniteur.";
-            lienDiplomeError.className = "error active";
-            formulaire.LienURLDiplome.className= "invalid";
-            isValid = false;
-        }
         // console.log("SFVDF");
         
-    if(!isValid) {
-        // console.log("SFVDF");
-        event.preventDefault();
-    }
+        if(!isValid) {
+            // console.log("SFVDF");
+            event.preventDefault();
+        }
     }
     );
 </script>

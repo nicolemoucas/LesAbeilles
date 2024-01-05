@@ -74,6 +74,14 @@
             } else {
                 $row = pg_fetch_object($recupEmploye);
             }
+
+            //pour la combobox des rôles des employés
+            $requete = "SELECT unnest(enum_range(NULL::ERoleEmploye)) AS ERole";
+            $listeRolesEmployes = pg_query($connexion, $requete);
+            $employes_combobox_php = "";
+            while ($row_emp = pg_fetch_object($listeRolesEmployes)) {
+                $employes_combobox_php .= '<option value="' . $row_emp->erole . '">' . $row_emp->erole . '</option>';
+            }
         ?>
     <div class="corps">
         <h1>Profil employé : <?php echo $row->prenomemp . ' ' .$row->nomemp?></h1>
@@ -84,9 +92,15 @@
                 <button class= "button" formaction="javascript:confirmerSuppression('<?php echo $roleEmploye ?>')">Supprimer le profil</button>
             </div>
 
-            <label for="RoleEmploye" class="label">Rôle : <?php echo $roleEmploye ?></label>         
-            <br><br>
-    
+            <div>
+                <label for="RoleEmploye">Role employé</label><br>
+                <select name="RoleEmploye" class="form-control" id="RoleEmploye" required>
+                    <option value="<?php echo $roleEmploye; ?>"><?php echo $roleEmploye; ?></option>
+                    <?php echo $employes_combobox_php; ?>
+                </select>
+            </div>
+            <br>
+            
             <label for="NomEmploye" class="label">NOM : </label><br>
             <input type="text" id="NomEmploye" name="NomEmploye" value= "<?php echo $row->nomemp ?>" required/>
             <div id="nomError" class="error"></div>
@@ -130,7 +144,7 @@
         if(verifFormulaire()) {
             const formulaire = document.formulaire;
             if(confirm("Voulez-vous vraiment modifier le profil de cet employé ?")) {
-                const url = 'modifierProfileEmploye.php?idEpmloye=' + idEmploye + '&NomEmploye=' + formulaire.NomEmploye.value + '&PrenomEmploye=' + formulaire.PrenomEmploye.value + '&DateNaissEmploye=' + formulaire.DateNaissanceEmploye.value + '&MailEmploye=' + formulaire.MailEmploye.value  + '&TelEmploye=' + formulaire.TelEmploye.value;
+                const url = 'modifierProfileEmploye.php?idEmploye=' + idEmploye + '&NomEmploye=' + formulaire.NomEmploye.value + '&PrenomEmploye=' + formulaire.PrenomEmploye.value + '&DateNaissEmploye=' + formulaire.DateNaissanceEmploye.value + '&MailEmploye=' + formulaire.MailEmploye.value  + '&TelEmploye=' + formulaire.TelEmploye.value;
                 document.location = url;
             }
         }

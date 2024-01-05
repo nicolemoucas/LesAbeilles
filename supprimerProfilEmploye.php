@@ -36,7 +36,6 @@
         $dateNaissEmploye = $_GET["DateNaissEmploye"];
         $mailEmploye = $_GET["MailEmploye"];
         $telEmploye = $_GET["TelEmploye"];
-        echo 'date'.$dateNaissEmploye;
 
         $deleteEmploye = pg_prepare($connexion, "delete_employe", "CALL p_supprimer_employe($1,$2,$3,$4,$5,$6)");
         $deleteEmploye = pg_execute($connexion, "delete_employe", array($roleEmploye, $nomEmploye, $prenomEmploye, $dateNaissEmploye, $mailEmploye, $telEmploye)); 
@@ -44,6 +43,6 @@
         if($deleteEmploye) {
             echo '<script type="text/javascript"> confirmerEmployeSupprime(); </script>';
         }
-        ?>
+?>
     </body>
 </html>
