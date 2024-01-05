@@ -138,6 +138,7 @@ GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc
 GRANT EXECUTE ON FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION possede_remise(idPers INTEGER) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION creer_planche_voile(p_idFloteur INTEGER, p_idPiedMat INTEGER, p_idDeVoile INTEGER) TO moniteurs_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc TIMESTAMP, dureeLoc INTERVAL) TO moniteurs_abeilles;
 
 GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement) TO moniteurs_abeilles;
 

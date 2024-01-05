@@ -23,6 +23,7 @@
                 <a href="cours_de_voile.php" class="button">Consulter les cours</a>
                 <a href="consulter_locations.php" class="button">Consulter les locations</a>
                 <a href="gestionMateriel.php" class="button">Consulter le stock de matériel</a>
+                <a href="location_en_cours.php" class="button">Consulter les locations en cours</a>
             </div>
 
             <br><br>

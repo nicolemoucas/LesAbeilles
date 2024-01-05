@@ -109,9 +109,9 @@
     </footer>
     <script>
         function annulerLocation(idLocation) {
-            if(confirm("Voulez-vous vraiment annuler la location n°" + idLocation + " ?")) {
-                // Ajoutez ici le code pour annuler la location, par exemple, en faisant une requête Ajax
-            }
+                if(confirm("Voulez-vous vraiment annuler la location n°" + idLocation + " ?")) {
+                window.location.href = 'annuler_location.php?idLocation=' + idLocation;
+                }
         }
     </script>
 </body>

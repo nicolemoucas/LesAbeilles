@@ -1032,6 +1032,111 @@ END;
 $BODY$
 LANGUAGE PlpgSQL;
 
+/* 24 - Ajout d'une location */
+CREATE OR REPLACE PROCEDURE ajouter_location(
+    p_IdClient INT,
+    p_IdMatos INT,
+    p_TypeMatos VARCHAR(30),
+    p_DateHeureLocation TIMESTAMP,
+    p_Duree INTERVAL,
+    p_PrixHeure FLOAT,
+    p_PrixHeureSupp FLOAT,
+    p_EtatLocation EEtatLocation,
+    p_MoyenPaiement EMoyenPaiement
+)
+AS $$
+DECLARE
+    v_IdPaiement INT;
+    v_MontantTotal FLOAT;
+    v_IdStandUpPaddle INT := NULL;
+    v_IdPlancheVoile INT := NULL;
+    v_IdPedalo INT := NULL;
+    v_IdCatamaran INT := NULL;
+BEGIN
+    IF p_Duree = '1 hour' THEN
+        v_MontantTotal := p_PrixHeure;
+    ELSE
+        v_MontantTotal := p_PrixHeure + (EXTRACT(HOUR FROM p_Duree) - 1) * p_PrixHeureSupp;
+    END IF;
+
+    INSERT INTO Paiement (DateHeure, Montant, MoyenPaiement)
+    VALUES (CURRENT_TIMESTAMP, v_MontantTotal, p_MoyenPaiement)
+    RETURNING IdPaiement INTO v_IdPaiement;
+
+    CASE p_TypeMatos
+        WHEN 'StandUpPaddle' THEN
+            v_IdStandUpPaddle := p_IdMatos;
+        WHEN 'PlancheAVoile' THEN
+            v_IdPlancheVoile := p_IdMatos;
+        WHEN 'Pedalo' THEN
+            v_IdPedalo := p_IdMatos;
+        WHEN 'Catamaran' THEN
+            v_IdCatamaran := p_IdMatos;
+    END CASE;
+
+    INSERT INTO Location (
+        IdClient, IdPaiement, DateHeureLocation, Duree, TarifLocation, EtatLocation,
+        IdStandUpPaddle, IdPlancheVoile, IdPedalo, IdCatamaran
+    )
+    VALUES (
+        p_IdClient, v_IdPaiement, p_DateHeureLocation, p_Duree, v_MontantTotal, 'En cours',
+        v_IdStandUpPaddle, v_IdPlancheVoile, v_IdPedalo, v_IdCatamaran
+    );
+END;
+$$ LANGUAGE plpgsql;
+
+
+--rechercher location pedalo
+CREATE OR REPLACE FUNCTION f_rechercher_pedalo(dateLoc TIMESTAMP, dureeLoc INTERVAL)
+RETURNS TABLE (
+    idMatos INTEGER,
+    nomMateriel VARCHAR(30),
+    idPrixMatos INTEGER,
+    prixHeure FLOAT,
+    prixHeureSupp FLOAT,
+    prixDemiHeure FLOAT,
+    statut EStatutMateriel
+) AS $$
+DECLARE
+    minTime TIMESTAMP;
+    maxTime TIMESTAMP;
+BEGIN
+    SELECT INTO minTime dateLoc - dureeLoc;
+    SELECT INTO maxTime dateLoc + dureeLoc;
+
+    RETURN QUERY SELECT DISTINCT
+        p.idstanduppaddle as idMatos,
+        m.nomMateriel,
+        p.idPrixMateriel as idPrixMatos,
+        m.prixHeure,
+        m.prixHeureSupp,
+        m.prixDemiHeure,
+        p.statut
+    FROM
+        pedalo p
+    JOIN
+        PrixMateriel m ON p.idPrixMateriel = m.idPrixMateriel
+    LEFT JOIN
+        v_stock_materiel_raw c ON c.IdMatos = p.pedalo
+    WHERE
+        p.statut = 'Fonctionnel'
+        AND NOT EXISTS (
+            SELECT 1
+            FROM
+                Location t_loc
+            WHERE
+                t_loc.idpedalo = p.pedalo
+                AND t_loc.etatlocation = 'En cours'
+                AND (
+                    (t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+                    OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+                    OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+                    OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+                )
+        );
+END;
+$$ LANGUAGE PLPGSQL;
+
 DROP FUNCTION IF EXISTS creer_planche_voile;
 CREATE OR REPLACE FUNCTION creer_planche_voile(p_idFloteur INTEGER, p_idPiedMat INTEGER, p_idDeVoile INTEGER) 
 RETURNS TABLE (idPlanche INTEGER) AS $BODY$
