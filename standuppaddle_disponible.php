@@ -107,13 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php
         $idClient = isset($_GET['idClient']) ? $_GET['idClient'] : null;
 
-        if ($timestampLocation != "") {
-            echo "<p>Date de Location: $dateLocation</p>";
-            echo "<p>Heure de Location: $heureLocation</p>";
-            echo "<p>Format Timestamp: $timestampLocationFormatted</p>";
-            echo "<p>Durée de Location: $dureeLocation</p>";
-            echo "<p>ID Client: " . ($idClient !== null ? $idClient : "non spécifié") . "</p>";
-        }
 
         if ($result) {
             echo "<table>
