@@ -13,7 +13,9 @@
     <body>
         <?php $current_url = 'location.php'; ?>
         <header>
-            <?php include('header.php') ?>
+            <?php 
+                include('header.php') 
+            ?>
         </header>
     
         <div class="container corps">
@@ -21,8 +23,8 @@
             <div class="fonctionnalites">
                 <a href="#" class="button" onclick="redirectTo('location.php')">Louer Planche à voile</a>
                 <a href="#" class="button" onclick="redirectTo('standuppaddle_disponible.php')">Louer Stand Up Paddle</a>
-                <a href="#" class="button" onclick="redirectTo('location.php')">Louer Catamaran</a>
-                <a href="#" class="button" onclick="redirectTo('location.php')">Louer Pédalo</a>
+                <a href="#" class="button" onclick="redirectTo('louer_catamaran.php')">Louer Catamaran</a>
+                <a href="#" class="button" onclick="redirectTo('louer_pedalo.php')">Louer Pédalo</a>
             </div>
 
             <script>

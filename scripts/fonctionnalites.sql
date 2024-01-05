@@ -589,6 +589,7 @@ BEGIN
 							);
 END;
 $$ Language PlpgSQL;
+SELECT * FROM f_rechercher_catamaran (now()::timestamp, '1 hour'::interval);
 
 DROP FUNCTION IF EXISTS f_rechercher_pedalo;
 CREATE OR REPLACE FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval)
@@ -784,6 +785,7 @@ BEGIN
 	RETURN QUERY SELECT idFloteur,idPiedMat, idDeVoile;
 END;
 $$ Language PlpgSQL;
+
 /* 24 - Création d'un garçon de plage */
 DROP FUNCTION IF EXISTS creer_garcon;
 CREATE OR REPLACE FUNCTION creer_garcon(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)

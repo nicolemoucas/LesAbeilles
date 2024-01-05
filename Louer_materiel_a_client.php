@@ -18,10 +18,10 @@
         <div class="corps">
             <h2>Location d'un matériel</h2>
             <div class="fonctionnalites">
-                <a href="Louer_planche_a_voile.php" class="button">Louer une planche à voile</a>
-                <a href="Louer_catamaran.php" class="button">Louer un catamaran</a>
-                <a href="Louer_stand_up_paddle.php" class="button">Louer un stand up paddle</a>
-                <a href="Louer_pedalo.php" class="button">Louer un pédalo</a>
+                <a href="louer_planche_a_voile.php" class="button">Louer une planche à voile</a>
+                <a href="louer_catamaran.php" class="button">Louer un catamaran</a>
+                <a href="louer_stand_up_paddle.php" class="button">Louer un stand up paddle</a>
+                <a href="louer_pedalo.php" class="button">Louer un pédalo</a>
             
 
             </div>
