@@ -106,6 +106,10 @@
                 echo '<button class= "button" formaction="javascript:confirmerSuppression()">Supprimer le profil</button>'?>
                 <button class="button" formaction="javascript:confirmerModification()"> Modifier le profil</button>
                 <button class= "button" formaction="javascript:confirmerInscription()">Inscrire à un cours</button>
+
+                <button class= "button" formaction="javascript:confirmerForfait()">Acheter un forfait</button>
+
+                <button class= "button" formaction="javascript:confirmerLocation()">Louer un matériel</button>
         
             </div>
                 <input type="hidden" id="idpers" name="idpers" value="<?php echo $row->idpers; ?>" />
@@ -205,5 +209,23 @@
             document.location = url;
         }
     }
+
+
+    function confirmerForfait() {
+        const formulaire = document.formulaire;
+        if(confirm("Voulez-vous ajouter un forfait a ce client ?")) {
+            const url = 'acheter_forfait.php?idClient=' + formulaire.idpers.value;
+            document.location = url;
+        }
+    }
+
+    function confirmerLocation() {
+        const formulaire = document.formulaire;
+        if(confirm("Voulez-vous louer un matériel à ce client ?")) {
+            const url = 'menu_location.php?idClient=' + formulaire.idpers.value;
+            document.location = url;
+        }
+    }
+
 
 </script>
