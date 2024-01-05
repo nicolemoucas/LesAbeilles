@@ -19,13 +19,6 @@
                 }
             }
         </script>
-        <!-- <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px; 
-            } -->
-        </style>
     </head>
     <body>
         <?php $current_url = 'cours_de_voile.php'; ?>
@@ -48,7 +41,7 @@
                 if (!$result) {
                     echo "Erreur lors de l'exécution de la fonction.";
                 } else {
-                    echo "<table border='1' class='table_cours_stock'>
+                    echo "<table border='1' class='table_cours_stock_location'>
                             <tr>
                                 <th>ID Cours</th>
                                 <th>Date et Heure</th>
@@ -100,7 +93,7 @@
     // $(document).ready(function(){
 
         // code to read selected table row cell data (values)
-        // $("#table_cours_stock").on('click','.btnAnnulerCours',function(){
+        // $("#table_cours_stock_location_location").on('click','.btnAnnulerCours',function(){
             function annulerCours() {
                 console.log("here");
                 // get the current row

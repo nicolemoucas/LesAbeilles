@@ -332,3 +332,40 @@ CREATE OR REPLACE VIEW v_stock_materiel AS
 		ORDER BY nommateriel;
 --SELECT * FROM v_stock_materiel;
 --SELECT DISTINCT "Nom matériel" AS nomMat FROM v_stock_materiel;
+
+-- view planning
+--SELECT * FROM V_stock_materiel_raw;
+--SELECT * FROM Client;
+--SELECT * FROM v_Planche_a_voile_compo;
+--SELECT * FROM Catamaran;
+
+DROP VIEW IF EXISTS v_planning_locations;
+CREATE OR REPLACE VIEW v_planning_locations AS
+	SELECT l.IdLocation, l.DateHeureLocation, l.Duree, l.TarifLocation, l.EtatLocation, l.IdClient,
+		c.Nom AS NomClient, c.Prenom AS PrenomClient, c.Mail AS MailClient, c.numTelephone AS TelephoneClient,
+		vc.NomMateriel
+		FROM Location l
+		INNER JOIN v_stock_materiel_raw vc ON l.IdCatamaran = vc.IdMatos AND vc.nomMateriel = 'Catamaran'
+		INNER JOIN Client c ON l.IdClient = c.IdClient
+	UNION
+	SELECT l.IdLocation, l.DateHeureLocation, l.Duree, l.TarifLocation, l.EtatLocation, l.IdClient,
+		c.Nom AS NomClient, c.Prenom AS PrenomClient, c.Mail AS MailClient, c.numTelephone AS TelephoneClient,
+		vp.NomMateriel
+		FROM Location l
+		INNER JOIN v_stock_materiel_raw vp ON l.IdPedalo = vp.IdMatos AND vp.nomMateriel = 'Pédalo'
+		INNER JOIN Client c ON l.IdClient = c.IdClient
+	UNION
+	SELECT l.IdLocation, l.DateHeureLocation, l.Duree, l.TarifLocation, l.EtatLocation, l.IdClient,
+		c.Nom AS NomClient, c.Prenom AS PrenomClient, c.Mail AS MailClient, c.numTelephone AS TelephoneClient,
+		vs.NomMateriel 
+		FROM Location l
+		INNER JOIN v_stock_materiel_raw vs ON l.IdStandUpPaddle = vs.IdMatos AND vs.nomMateriel = 'Stand Up Paddle'
+		INNER JOIN Client c ON l.IdClient = c.IdClient
+	UNION
+	SELECT l.IdLocation, l.DateHeureLocation, l.Duree, l.TarifLocation, l.EtatLocation, l.IdClient,
+		c.Nom AS NomClient, c.Prenom AS PrenomClient, c.Mail AS MailClient, c.numTelephone AS TelephoneClient,
+		vpv.NomMateriel 
+		FROM Location l
+		INNER JOIN v_Planche_a_voile_compo vpv ON l.IdStandUpPaddle = vpv.IdPlancheVoile
+		INNER JOIN Client c ON l.IdClient = c.IdClient;
+SELECT * FROM v_planning_locations;

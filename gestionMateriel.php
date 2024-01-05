@@ -120,7 +120,7 @@
                     }
                     $col=0;
                     // table header
-                    echo "<table border='1' class='table_cours_stock'";
+                    echo "<table border='1' class='table_cours_stock_location'";
                     echo "<tr>";
 
                     // get column names
@@ -164,7 +164,7 @@
     $(document).ready(function(){
 
         // code to read selected table row cell data (values)
-        $(".table_cours_stock").on('click','.btnModifMateriel',function(){
+        $(".table_cours_stock_location").on('click','.btnModifMateriel',function(){
 
             // get the current row
             var currentRow=$(this).closest("tr"); 
