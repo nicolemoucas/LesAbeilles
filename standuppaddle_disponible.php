@@ -1,30 +1,35 @@
 <?php
 session_start();
 
-// Connexion à la base de données
 $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14")
     or die("Impossible de se connecter : " . pg_result_error($connexion));
 
-// Initialiser les variables
-$dateLocation = $heureLocation = $dureeLocation = $timestampLocation = "";
+$dateLocation = $heureLocation = $dureeLocation = $timestampLocation = $timestampLocationFormatted = "";
 $result = null;
 
-// Vérification si le formulaire est soumis
+$idClient = isset($_GET['idClient']) ? $_GET['idClient'] : null;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupération des données du formulaire
     $dateLocation = $_POST["dateLocation"];
     $heureLocation = $_POST["heureLocation"];
     $dureeLocation = $_POST["dureeLocation"];
 
-    // Vérifier si la date, l'heure et la durée sont définies
     if ($dateLocation != "" && $heureLocation != "" && $dureeLocation != "") {
-        // Convertir la date et l'heure en timestamp
         $timestampLocation = strtotime("$dateLocation $heureLocation");
 
-        // Requête pour rechercher le matériel disponible
-        $result = pg_query_params($connexion, "SELECT * FROM f_rechercher_standuppaddle($timestampLocation::timestamp, INTERVAL '1 hour')", array($timestampLocation, $dureeLocation));
+        if ($timestampLocation !== false) {
+            $timestampLocationFormatted = date('Y-m-d H:i:s', $timestampLocation);
+
+            $query = "SELECT * FROM f_rechercher_standuppaddle($1, INTERVAL '1 hour')";
+            $result = pg_query_params($connexion, $query, array($timestampLocationFormatted));
+
+            if (!$result) {
+                die("Erreur dans la requête SQL : " . pg_last_error($connexion));
+            }
+        } else {
+            die("Erreur lors de la conversion de la date et de l'heure.");
+        }
     }
-    //'2023-05-17 14:30:00'::timestamp, INTERVAL '1 hour'
 }
 ?>
 
@@ -92,15 +97,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
 
         <?php
-        // Afficher les informations de débogage
+        $idClient = isset($_GET['idClient']) ? $_GET['idClient'] : null;
+
         if ($timestampLocation != "") {
             echo "<p>Date de Location: $dateLocation</p>";
             echo "<p>Heure de Location: $heureLocation</p>";
-            echo "<p>Format Timestamp: " . date('Y-m-d H:i:s', $timestampLocation) . "</p>";
+            echo "<p>Format Timestamp: $timestampLocationFormatted</p>";
             echo "<p>Durée de Location: $dureeLocation</p>";
+            echo "<p>ID Client: " . ($idClient !== null ? $idClient : "non spécifié") . "</p>";
         }
 
-        // Afficher les résultats si le formulaire est soumis
         if ($result) {
             echo "<table>
                     <thead>
@@ -118,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <td>" . $row['idmatos'] . "</td>
                         <td>" . $row['nommateriel'] . "</td>
                         <td>" . $row['statut'] . "</td>
-                        <td><button class='louer-button' onclick='louerConfirmation(" . $row['idmatos'] . ", \"" . $row['nommateriel'] . "\", " . $row['prixheure'] . ", " . $_SESSION['idClient'] . ")'>Louer</button></td>
+                        <td><button class='louer-button' onclick='louerConfirmation(" . $row['idmatos'] . ", \"" . $row['nommateriel'] . "\", " . $row['prixheure'] . ", " . $idClient . ")'>Louer</button></td>
                       </tr>";
             }
 
@@ -137,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var choixPaiement = document.getElementById("choixPaiement").value;
 
             if (confirm("Confirmez-vous la location de " + nomMatos + " pour " + prixHeure + " € par heure avec un paiement par " + choixPaiement + " ?")) {
-                // Ajout du moyen de paiement à la requête URL
+              
                 window.location.href = "louer_materiel_client.php?idMatos=" + idMatos + "&nomMatos=" + nomMatos + "&prixHeure=" + prixHeure + "&idClient=" + idClient + "&choixPaiement=" + choixPaiement;
             }
         }
