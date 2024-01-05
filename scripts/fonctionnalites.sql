@@ -1136,3 +1136,18 @@ BEGIN
         );
 END;
 $$ LANGUAGE PLPGSQL;
+
+DROP FUNCTION IF EXISTS creer_planche_voile;
+CREATE OR REPLACE FUNCTION creer_planche_voile(p_idFloteur INTEGER, p_idPiedMat INTEGER, p_idDeVoile INTEGER) 
+RETURNS TABLE (idPlanche INTEGER) AS $BODY$
+BEGIN
+
+    INSERT INTO plancheavoile (nbplaces, statut, idprixmateriel) VALUES (1, 'Fonctionnel', '2')  RETURNING idplanchevoile INTO idPlanche;
+    UPDATE flotteur set idplanchevoile = idPlanche WHERE idFlotteur = p_idFloteur;
+    UPDATE pieddemat set idplanchevoile = idPlanche WHERE idpieddemat = p_idPiedMat;
+    UPDATE voile set idplanchevoile = idPlanche WHERE idvoile = p_idDeVoile;
+
+    RETURN QUERY SELECT idPlanche;
+END;
+$BODY$
+LANGUAGE PlpgSQL;

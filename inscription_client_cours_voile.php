@@ -7,15 +7,6 @@ $idClientFromURL = isset($_GET['idClient']) ? $_GET['idClient'] : '';
 $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14")
     or die("Impossible de se connecter : " . pg_result_error($connexion));
 
-
-
-
-$queryForfait = pg_query($connexion, "SELECT idForfait FROM forfait WHERE idClient = $idClientFromURL AND nbseancesrestantes > 0 LIMIT 1;");
-if(pg_num_rows($queryForfait) < 1) {
-    header('Location: http://localhost/LesAbeilles/acheter_forfait.php?idClient='. $idClientFromURL);
-}
-$idForfaitValid = pg_fetch_object($queryForfait)->idforfait;
-
 $result = pg_query($connexion, 'SELECT * FROM consulter_cours_voile_pour_inscription()');
 ?>
 
@@ -100,7 +91,6 @@ $result = pg_query($connexion, 'SELECT * FROM consulter_cours_voile_pour_inscrip
                                     <form method='post' action='inscription_client_cours_action.php'>
                                         <input type='hidden' name='idClient' value='$idClientFromURL'>
                                         <input type='hidden' name='idCours' value='" . $row['idcours'] . "'>
-                                        <input type='hidden' name='idForfait' value='" . $idForfaitValid . "'>
                                         <button type='submit' class='button' name='inscrireCours'>Inscrire à ce cours</button>
                                     </form>
                                 </td>
