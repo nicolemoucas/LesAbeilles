@@ -47,6 +47,12 @@ GRANT SELECT, INSERT ON paiement TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON forfait TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON reservation TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON location TO proprietaires_abeilles;
+GRANT SELECT, INSERT ON plancheavoile TO proprietaires_abeilles;
+GRANT SELECT, INSERT, UPDATE ON flotteur TO proprietaires_abeilles;
+GRANT SELECT, INSERT, UPDATE ON voile TO proprietaires_abeilles;
+GRANT SELECT, INSERT, UPDATE ON pieddemat TO proprietaires_abeilles;
+GRANT SELECT ON prixmateriel TO proprietaires_abeilles;
+
 
 GRANT USAGE ON TYPE ECamping TO proprietaires_abeilles;
 GRANT USAGE ON TYPE EPreferenceContact TO proprietaires_abeilles;
@@ -84,6 +90,7 @@ GRANT USAGE ON SEQUENCE standuppaddle_idstanduppaddle_seq TO proprietaires_abeil
 GRANT USAGE ON SEQUENCE voile_idvoile_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE paiement_idpaiement_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE  forfait_idforfait_seq TO proprietaires_abeilles;
+GRANT USAGE ON SEQUENCE plancheavoile_idplanchevoile_seq TO proprietaires_abeilles;
 
 DROP USER IF EXISTS lfrottier;
 CREATE USER lfrottier WITH ENCRYPTED PASSWORD 'lfrottier';
@@ -120,6 +127,12 @@ GRANT SELECT, INSERT ON forfait TO moniteurs_abeilles;
 GRANT SELECT, INSERT ON coursplanchevoile TO moniteurs_abeilles;
 GRANT SELECT, INSERT ON reservation TO moniteurs_abeilles;
 GRANT SELECT, INSERT ON location TO moniteurs_abeilles;
+GRANT SELECT, INSERT ON plancheavoile TO moniteurs_abeilles;
+GRANT SELECT, INSERT, UPDATE ON flotteur TO moniteurs_abeilles;
+GRANT SELECT, INSERT, UPDATE ON voile TO moniteurs_abeilles;
+GRANT SELECT, INSERT, UPDATE ON pieddemat TO moniteurs_abeilles;
+GRANT SELECT ON prixmateriel TO moniteurs_abeilles;
+
 
 GRANT USAGE ON TYPE ECamping TO moniteurs_abeilles;
 GRANT USAGE ON TYPE EPreferenceContact TO moniteurs_abeilles;
@@ -152,6 +165,8 @@ GRANT USAGE ON SEQUENCE voile_idvoile_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE paiement_idpaiement_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE  forfait_idforfait_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO moniteurs_abeilles;
+GRANT USAGE ON SEQUENCE plancheavoile_idplanchevoile_seq TO moniteurs_abeilles;
+
 
 
 DROP USER IF EXISTS jbond;

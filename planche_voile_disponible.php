@@ -44,18 +44,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $result = pg_fetch_object($result);
 
             if($result->idfloteur == null || $result->idpiedmat == null || $result->iddevoile == null) {
-                echo "VIDE";
                 echo '<script type="text/javascript"> alertNonDisponible(); </script>';
             } else {
                 $queryPlanche = "SELECT * FROM creer_planche_voile($result->idfloteur, $result->idpiedmat, $result->iddevoile)";
                 $plancheAVoile = pg_query($connexion, $queryPlanche);
-        
+                $idPlanche = pg_fetch_object($plancheAVoile)->idPlanche;
+
                 $queryPrix = "SELECT * FROM prixmateriel where idprixmateriel = 2";
                 $resulPrixMat = pg_query($connexion, $queryPrix);
                 $prixMat = pg_fetch_object($resulPrixMat);
+                $prixHeure = $prixMat->prixheure;
+                $prixHeureSupp = $prixMat->prixheuresupp;
 
-                $queryLoc = "CALL ajouter_location()"; //TODO
-                resulPrixMat = pg_query($connexion, $queryLoc);
+                $queryLoc = "CALL ajouter_location($idClient, $idPlanche, 'PlancheAVoile', timestamp '$timestampLocationFormatted', INTERVAL '$dureeLocation HOUR', $prixHeure, $prixHeureSupp, 'En cours', 'Carte')";
+                echo $queryLoc;
+                $resulLoc = pg_query($connexion, $queryLoc);
 
             }
 
