@@ -1,7 +1,9 @@
 -- FK ajoutées après l'insertion des clients
 
 -- Création des types ENUM
-DROP TYPE IF EXISTS EMoyenPaiement CASCADE;
+--SELECT * FROM pg_type WHERE typcategory = 'E' ORDER BY typname; -- enums
+
+DROP TYPE IF EXISTS EMoyenPaiement CASCADE;-- OK
 CREATE TYPE EMoyenPaiement AS ENUM ('Carte', 'Espèces');
 
 DROP TYPE IF EXISTS EETatLocation CASCADE;
