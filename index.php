@@ -9,10 +9,8 @@
     </head>
     <body>
         <header>
-            <div class="header">
-                <h1>Club Nautique Les Abeilles</h1>
-            </div>
-            </header>
+            <?php include('header.php')?>
+        </header>
         <div class="corps">
                 <h1>Connexion</h1>
                 <form method="post" name="formulaire" novalidate="" class="form" action="verifConnexion.php">
