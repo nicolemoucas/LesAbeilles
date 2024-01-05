@@ -25,11 +25,12 @@
         if (isset($_POST['inscrireCours'])) {
             $idClient = $_POST['idClient'];
             $idCours = $_POST['idCours'];
+            $idForfait = $_POST['idForfait'];
 
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14")
                 or die("Impossible de se connecter : " . pg_result_error($connexion));
 
-            $inscrireCoursQuery = "SELECT InscrireClientauCours($idClient, $idCours)";
+            $inscrireCoursQuery = "SELECT InscrireClientauCours($idClient, $idCours, $idForfait)";
             $result = pg_query($connexion, $inscrireCoursQuery);
 
             if ($result) {

@@ -42,6 +42,9 @@ GRANT SELECT, INSERT ON Pedalo TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON PiedDeMat TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON StandUpPaddle TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON Voile TO proprietaires_abeilles;
+GRANT SELECT ON typeforfait TO proprietaires_abeilles;
+GRANT SELECT, INSERT ON paiement TO proprietaires_abeilles;
+GRANT SELECT, INSERT ON forfait TO proprietaires_abeilles;
 
 GRANT USAGE ON TYPE ECamping TO proprietaires_abeilles;
 GRANT USAGE ON TYPE EPreferenceContact TO proprietaires_abeilles;
@@ -61,6 +64,7 @@ GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc
 GRANT EXECUTE ON FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_annuler_cours(idCoursSupp int) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION possede_remise(idPers INTEGER) TO proprietaires_abeilles;
 
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO proprietaires_abeilles;
@@ -68,6 +72,7 @@ GRANT EXECUTE ON PROCEDURE supprimer_client(nom VARCHAR, prenom VARCHAR, dateNai
 GRANT EXECUTE ON PROCEDURE creer_cours(horaireCours TIMESTAMP, nivCours EStatutClient, idMoniteur INT) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE p_supprimer_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE modifier_employe(idEmp INT, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, telEmploye VARCHAR)  TO proprietaires_abeilles;
+GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement) TO proprietaires_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO proprietaires_abeilles;
@@ -78,6 +83,8 @@ GRANT USAGE ON SEQUENCE pedalo_idpedalo_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE pieddemat_idpieddemat_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE standuppaddle_idstanduppaddle_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE voile_idvoile_seq TO proprietaires_abeilles;
+GRANT USAGE ON SEQUENCE paiement_idpaiement_seq TO proprietaires_abeilles;
+GRANT USAGE ON SEQUENCE  forfait_idforfait_seq TO proprietaires_abeilles;
 
 DROP USER IF EXISTS lfrottier;
 CREATE USER lfrottier WITH ENCRYPTED PASSWORD 'lfrottier';
@@ -108,6 +115,9 @@ GRANT SELECT, INSERT ON Pedalo TO moniteurs_abeilles;
 GRANT SELECT, INSERT ON PiedDeMat TO moniteurs_abeilles;
 GRANT SELECT, INSERT ON StandUpPaddle TO moniteurs_abeilles;
 GRANT SELECT, INSERT ON Voile TO moniteurs_abeilles;
+GRANT SELECT ON typeforfait TO moniteurs_abeilles;
+GRANT SELECT, INSERT ON paiement TO moniteurs_abeilles;
+GRANT SELECT, INSERT ON forfait TO moniteurs_abeilles;
 
 GRANT USAGE ON TYPE ECamping TO moniteurs_abeilles;
 GRANT USAGE ON TYPE EPreferenceContact TO moniteurs_abeilles;
@@ -119,11 +129,13 @@ GRANT EXECUTE ON FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCH
 GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO moniteurs_abeilles;
-GRANT EXECUTE ON FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
-GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
-GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
-GRANT EXECUTE ON FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval) TO moniteurs_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval) TO moniteurs_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval) TO moniteurs_abeilles;
+GRANT EXECUTE ON FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile) TO moniteurs_abeilles;
+GRANT EXECUTE ON FUNCTION possede_remise(idPers INTEGER) TO moniteurs_abeilles;
 
+GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement) TO moniteurs_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE catamaran_idcatamaran_seq TO moniteurs_abeilles;
@@ -132,6 +144,8 @@ GRANT USAGE ON SEQUENCE pedalo_idpedalo_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE pieddemat_idpieddemat_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE standuppaddle_idstanduppaddle_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE voile_idvoile_seq TO moniteurs_abeilles;
+GRANT USAGE ON SEQUENCE paiement_idpaiement_seq TO moniteurs_abeilles;
+GRANT USAGE ON SEQUENCE  forfait_idforfait_seq TO moniteurs_abeilles;
 
 DROP USER IF EXISTS jbond;
 CREATE USER jbond WITH ENCRYPTED PASSWORD 'jbond';
