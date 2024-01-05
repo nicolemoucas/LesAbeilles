@@ -135,6 +135,9 @@
                 </select>
                 <div id="typeError" class="error"></div><br>
 
+
+
+
             <label for="CapaciteFlotteur">Capacité du flotteur</label><br>
             <select name="CapaciteFlotteur" class="form-control" id="CapaciteFlotteur">
             <option disabled selected value> -- Sélectionnez une option -- </option>
@@ -149,6 +152,7 @@
                 <?php echo $taille_combobox_php ?>
             </select>
             <div id="tailleError" class="error"></div><br>
+
 
 
             <h1> Choix de l'horaire</h1>
@@ -168,6 +172,26 @@
         <footer>
             <?php include('footer.php')?>
         </footer>
+
+
+        <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const typeMatérielSelect = document.getElementById("typeMatériel");
+        const capaciteFlotteurDiv = document.getElementById("capaciteFlotteurDiv");
+        const tailleVoileDiv = document.getElementById("tailleVoileDiv");
+
+        typeMatérielSelect.addEventListener("change", function() {
+            const selectedValue = typeMatérielSelect.value;
+
+            // Afficher ou masquer les onglets en fonction du type de matériel sélectionné
+            capaciteFlotteurDiv.style.display = (selectedValue === "Planche à voile") ? "block" : "none";
+            tailleVoileDiv.style.display = (selectedValue === "Planche à voile") ? "block" : "none";
+        });
+    });
+
+    
+    </script>
+
     </body>
 </html>
 <script>
@@ -243,4 +267,4 @@
             event.preventDefault();
         }
 });
-</script>
+

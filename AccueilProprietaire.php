@@ -28,6 +28,10 @@
                 <a href="rechercherClient.php" class="button">Rechercher un client</a>
                 <a href="cours_de_voile.php" class="button">Consulter les cours</a>
                 <a href="rechercherEmploye.php" class="button">Rechercher un employé</a>
+                <a href="Affiher_liste_employes.php" class="button">Afficher la liste des employés</a>
+                <a href="#" class="button">Rechercher un cours</a>
+                <a href="inscription_client_cours_voile.php" class="button">Inscription d'un client à un cours</a>
+
             </div>
 
             <br><br>

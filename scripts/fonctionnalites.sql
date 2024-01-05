@@ -820,3 +820,187 @@ BEGIN
 END;
 $BODY$
 LANGUAGE PlpgSQL;
+
+DROP PROCEDURE IF EXISTS acheter_forfait;
+CREATE OR REPLACE PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement, montantForfait FLOAT) AS $BODY$
+DECLARE
+	now timestamp;
+	idPaie INTEGER;
+	annee INTEGER;
+	enfant BOOLEAN;
+	nbseancesForfait INTEGER;
+	dateFinForfait DATE;
+BEGIN
+	now := NOW();
+	
+	SELECT INTO montantForfait prix FROM typeforfait WHERE idtypeforfait = idForfait;
+	SELECT INTO nbseancesForfait nbseances FROM typeforfait WHERE idtypeforfait = idForfait;
+	SELECT INTO enfant EXISTS (SELECT * FROM CLIENT WHERE idClient = idClientFor AND idcertificat IS NOT NULL);
+	SELECT INTO annee date_part('year', CURRENT_DATE);
+	SELECT INTO dateFinForfait to_date(CONCAT(annee, '/10/10'), 'YYYY/MM/DD');
+	
+	INSERT INTO paiement (dateheure, montant, moyenpaiement) 
+	VALUES (now, montantForfait, typePaiement);
+	
+	SELECT INTO idPaie idpaiement FROM paiement 
+	WHERE dateheure = now AND montant = montantForfait AND moyenpaiement = typePaiement;
+	
+	
+	INSERT INTO forfait (datefin, nbseancesrestantes, forfaitenfant, idclient, idtypeforfait, idpaiement)
+	VALUES(dateFinForfait, nbseancesForfait, enfant, idClientFor, idForfait, idPaie);
+END;
+$BODY$
+LANGUAGE PlpgSQL;
+
+DROP FUNCTION IF EXISTS calculer_reduction_prix;
+CREATE OR REPLACE FUNCTION calculer_reduction_prix(montant FlOAT, idPers INTEGER)
+    RETURNS FLOAT
+    AS $BODY$
+BEGIN
+    IF (SELECT EXISTS(SELECT * FROM client WHERE idCLient = idPers AND (camping IS NOT NULL OR camping = 'Autre'))) THEN
+        RETURN SELECT montant * 0.9;
+    END IF;
+    RETURN SELECT montant;
+END;
+$BODY$
+LANGUAGE PlpgSQL;
+
+--enregistrer location
+-- Déclencheur pour vérifier la disponibilité du matériel lors de la location
+CREATE OR REPLACE FUNCTION check_location_disponibilite()
+RETURNS TRIGGER AS $$
+DECLARE
+    dateDebut Location.DateDebut%TYPE;
+    dateFin Location.DateFin%TYPE;
+    idMateriel INTEGER;
+BEGIN
+    -- Extraire les valeurs de date début, date fin et idMateriel depuis la nouvelle ligne
+    dateDebut := NEW.DateDebut;
+    dateFin := NEW.DateFin;
+    idMateriel := NEW.IdMateriel;  -- Remplacez IdMateriel par le vrai nom de la colonne dans votre table
+
+    -- Vérifier si le matériel est déjà en location pour la période spécifiée
+    IF EXISTS (
+        SELECT 1
+        FROM Location
+        WHERE IdMateriel = idMateriel
+          AND (
+            (dateDebut >= DateDebut AND dateDebut < DateFin) OR
+            (dateFin > DateDebut AND dateFin <= DateFin) OR
+            (dateDebut <= DateDebut AND dateFin >= DateFin)
+          )
+    ) THEN
+        RAISE EXCEPTION 'Le matériel est déjà en location pour cette période.';
+    END IF;
+
+    -- Appeler la fonction de vérification du matériel
+    RETURN check_location_materiel();
+END;
+$$ LANGUAGE plpgsql;
+
+-- Déclencheur avant chaque insertion dans la table Location
+CREATE TRIGGER check_location_disponibilite_trigger
+BEFORE INSERT
+ON Location
+FOR EACH ROW
+EXECUTE FUNCTION check_location_disponibilite();
+=======
+
+	SELECT INTO minTime dateLoc - dureeLoc;
+	SELECT INTO maxTime dateLoc + dureeLoc;
+
+	SELECT INTO idFloteur idflotteur FROM flotteur t_flot
+	WHERE statut = 'Fonctionnel'
+	AND capacite = capaciteFlot
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM coursplanchevoile t_cours LEFT JOIN reservation t_res ON t_cours.idcours = t_res.idcours
+			WHERE t_res.idplanchevoile = t_flot.idplanchevoile
+			AND t_cours.etatcours = 'Prévu'
+			AND ((t_cours.dateheure BETWEEN minTime AND maxTime)
+				OR ((t_cours.dateheure + interval '2 hours' BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours'))
+				OR (maxTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours')))
+				))
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM location t_loc
+			WHERE t_loc.idplanchevoile = t_flot.idplanchevoile
+			AND t_loc.etatlocation = 'En cours'
+			AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+				OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+				OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+	)
+	LIMIT 1;
+
+	SELECT INTO idPiedMat idpieddemat FROM pieddemat t_mat
+	WHERE statut = 'Fonctionnel'
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM coursplanchevoile t_cours LEFT JOIN reservation t_res ON t_cours.idcours = t_res.idcours
+			WHERE t_res.idplanchevoile = t_mat.idplanchevoile
+			AND t_cours.etatcours = 'Prévu'
+			AND ((t_cours.dateheure BETWEEN minTime AND maxTime)
+				OR ((t_cours.dateheure + interval '2 hours' BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours'))
+				OR (maxTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours')))
+				))
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM location t_loc
+			WHERE t_loc.idplanchevoile = t_mat.idplanchevoile
+			AND t_loc.etatlocation = 'En cours'
+			AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+				OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+				OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+	)
+	LIMIT 1;
+
+	SELECT INTO idDeVoile idvoile FROM voile t_voi
+	WHERE statut = 'Fonctionnel'
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM coursplanchevoile t_cours LEFT JOIN reservation t_res ON t_cours.idcours = t_res.idcours
+			WHERE t_res.idplanchevoile = t_voi.idplanchevoile
+			AND t_cours.etatcours = 'Prévu'
+			AND ((t_cours.dateheure BETWEEN minTime AND maxTime)
+				OR ((t_cours.dateheure + interval '2 hours' BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours'))
+				OR (maxTime BETWEEN t_cours.dateheure AND (t_cours.dateheure + interval '2 hours')))
+				))
+	AND NOT EXISTS(
+		SELECT idplanchevoile FROM location t_loc
+			WHERE t_loc.idplanchevoile = t_voi.idplanchevoile
+			AND t_loc.etatlocation = 'En cours'
+			AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+				OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+				OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+				OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
+	)
+	LIMIT 1;
+
+
+	RETURN QUERY SELECT idFloteur,idPiedMat, idDeVoile;
+END;
+$$ Language PlpgSQL;
+/* 24 - Création d'un garçon de plage */
+DROP FUNCTION IF EXISTS creer_garcon;
+CREATE OR REPLACE FUNCTION creer_garcon(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR)
+    RETURNS int
+    AS $BODY$
+DECLARE
+    nouvIdGarcon int;
+    nomUtil VARCHAR;
+    mdp VARCHAR;
+BEGIN
+    nomUtil := $1;
+    mdp := $2;
+    INSERT INTO CompteEmploye (NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye) VALUES
+		($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, 'Garçon de plage')
+		RETURNING IdCompte INTO nouvIdGarcon;
+    --EXECUTE FORMAT('REASSIGN OWNED BY %I TO garcons_de_plage_abeilles', nomUtil);
+    EXECUTE FORMAT('DROP USER IF EXISTS %I', nomUtil);
+    EXECUTE FORMAT('CREATE USER "%I" WITH ENCRYPTED PASSWORD ''%s''', nomUtil, mdp);
+    EXECUTE FORMAT('GRANT garcons_de_plage_abeilles TO %I', nomUtil);
+    RETURN nouvIdGarcon;
+END;
+$BODY$
+LANGUAGE PlpgSQL;
+

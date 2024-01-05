@@ -23,7 +23,10 @@
                 <a href="gestionMateriel.php" class="button">Consulter le stock de matériel</a>
                 <a href="inscriptionClient.php" class="button">Créer un profil client</a>
                 <a href="rechercherClient.php" class="button">Rechercher un client</a>
-                <a href="inscription_client_cours_voile.php" class="button">Inscrire un client à un cours</a>
+                <a href="#" class="button">Rechercher un cours</a>
+                <a href="inscription_client_cours_voile.php" class="button">Inscription d'un Client à un cours</a>
+                <a href="Location.php" class="button">Louer du materiel à un client</a>
+
             </div>
 
             <br><br>
