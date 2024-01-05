@@ -1032,3 +1032,57 @@ END;
 $BODY$
 LANGUAGE PlpgSQL;
 
+/* 24 - Ajout d'une location */
+CREATE OR REPLACE PROCEDURE ajouter_location(
+    p_IdClient INT,
+    p_IdMatos INT,
+    p_TypeMatos VARCHAR(30),
+    p_DateHeureLocation TIMESTAMP,
+    p_Duree INTERVAL,
+    p_PrixHeure FLOAT,
+    p_PrixHeureSupp FLOAT,
+    p_EtatLocation EEtatLocation,
+    p_MoyenPaiement EMoyenPaiement
+)
+AS $$
+DECLARE
+    v_IdPaiement INT;
+    v_MontantTotal FLOAT;
+    v_IdStandUpPaddle INT := NULL;
+    v_IdPlancheVoile INT := NULL;
+    v_IdPedalo INT := NULL;
+    v_IdCatamaran INT := NULL;
+BEGIN
+    IF p_Duree = '1 hour' THEN
+        v_MontantTotal := p_PrixHeure;
+    ELSE
+        v_MontantTotal := p_PrixHeure + (EXTRACT(HOUR FROM p_Duree) - 1) * p_PrixHeureSupp;
+    END IF;
+
+    INSERT INTO Paiement (DateHeure, Montant, MoyenPaiement)
+    VALUES (CURRENT_TIMESTAMP, v_MontantTotal, p_MoyenPaiement)
+    RETURNING IdPaiement INTO v_IdPaiement;
+
+    CASE p_TypeMatos
+        WHEN 'StandUpPaddle' THEN
+            v_IdStandUpPaddle := p_IdMatos;
+        WHEN 'PlancheAVoile' THEN
+            v_IdPlancheVoile := p_IdMatos;
+        WHEN 'Pedalo' THEN
+            v_IdPedalo := p_IdMatos;
+        WHEN 'Catamaran' THEN
+            v_IdCatamaran := p_IdMatos;
+    END CASE;
+
+    INSERT INTO Location (
+        IdClient, IdPaiement, DateHeureLocation, Duree, TarifLocation, EtatLocation,
+        IdStandUpPaddle, IdPlancheVoile, IdPedalo, IdCatamaran
+    )
+    VALUES (
+        p_IdClient, v_IdPaiement, p_DateHeureLocation, p_Duree, v_MontantTotal, 'En cours',
+        v_IdStandUpPaddle, v_IdPlancheVoile, v_IdPedalo, v_IdCatamaran
+    );
+END;
+$$ LANGUAGE plpgsql;
+
+
