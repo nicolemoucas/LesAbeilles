@@ -93,7 +93,7 @@ input {
   cursor: pointer;
 }
 
-.table_cours_stock {
+.table_cours_stock_location {
   border-collapse: collapse;
   flex-grow:1;
   height:100%;
@@ -105,7 +105,7 @@ input {
   width: 100%;
 }
 
-.table_cours_stock td {
+.table_cours_stock_location td {
   padding: 5px;
 }
 

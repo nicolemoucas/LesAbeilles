@@ -27,6 +27,7 @@
                 <a href="inscriptionClient.php" class="button">Créer un profil client</a>
                 <a href="rechercherClient.php" class="button">Rechercher un client</a>
                 <a href="cours_de_voile.php" class="button">Consulter les cours</a>
+                <a href="consulter_locations.php" class="button">Consulter les locations</a>
                 <a href="rechercherEmploye.php" class="button">Rechercher un employé</a>
                 <a href="Affiher_liste_employes.php" class="button">Afficher la liste des employés</a>
                 <a href="#" class="button">Rechercher un cours</a>
