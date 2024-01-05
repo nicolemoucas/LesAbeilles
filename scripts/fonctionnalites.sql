@@ -647,29 +647,57 @@ END;
 $$ Language PlpgSQL;
 
 
-DROP FUNCTION IF EXISTS f_rechercher_standuppaddle;
-CREATE OR REPLACE FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval)
-RETURNS TABLE (idMatos INTEGER) AS $$
+DROP FUNCTION IF EXISTS f_rechercher_standuppaddle(dateLoc TIMESTAMP, dureeLoc INTERVAL);
+
+CREATE OR REPLACE FUNCTION f_rechercher_standuppaddle(dateLoc TIMESTAMP, dureeLoc INTERVAL)
+RETURNS TABLE (
+    idMatos INTEGER,
+    nomMateriel VARCHAR(30),
+    idPrixMatos INTEGER,
+    prixHeure FLOAT,
+    prixHeureSupp FLOAT,
+    prixDemiHeure FLOAT,
+    statut EStatutMateriel
+) AS $$
 DECLARE
-	minTime timestamp;
-	maxTime timestamp;
+    minTime TIMESTAMP;
+    maxTime TIMESTAMP;
 BEGIN
+    SELECT INTO minTime dateLoc - dureeLoc;
+    SELECT INTO maxTime dateLoc + dureeLoc;
 
-	SELECT INTO minTime dateLoc - dureeLoc;
-	SELECT INTO maxTime dateLoc + dureeLoc;
-
-	RETURN QUERY SELECT idstanduppaddle as idMatos
-					  FROM standuppaddle t_mat WHERE statut = 'Fonctionnel' AND NOT EXISTS(
-							SELECT idstanduppaddle FROM location t_loc
-							WHERE t_loc.idstanduppaddle = t_mat.idstanduppaddle
-							AND t_loc.etatlocation = 'En cours'
-							AND ((t_loc.dateheurelocation BETWEEN minTime AND maxTime)
-								OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
-								OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
-								OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree)))
-							);
+    RETURN QUERY SELECT DISTINCT
+        s.idstanduppaddle as idMatos,
+        m.nomMateriel,
+        s.idPrixMateriel as idPrixMatos,
+        m.prixHeure,
+        m.prixHeureSupp,
+        m.prixDemiHeure,
+        s.statut
+    FROM
+        StandUpPaddle s
+    JOIN
+        PrixMateriel m ON s.idPrixMateriel = m.idPrixMateriel
+    LEFT JOIN
+        v_stock_materiel_raw c ON c.IdMatos = s.idStandUpPaddle
+    WHERE
+        s.statut = 'Fonctionnel'
+        AND NOT EXISTS (
+            SELECT 1
+            FROM
+                Location t_loc
+            WHERE
+                t_loc.idStandUpPaddle = s.idStandUpPaddle
+                AND t_loc.etatlocation = 'En cours'
+                AND (
+                    (t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+                    OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+                    OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+                    OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+                )
+        );
 END;
-$$ Language PlpgSQL;
+$$ LANGUAGE PLPGSQL;
 
 DROP FUNCTION IF EXISTS f_rechercher_planchevoile;
 CREATE OR REPLACE FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile)
