@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($timestampLocation !== false) {
             $timestampLocationFormatted = date('Y-m-d H:i:s', $timestampLocation);
 
-            $query = "SELECT * FROM f_rechercher_standuppaddle($1, INTERVAL '1 hour')";
+            $query = "SELECT * FROM f_rechercher_standuppaddle($1, INTERVAL '$2 hour')";
             $result = pg_query_params($connexion, $query, array($timestampLocationFormatted));
 
             if (!$result) {
