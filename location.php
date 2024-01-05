@@ -38,14 +38,13 @@
     </div>
         <div class="corps">
         
-        <div class="buttons-container">
-                
+            <div class="buttons-container">
                 <h3>La personne est-elle déjà cliente?</h3>
-            
-            <div>  
-                <button class="button">Oui</button>
-                <button class="button" onclick="javascript:alertClientDoesntExists();">Non</button> 
-            </div>
+                
+                <div>  
+                    <button class="button">Oui</button>
+                    <button class="button" onclick="javascript:alertClientDoesntExists();">Non</button> 
+                </div>
         </div>
         
         <div class="form-container">

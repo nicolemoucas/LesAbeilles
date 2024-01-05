@@ -18,7 +18,7 @@
         </header>
 
         <div class="corps">
-            <h2>Bienvenue au Club Nautique Les Abeilles <?php echo $_SESSION["identifiant"]?></h2>
+            <h2>Bienvenue au Club Nautique Les Abeilles, <?php echo $_SESSION["identifiant"]?></h2>
             <div class="fonctionnalites">
                 <a href="cours_de_voile.php" class="button">Rechercher un cours</a>
                 <a href="gestionMateriel.php" class="button">Consulter le stock de matériel</a>
