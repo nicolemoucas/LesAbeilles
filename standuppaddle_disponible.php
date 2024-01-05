@@ -14,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $heureLocation = $_POST["heureLocation"];
     $dureeLocation = $_POST["dureeLocation"];
 
-    
     $choixPaiement = isset($_POST['choixPaiement']) ? $_POST['choixPaiement'] : ''; 
 
     if ($dateLocation != "" && $heureLocation != "" && $dureeLocation != "") {
@@ -152,8 +151,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var choixPaiement = document.getElementById("choixPaiement").value;
 
             if (confirm("Confirmez-vous la location de " + nomMatos + " pour " + prixHeure + " € par heure avec un paiement par " + choixPaiement + " ?")) {
-                // Ajout du moyen de paiement à la requête URL
-                window.location.href = "louer_materiel_client.php?idMatos=" + idMatos + "&nomMatos=" + nomMatos + "&prixHeure=" + prixHeure + "&idClient=" + idClient + "&choixPaiement=" + choixPaiement;
+                // Ajout des informations de location à la requête URL
+                window.location.href = "location_action.php?idMatos=" + idMatos + "&nomMatos=" + nomMatos + "&prixHeure=" + prixHeure + "&idClient=" + idClient + "&choixPaiement=" + choixPaiement + "&timestampLocation=" + "<?php echo $timestampLocationFormatted; ?>"  + "&dureeLocation=" + dureeLocation;
             }
         }
     </script>
