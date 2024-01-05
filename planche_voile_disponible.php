@@ -165,7 +165,7 @@ $idClient = isset($_GET['idClient']) ? $_GET['idClient'] : null;
                 $prixHeure = $prixMat->prixheure;
                 $prixHeureSupp = $prixMat->prixheuresupp;
                 $nomMatos = 'PlancheAVoile'; 
-                echo '<script type="text/javascript"> louerConfirmation('.$idPlanche .', "'.$nomMatos.'", '.$prixHeure.', '.$prixHeureSupp.', '.$timestampLocation.', "'. $dureeLocation.' HOUR"); </script>';
+                echo '<script type="text/javascript"> louerConfirmation('.$idPlanche .', "'.$nomMatos.'", '.$prixHeure.', '.$prixHeureSupp.', '.$timestampLocation.', '. $dureeLocation.'); </script>';
             }
 
         } 
