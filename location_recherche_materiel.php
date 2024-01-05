@@ -135,24 +135,23 @@
                 </select>
                 <div id="typeError" class="error"></div><br>
 
-            <!-- Ajoutez ces divs autour des champs CapaciteFlotteur et TailleVoile -->
-            <div id="capaciteFlotteurDiv">
-                <label for="CapaciteFlotteur">Capacité du flotteur</label><br>
-                <select name="CapaciteFlotteur" class="form-control" id="CapaciteFlotteur">
-                    <option disabled selected value> -- Sélectionnez une option -- </option>
-                    <?php echo $capacite_combobox_php ?>
-                </select>
-                <div id="capaciteError" class="error"></div><br>
-            </div>
 
-            <div id="tailleVoileDiv">
-                <label for="TailleVoile">Taille de la Voile</label><br>
-                <select name="TailleVoile" class="form-control" id="TailleVoile">
-                    <option disabled selected value> -- Sélectionnez une option -- </option>
-                    <?php echo $taille_combobox_php ?>
-                </select>
-                <div id="tailleError" class="error"></div><br>
-            </div>
+
+
+            <label for="CapaciteFlotteur">Capacité du flotteur</label><br>
+            <select name="CapaciteFlotteur" class="form-control" id="CapaciteFlotteur">
+            <option disabled selected value> -- Sélectionnez une option -- </option>
+                <?php echo $capacite_combobox_php ?>
+            </select>
+            <div id="capaciteError" class="error"></div><br>
+
+
+            <label for="TailleVoile">Taille de la Voile</label><br>
+            <select name="TailleVoile" class="form-control" id="TailleVoile">
+            <option disabled selected value> -- Sélectionnez une option -- </option>
+                <?php echo $taille_combobox_php ?>
+            </select>
+            <div id="tailleError" class="error"></div><br>
 
 
 
@@ -173,6 +172,7 @@
         <footer>
             <?php include('footer.php')?>
         </footer>
+
 
         <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -267,4 +267,4 @@
             event.preventDefault();
         }
 });
-</script>
+
