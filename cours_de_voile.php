@@ -13,18 +13,18 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- pour jQuery -->
         <script>
             function afficherParticipants(dateHeureCours) {
-                var confirmation = confirm("Voulez-vous afficher les participants à ce cours le " + dateHeureCours + " ?");
+                var confirmation = confirm("Voulez-vous afficher les participants à au cours du " + dateHeureCours + " ?");
                 if (confirmation) {
                     window.location.href = 'consulter_liste_participants.php?dateheure=' + encodeURIComponent(dateHeureCours);
                 }
             }
         </script>
-        <style>
+        <!-- <style>
             table {
                 width: 100%;
                 border-collapse: collapse;
                 margin-top: 20px; 
-            }
+            } -->
         </style>
     </head>
     <body>
@@ -44,7 +44,7 @@
 
                 $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
                 $result = pg_query($connexion, 'SELECT * FROM consulter_cours_voile()');
-
+            
                 if (!$result) {
                     echo "Erreur lors de l'exécution de la fonction.";
                 } else {
@@ -57,56 +57,38 @@
                                 <th>Etat Cours</th>";
                     // que le propriétaire peut annuler des cours
                     if ($_SESSION["role"] == 'Propriétaire') {
-                        echo "<th>Action</th>";
+                        echo "<th colspan=\"2\">Actions</th>";
                     }
+                    else {
+                        echo "<th>Action</th>";
+                    };
                     echo "</tr>";
-                }
-
-            $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
-            $result = pg_query($connexion, 'SELECT * FROM consulter_cours_voile()');
-
-            if (!$result) {
-                echo "Erreur lors de l'exécution de la fonction.";
-            } else {
-                echo "<table border='1'>
-                        <tr>
-                            <th>Date et Heure</th>
-                            <th>Niveau</th>
-                            <th>Nom Moniteur</th>
-                            <th>Action</th>
-                        </tr>";
-
-                while ($row = pg_fetch_assoc($result)) {
-                    // Déclaration et initialisation de $dateHeure à l'intérieur de la boucle
-                    $dateHeure = $row['dateheure'];
-
-                    echo "<tr>
-                            <td>".$dateHeure."</td>
-                            <td>".$row['niveau']."</td>
-                            <td>".$row['nommoniteur']."</td>
-                            <td><button class='button' onclick='afficherParticipants(\"".$dateHeure."\")'>Afficher les participants</button></td>
-                          </tr>";
 
                     while ($row = pg_fetch_assoc($result)) {
+                        // Déclaration et initialisation de $dateHeure à l'intérieur de la boucle
+                        $dateHeure = $row['dateheure'];
                         echo "<tr>
                                 <td>".$row['idcours']."</td>
-                                <td>".$row['dateheure']."</td>
+                                <td>".$dateHeure."</td>
                                 <td>".$row['niveau']."</td>
                                 <td>".$row['nommoniteur']."</td>
                                 <td>".$row['etatcours']."</td>";
-                        // que le propriétaire peut annuler des cours
+                        // que le propriétaire peut annuler les cours
                         if ($_SESSION["role"] == 'Propriétaire') {
-                            echo "<td><button class='btnAnnulerCours' onclick=\"annulerCours()\">Annuler</button></td>";
+                            echo "<td><button class='btnAnnulerConsulterCours' onclick=\"annulerCours()\">Annuler</button></td>
+                                <td><button class='btnAnnulerConsulterCours' onclick='afficherParticipants(\"".$dateHeure."\")'>Afficher les participants</button></td>";
+                        }
+                        else {
+                            echo "<td><button class='btnAnnulerConsulterCours' onclick='afficherParticipants(\"".$dateHeure."\")'>Afficher les participants</button></td>";
                         }
                         echo "</tr>";
                     }
                     echo "</table>";
 
+                    // Free resultset
+                    pg_free_result($result);
+                    pg_close($connexion);
                 }
-                // Free resultset
-                pg_free_result($result);
-                pg_close($connexion);
-            }
             ?>
         </div> <!-- end corps -->
 
