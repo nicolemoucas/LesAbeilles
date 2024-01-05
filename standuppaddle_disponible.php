@@ -152,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (confirm("Confirmez-vous la location de " + nomMatos + " pour " + prixHeure + " € par heure avec un paiement par " + choixPaiement + " ?")) {
                 // Ajout des informations de location à la requête URL
-                window.location.href = "location_action.php?idMatos=" + idMatos + "&nomMatos=" + nomMatos + "&prixHeure=" + prixHeure + "&idClient=" + idClient + "&choixPaiement=" + choixPaiement + "&timestampLocation=" + "<?php echo $timestampLocationFormatted; ?>"  + "&dureeLocation=" + dureeLocation;
+                window.location.href = "location_action.php?idMatos=" + idMatos + "&nomMatos=" + nomMatos + "&prixHeure=" + prixHeure + "&idClient=" + idClient + "&choixPaiement=" + choixPaiement + "&timestampLocation=" + "<?php echo $timestampLocationFormatted; ?>"  + "&dureeLocation=" + <?php echo $dureeLocation; ?>;
             }
         }
     </script>
