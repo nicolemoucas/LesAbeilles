@@ -36,8 +36,6 @@
 
                 $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
 
-                    or die("Impossible de se connecter : " . pg_result_error($connexion));
-
                     $result = pg_query_params(
                         $connexion,
                         'CALL ajouter_location($1, $2, $3, $4, $5::INTERVAL, $6, $7, $8, $9)',

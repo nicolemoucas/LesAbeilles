@@ -4,7 +4,7 @@
 
 
 <script>
-        function louerConfirmation(idMatos, nomMatos, prixHeure, idClient, choixPaiement, timeStampLoc, dureeLoc) {
+        function louerConfirmation(idMatos, nomMatos, prixHeure, idClient, timeStampLoc, dureeLoc) {
             var choixPaiement = document.getElementById("choixPaiement").value;
 
             if (confirm("Confirmez-vous la location de " + nomMatos + " pour " + prixHeure + " € par heure avec un paiement par " + choixPaiement + " ?")) {
@@ -164,7 +164,7 @@ $idClient = isset($_GET['idClient']) ? $_GET['idClient'] : null;
                 $prixHeure = $prixMat->prixheure;
                 $prixHeureSupp = $prixMat->prixheuresupp;
                 $nomMatos = 'PlancheAVoile'; 
-                echo '<script type="text/javascript"> louerConfirmation('.$idPlanche .', "'.$nomMatos.'", '.$prixHeure.', '.$prixHeureSupp.', '.$timestampLocationFormatted.', '. $dureeLocation.'); </script>';
+                echo '<script type="text/javascript"> louerConfirmation('.$idPlanche .', "'.$nomMatos.'", '.$prixHeure.', '.$prixHeureSupp.', "'.$timestampLocationFormatted.'", '. $dureeLocation.'); </script>';
             }
 
         } 
