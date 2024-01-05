@@ -111,7 +111,7 @@
         function annulerLocation(idLocation) {
                 if(confirm("Voulez-vous vraiment annuler la location n°" + idLocation + " ?")) {
                 window.location.href = 'annuler_location.php?idLocation=' + idLocation;
-            }
+                }
         }
     </script>
 </body>
