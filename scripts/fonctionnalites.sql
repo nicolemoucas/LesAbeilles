@@ -1086,3 +1086,53 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+--rechercher location pedalo
+CREATE OR REPLACE FUNCTION f_rechercher_pedalo(dateLoc TIMESTAMP, dureeLoc INTERVAL)
+RETURNS TABLE (
+    idMatos INTEGER,
+    nomMateriel VARCHAR(30),
+    idPrixMatos INTEGER,
+    prixHeure FLOAT,
+    prixHeureSupp FLOAT,
+    prixDemiHeure FLOAT,
+    statut EStatutMateriel
+) AS $$
+DECLARE
+    minTime TIMESTAMP;
+    maxTime TIMESTAMP;
+BEGIN
+    SELECT INTO minTime dateLoc - dureeLoc;
+    SELECT INTO maxTime dateLoc + dureeLoc;
+
+    RETURN QUERY SELECT DISTINCT
+        p.idstanduppaddle as idMatos,
+        m.nomMateriel,
+        p.idPrixMateriel as idPrixMatos,
+        m.prixHeure,
+        m.prixHeureSupp,
+        m.prixDemiHeure,
+        p.statut
+    FROM
+        pedalo p
+    JOIN
+        PrixMateriel m ON p.idPrixMateriel = m.idPrixMateriel
+    LEFT JOIN
+        v_stock_materiel_raw c ON c.IdMatos = p.pedalo
+    WHERE
+        p.statut = 'Fonctionnel'
+        AND NOT EXISTS (
+            SELECT 1
+            FROM
+                Location t_loc
+            WHERE
+                t_loc.idpedalo = p.pedalo
+                AND t_loc.etatlocation = 'En cours'
+                AND (
+                    (t_loc.dateheurelocation BETWEEN minTime AND maxTime)
+                    OR ((t_loc.dateheurelocation + t_loc.duree) BETWEEN minTime AND maxTime)
+                    OR (minTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+                    OR (maxTime BETWEEN t_loc.dateheurelocation AND (t_loc.dateheurelocation + t_loc.duree))
+                )
+        );
+END;
+$$ LANGUAGE PLPGSQL;
