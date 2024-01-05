@@ -1,3 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+
+<script>
+        function louerConfirmation(idMatos, nomMatos, prixHeure, idClient) {
+            var choixPaiement = document.getElementById("choixPaiement").value;
+
+            if (confirm("Confirmez-vous la location de " + nomMatos + " pour " + prixHeure + " € par heure avec un paiement par " + choixPaiement + " ?")) {
+              
+                window.location.href = "location_action.php?idMatos=" + idMatos + "&nomMatos=" + nomMatos + "&prixHeure=" + prixHeure + "&idClient=" + idClient + "&choixPaiement=" + choixPaiement;
+            }
+        }
+
+        function alertNonDisponible(idClient) {
+            alert("Pas de planche a voile disponible avec pour ces critères.")
+            window.location.href = "planche_voile_disponible.php?idClient=" + idClient;
+        }
+    </script>
+
 <?php
 session_start();
 
@@ -22,54 +43,7 @@ $idClient = isset($_GET['idClient']) ? $_GET['idClient'] : null;
     while ($option = pg_fetch_object($listeTailleVoile)) {
         $taille_combobox_php .= '<option value="' . $option->etv . '">' . $option->etv . '</option>';
     }   
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $dateLocation = $_POST["dateLocation"];
-    $heureLocation = $_POST["heureLocation"];
-    $dureeLocation = $_POST["dureeLocation"];
-    $capaciteFlotteur = $_POST["CapaciteFlotteur"];
-    $tailleVoile = $_POST["TailleVoile"];
-
-    if ($dateLocation != "" && $heureLocation != "" && $dureeLocation != "") {
-        $timestampLocation = strtotime("$dateLocation $heureLocation");
-        if ($timestampLocation !== false) {
-            $timestampLocationFormatted = date('Y-m-d H:i:s', $timestampLocation);
-
-
-
-
-            $query = "SELECT * FROM f_rechercher_planchevoile(timestamp '$timestampLocationFormatted', INTERVAL '$dureeLocation HOUR', '$capaciteFlotteur', '$tailleVoile')";
-            echo $query;
-            $result = pg_query($connexion, $query);
-            $result = pg_fetch_object($result);
-
-            if($result->idfloteur == null || $result->idpiedmat == null || $result->iddevoile == null) {
-                echo '<script type="text/javascript"> alertNonDisponible(); </script>';
-            } else {
-                $queryPlanche = "SELECT * FROM creer_planche_voile($result->idfloteur, $result->idpiedmat, $result->iddevoile)";
-                $plancheAVoile = pg_query($connexion, $queryPlanche);
-                $idPlanche = pg_fetch_object($plancheAVoile)->idPlanche;
-
-                $queryPrix = "SELECT * FROM prixmateriel where idprixmateriel = 2";
-                $resulPrixMat = pg_query($connexion, $queryPrix);
-                $prixMat = pg_fetch_object($resulPrixMat);
-                $prixHeure = $prixMat->prixheure;
-                $prixHeureSupp = $prixMat->prixheuresupp;
-
-                $queryLoc = "CALL ajouter_location($idClient, $idPlanche, 'PlancheAVoile', timestamp '$timestampLocationFormatted', INTERVAL '$dureeLocation HOUR', $prixHeure, $prixHeureSupp, 'En cours', 'Carte')";
-                echo $queryLoc;
-                $resulLoc = pg_query($connexion, $queryLoc);
-
-            }
-
-        } 
-    }
-}
 ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -138,9 +112,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <select name="TailleVoile" class="form-control" id="TailleVoile">
             <option disabled selected value> -- Sélectionnez une option -- </option>
                 <?php echo $taille_combobox_php ?>
+            </select><br><br>
+
+            <label for="choixPaiement">Mode de paiement :</label>
+            <select id="choixPaiement" name="choixPaiement" required>
+                <option value="Carte">Carte</option>
+                <option value="Espece">Espèces</option>
             </select>
+            <br>
             <div id="tailleError" class="error"></div><br>
-            <button type="submit">Afficher Résultats</button>
+            <button type="submit">Louer</button>
         </form>
 
         <?php
@@ -152,20 +133,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php include('footer.php') ?>
     </footer>
 
-    <script>
-        function louerConfirmation(idMatos, nomMatos, prixHeure, idClient) {
-            var choixPaiement = document.getElementById("choixPaiement").value;
+    <?php 
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $dateLocation = $_POST["dateLocation"];
+    $heureLocation = $_POST["heureLocation"];
+    $dureeLocation = $_POST["dureeLocation"];
+    $capaciteFlotteur = $_POST["CapaciteFlotteur"];
+    $tailleVoile = $_POST["TailleVoile"];
+    $choixPaiement = isset($_POST['choixPaiement']) ? $_POST['choixPaiement'] : ''; 
 
-            if (confirm("Confirmez-vous la location de " + nomMatos + " pour " + prixHeure + " € par heure avec un paiement par " + choixPaiement + " ?")) {
-              
-                window.location.href = "louer_materiel_client.php?idMatos=" + idMatos + "&nomMatos=" + nomMatos + "&prixHeure=" + prixHeure + "&idClient=" + idClient + "&choixPaiement=" + choixPaiement;
+    if ($dateLocation != "" && $heureLocation != "" && $dureeLocation != "") {
+        $timestampLocation = strtotime("$dateLocation $heureLocation");
+        if ($timestampLocation !== false) {
+            $timestampLocationFormatted = date('Y-m-d H:i:s', $timestampLocation);
+
+            $query = "SELECT * FROM f_rechercher_planchevoile(timestamp '$timestampLocationFormatted', INTERVAL '$dureeLocation HOUR', '$capaciteFlotteur', '$tailleVoile')";
+            $result = pg_query($connexion, $query);
+            $result = pg_fetch_object($result);
+
+            if($result->idfloteur == null || $result->idpiedmat == null || $result->iddevoile == null) {
+                echo '<script type="text/javascript"> alertNonDisponible('.$idClient.'); </script>';
+            } else {
+                $queryPlanche = "SELECT * FROM creer_planche_voile($result->idfloteur, $result->idpiedmat, $result->iddevoile)";
+
+                $plancheAVoile = pg_query($connexion, $queryPlanche);
+                $idPlanche = pg_fetch_object($plancheAVoile)->idplanche;
+
+                $queryPrix = "SELECT * FROM prixmateriel where idprixmateriel = 2";
+                $resulPrixMat = pg_query($connexion, $queryPrix);
+                $prixMat = pg_fetch_object($resulPrixMat);
+                $prixHeure = $prixMat->prixheure;
+                $prixHeureSupp = $prixMat->prixheuresupp;
+                $nomMatos = 'PlancheAVoile'; 
+                echo '<script type="text/javascript"> louerConfirmation('.$idPlanche .', "'.$nomMatos.'", '.$prixHeure.', '.$prixHeureSupp.' ); </script>';
             }
-        }
 
-        function alertNonDisponible() {
-            alert("Pas de planche a voile disponible avec pour ces critères.")
-        }
-    </script>
+        } 
+    }
+}
+    
+    ?>
 
 </body>
 
