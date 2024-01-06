@@ -87,7 +87,7 @@ GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGE
 GRANT EXECUTE ON PROCEDURE ajouter_location( p_IdClient INT, p_IdMatos INT, p_TypeMatos VARCHAR(30), p_DateHeureLocation TIMESTAMP, p_Duree INTERVAL, p_PrixHeure FLOAT, p_PrixHeureSupp FLOAT, p_EtatLocation EEtatLocation, p_MoyenPaiement EMoyenPaiement) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE p_creer_diplome(dateObtention DATE, LienDocumentPDF VARCHAR, IdMoniteur int) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE p_creer_permis(dateObtention DATE, LienDocumentPDF VARCHAR, IdProprietaire int) TO proprietaires_abeilles;
-GRANT EXECUTE ON PROCEDURE modifier_profil_client( IN client_id INT, IN nouveau_nom VARCHAR(30), IN nouveau_prenom VARCHAR(30), IN nouvelle_date_naissance DATE, IN nouveau_mail VARCHAR(50), IN nouveau_numTelephone VARCHAR, IN nouveau_camping ECamping, IN nouveau_statut EStatutClient, IN nouvelle_taille FLOAT, IN nouveau_poids FLOAT, IN nouvelle_preference_contact EPreferenceContact) TO proprietaires_abeilles;
+GRANT EXECUTE ON PROCEDURE modifier_profil_client( idCli INT, nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE, mailClient VARCHAR, telClient VARCHAR, prefContactClient EPreferenceContact, campingClient ECamping, tailleClient INT, poidsClient FLOAT, statutClient EStatutClient) TO proprietaires_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO proprietaires_abeilles;
@@ -164,7 +164,7 @@ camping ECamping, statut EStatutClient, poids FLOAT, taille INTEGER, preferenceC
 GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement) TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE changer_etat_materiel(IN materiel_id INT,IN type_materiel VARCHAR(30),IN nouvel_etat EStatutMateriel) TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE ajouter_location( p_IdClient INT, p_IdMatos INT, p_TypeMatos VARCHAR(30), p_DateHeureLocation TIMESTAMP, p_Duree INTERVAL, p_PrixHeure FLOAT, p_PrixHeureSupp FLOAT, p_EtatLocation EEtatLocation, p_MoyenPaiement EMoyenPaiement) TO moniteurs_abeilles;
-GRANT EXECUTE ON PROCEDURE modifier_profil_client( IN client_id INT, IN nouveau_nom VARCHAR(30), IN nouveau_prenom VARCHAR(30), IN nouvelle_date_naissance DATE, IN nouveau_mail VARCHAR(50), IN nouveau_numTelephone VARCHAR, IN nouveau_camping ECamping, IN nouveau_statut EStatutClient, IN nouvelle_taille FLOAT, IN nouveau_poids FLOAT, IN nouvelle_preference_contact EPreferenceContact) TO moniteurs_abeilles;
+GRANT EXECUTE ON PROCEDURE modifier_profil_client( idCli INT, nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE, mailClient VARCHAR, telClient VARCHAR, prefContactClient EPreferenceContact, campingClient ECamping, tailleClient INT, poidsClient FLOAT, statutClient EStatutClient) TO moniteurs_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE catamaran_idcatamaran_seq TO moniteurs_abeilles;

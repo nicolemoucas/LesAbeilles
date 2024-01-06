@@ -374,33 +374,6 @@ $$ LANGUAGE plpgsql;
 /* 16 - Modifier le profil d'un client */
 DROP PROCEDURE IF EXISTS modifier_profil_client;
 
-
-CREATE OR REPLACE PROCEDURE modifier_profil_client( IN client_id INT, IN nouveau_nom VARCHAR(30), IN nouveau_prenom VARCHAR(30), IN nouvelle_date_naissance DATE, IN nouveau_mail VARCHAR(50), IN nouveau_numTelephone VARCHAR, IN nouveau_camping ECamping, IN nouveau_statut EStatutClient, IN nouvelle_taille FLOAT, IN nouveau_poids FLOAT, IN nouvelle_preference_contact EPreferenceContact) LANGUAGE plpgsql AS $$
-BEGIN
-    -- si le client n'existe pas
-    IF NOT EXISTS (SELECT 1 FROM Client WHERE Idclient = client_id) THEN
-        RAISE EXCEPTION 'Le client avec l''ID % n''existe pas.', client_id;
-    END IF;
-
-    -- sinon alors mise à jour du profil client
-    UPDATE Client
-    SET
-        Nom = nouveau_nom,
-        Prenom = nouveau_prenom,
-        DateNaissance = nouvelle_date_naissance,
-		numtelephone = nouveau_numTelephone,
-        Mail = nouveau_mail,
-        Camping = nouveau_camping,
-        Statut = nouveau_statut,
-        Taille = nouvelle_taille,
-        Poids = nouveau_poids,
-        PreferenceContact = nouvelle_preference_contact
-    WHERE Idclient = client_id;
-
-    RAISE NOTICE 'Le profil du client avec l''ID % a été modifié.', client_id;
-END;
-$$;
-
 /* 18- Changer l'état d'un matériel */
 CREATE OR REPLACE PROCEDURE changer_etat_materiel(IN materiel_id INT,IN type_materiel VARCHAR(30),IN nouvel_etat EStatutMateriel) LANGUAGE plpgsql AS $$
 BEGIN
@@ -441,18 +414,21 @@ END;
 $$;
 
 /* 20- Inscription d'un client à un cours de planche à voile */
-DROP FUNCTION IF EXISTS inscrireclientaucours(INT, INT);
-
+DROP FUNCTION IF EXISTS inscrireclientaucours;
 -- Créer la nouvelle fonction
-
-CREATE OR REPLACE FUNCTION inscrireclientaucours(p_idcours INT, p_idclient INT) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION inscrireclientaucours(p_idcours INT, p_idclient INT, p_idForfait INT)
+RETURNS VOID
+AS $$
 BEGIN
     -- Vérifier si le client n'est pas déjà inscrit à ce cours
     IF NOT EXISTS (SELECT 1 FROM participation WHERE idcours = p_idcours AND idclient = p_idclient) THEN
         -- Insérer l'inscription
         INSERT INTO participation(idcours, idclient)
         VALUES (p_idclient,p_idcours);
+        
+        UPDATE forfait SET nbseancesrestantes = (nbseancesrestantes - 1) WHERE idforfait = p_idForfait;
     END IF;
+    
 END;
 $$ LANGUAGE plpgsql;
 
