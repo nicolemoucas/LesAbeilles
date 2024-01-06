@@ -24,11 +24,11 @@ CREATE GROUP proprietaires_abeilles;
 
 GRANT super_role TO proprietaires_abeilles;
 
-GRANT SELECT, DELETE, INSERT ON Client TO proprietaires_abeilles;
+GRANT SELECT, UPDATE, DELETE, INSERT ON Client TO proprietaires_abeilles;
 GRANT SELECT, DELETE, INSERT ON CompteEmploye TO proprietaires_abeilles;
 GRANT SELECT, DELETE, INSERT ON PermisBateau TO proprietaires_abeilles;
 GRANT SELECT, DELETE, INSERT ON Diplome TO proprietaires_abeilles;
-GRANT SELECT, INSERT ON coursplanchevoile TO proprietaires_abeilles;
+GRANT SELECT, INSERT, DELETE ON coursplanchevoile TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON ArchiveMateriel TO proprietaires_abeilles;
 GRANT SELECT ON v_stock_materiel_raw TO proprietaires_abeilles;
 GRANT SELECT ON v_stock_materiel TO proprietaires_abeilles;
@@ -36,23 +36,20 @@ GRANT SELECT ON v_Planche_a_voile_compo_raw TO proprietaires_abeilles;
 GRANT SELECT ON v_Planche_a_voile_compo TO proprietaires_abeilles;
 GRANT SELECT ON v_Planche_a_voile TO proprietaires_abeilles;
 GRANT UPDATE ON CompteEmploye TO proprietaires_abeilles;
-GRANT SELECT, INSERT ON Catamaran TO proprietaires_abeilles;
-GRANT SELECT, INSERT ON Flotteur TO proprietaires_abeilles;
-GRANT SELECT, INSERT ON Pedalo TO proprietaires_abeilles;
-GRANT SELECT, INSERT ON PiedDeMat TO proprietaires_abeilles;
-GRANT SELECT, INSERT ON StandUpPaddle TO proprietaires_abeilles;
-GRANT SELECT, INSERT ON Voile TO proprietaires_abeilles;
+GRANT SELECT, INSERT, UPDATE ON Catamaran TO proprietaires_abeilles;
+GRANT SELECT, INSERT, UPDATE ON Pedalo TO proprietaires_abeilles;
+GRANT SELECT, INSERT, UPDATE ON StandUpPaddle TO proprietaires_abeilles;
 GRANT SELECT ON typeforfait TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON paiement TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON forfait TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON reservation TO proprietaires_abeilles;
 GRANT SELECT, INSERT ON location TO proprietaires_abeilles;
-GRANT SELECT, INSERT ON plancheavoile TO proprietaires_abeilles;
+GRANT SELECT, INSERT, UPDATE ON plancheavoile TO proprietaires_abeilles;
 GRANT SELECT, INSERT, UPDATE ON flotteur TO proprietaires_abeilles;
 GRANT SELECT, INSERT, UPDATE ON voile TO proprietaires_abeilles;
 GRANT SELECT, INSERT, UPDATE ON pieddemat TO proprietaires_abeilles;
 GRANT SELECT ON prixmateriel TO proprietaires_abeilles;
-
+GRANT SELECT ON participation TO proprietaires_abeilles;
 
 GRANT USAGE ON TYPE ECamping TO proprietaires_abeilles;
 GRANT USAGE ON TYPE EPreferenceContact TO proprietaires_abeilles;
@@ -74,7 +71,10 @@ GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc
 GRANT EXECUTE ON FUNCTION  creer_garcon(nomUtilisateur VARCHAR, motdepasse VARCHAR, nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval) TO proprietaires_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc TIMESTAMP, dureeLoc INTERVAL) TO proprietaires_abeilles;
-
+GRANT EXECUTE ON FUNCTION ConsulterListeEmploye() TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION AfficherProfilEmploye(Nom VARCHAR(30), Prenom VARCHAR(30)) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION listeInscritsCoursVoile(DateCours timestamp) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION inscrireclientaucours(p_idcours INT, p_idclient INT, p_idForfait INT) TO proprietaires_abeilles;
 
 GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
 camping ECamping, statut EStatutClient, poids FLOAT, taille INTEGER, preferenceContact EPreferenceContact) TO proprietaires_abeilles;
@@ -85,7 +85,9 @@ GRANT EXECUTE ON PROCEDURE modifier_employe(idEmp INT, nomEmploye VARCHAR, preno
 GRANT EXECUTE ON PROCEDURE changer_etat_materiel(IN materiel_id INT,IN type_materiel VARCHAR(30),IN nouvel_etat EStatutMateriel) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement, montantForfait FLOAT) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE ajouter_location( p_IdClient INT, p_IdMatos INT, p_TypeMatos VARCHAR(30), p_DateHeureLocation TIMESTAMP, p_Duree INTERVAL, p_PrixHeure FLOAT, p_PrixHeureSupp FLOAT, p_EtatLocation EEtatLocation, p_MoyenPaiement EMoyenPaiement) TO proprietaires_abeilles;
-
+GRANT EXECUTE ON PROCEDURE p_creer_diplome(dateObtention DATE, LienDocumentPDF VARCHAR, IdMoniteur int) TO proprietaires_abeilles;
+GRANT EXECUTE ON PROCEDURE p_creer_permis(dateObtention DATE, LienDocumentPDF VARCHAR, IdProprietaire int) TO proprietaires_abeilles;
+GRANT EXECUTE ON PROCEDURE modifier_profil_client( IN client_id INT, IN nouveau_nom VARCHAR(30), IN nouveau_prenom VARCHAR(30), IN nouvelle_date_naissance DATE, IN nouveau_mail VARCHAR(50), IN nouveau_numTelephone VARCHAR, IN nouveau_camping ECamping, IN nouveau_statut EStatutClient, IN nouvelle_taille FLOAT, IN nouveau_poids FLOAT, IN nouvelle_preference_contact EPreferenceContact) TO proprietaires_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO proprietaires_abeilles;
@@ -97,7 +99,7 @@ GRANT USAGE ON SEQUENCE pieddemat_idpieddemat_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE standuppaddle_idstanduppaddle_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE voile_idvoile_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE paiement_idpaiement_seq TO proprietaires_abeilles;
-GRANT USAGE ON SEQUENCE  forfait_idforfait_seq TO proprietaires_abeilles;
+GRANT USAGE ON SEQUENCE forfait_idforfait_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE plancheavoile_idplanchevoile_seq TO proprietaires_abeilles;
 
 DROP USER IF EXISTS lfrottier;
@@ -116,31 +118,28 @@ DROP OWNED BY moniteurs_abeilles;
 DROP GROUP IF EXISTS moniteurs_abeilles;
 CREATE GROUP moniteurs_abeilles;
 
-GRANT SELECT ON Client TO moniteurs_abeilles;
-GRANT INSERT ON Client TO moniteurs_abeilles;
+GRANT SELECT, INSERT, UPDATE ON Client TO moniteurs_abeilles;
 GRANT SELECT ON v_stock_materiel_raw TO moniteurs_abeilles;
 GRANT SELECT ON v_stock_materiel TO moniteurs_abeilles;
 GRANT SELECT ON v_Planche_a_voile_compo_raw TO moniteurs_abeilles;
 GRANT SELECT ON v_Planche_a_voile_compo TO moniteurs_abeilles;
 GRANT SELECT ON v_Planche_a_voile TO moniteurs_abeilles;
-GRANT SELECT, INSERT ON Catamaran TO moniteurs_abeilles;
-GRANT SELECT, INSERT ON Flotteur TO moniteurs_abeilles;
-GRANT SELECT, INSERT ON Pedalo TO moniteurs_abeilles;
-GRANT SELECT, INSERT ON PiedDeMat TO moniteurs_abeilles;
-GRANT SELECT, INSERT ON StandUpPaddle TO moniteurs_abeilles;
-GRANT SELECT, INSERT ON Voile TO moniteurs_abeilles;
+GRANT SELECT, INSERT, UPDATE ON Catamaran TO moniteurs_abeilles;
+GRANT SELECT, INSERT, UPDATE ON Pedalo TO moniteurs_abeilles;
+GRANT SELECT, INSERT, UPDATE ON StandUpPaddle TO moniteurs_abeilles;
+GRANT SELECT, INSERT, UPDATE ON Voile TO moniteurs_abeilles;
 GRANT SELECT ON typeforfait TO moniteurs_abeilles;
 GRANT SELECT, INSERT ON paiement TO moniteurs_abeilles;
 GRANT SELECT, INSERT ON forfait TO moniteurs_abeilles;
-GRANT SELECT, INSERT ON coursplanchevoile TO moniteurs_abeilles;
+GRANT SELECT ON coursplanchevoile TO moniteurs_abeilles;
 GRANT SELECT, INSERT ON reservation TO moniteurs_abeilles;
 GRANT SELECT, INSERT ON location TO moniteurs_abeilles;
-GRANT SELECT, INSERT ON plancheavoile TO moniteurs_abeilles;
+GRANT SELECT, INSERT, UPDATE ON plancheavoile TO moniteurs_abeilles;
 GRANT SELECT, INSERT, UPDATE ON flotteur TO moniteurs_abeilles;
 GRANT SELECT, INSERT, UPDATE ON voile TO moniteurs_abeilles;
 GRANT SELECT, INSERT, UPDATE ON pieddemat TO moniteurs_abeilles;
 GRANT SELECT ON prixmateriel TO moniteurs_abeilles;
-
+GRANT SELECT ON participation TO moniteurs_abeilles;
 
 GRANT USAGE ON TYPE ECamping TO moniteurs_abeilles;
 GRANT USAGE ON TYPE EPreferenceContact TO moniteurs_abeilles;
@@ -151,18 +150,21 @@ GRANT USAGE ON TYPE ECapaciteFlotteur TO moniteurs_abeilles;
 
 GRANT EXECUTE ON FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO moniteurs_abeilles;
-GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
-camping ECamping, statut EStatutClient, poids FLOAT, taille INTEGER, preferenceContact EPreferenceContact) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_planchevoile(dateLoc timestamp, dureeLoc interval, capaciteFlot ecapaciteflotteur, tailVoile etaillevoile) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION possede_remise(idPers INTEGER) TO moniteurs_abeilles;
-GRANT EXECUTE ON FUNCTION creer_planche_voile(p_idFloteur INTEGER, p_idPiedMat INTEGER, p_idDeVoile INTEGER) TO moniteurs_abeilles;
+GRANT EXECUTE ON FUNCTION listeInscritsCoursVoile(DateCours timestamp) TO moniteurs_abeilles;
+GRANT EXECUTE ON FUNCTION inscrireclientaucours(p_idcours INT, p_idclient INT, p_idForfait INT) TO proprietaires_abeilles;
+GRANT EXECUTE ON FUNCTION consulter_cours_voile_pour_inscription() TO moniteurs_abeilles;
 
+GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
+camping ECamping, statut EStatutClient, poids FLOAT, taille INTEGER, preferenceContact EPreferenceContact) TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement) TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE changer_etat_materiel(IN materiel_id INT,IN type_materiel VARCHAR(30),IN nouvel_etat EStatutMateriel) TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE ajouter_location( p_IdClient INT, p_IdMatos INT, p_TypeMatos VARCHAR(30), p_DateHeureLocation TIMESTAMP, p_Duree INTERVAL, p_PrixHeure FLOAT, p_PrixHeureSupp FLOAT, p_EtatLocation EEtatLocation, p_MoyenPaiement EMoyenPaiement) TO moniteurs_abeilles;
+GRANT EXECUTE ON PROCEDURE modifier_profil_client( IN client_id INT, IN nouveau_nom VARCHAR(30), IN nouveau_prenom VARCHAR(30), IN nouvelle_date_naissance DATE, IN nouveau_mail VARCHAR(50), IN nouveau_numTelephone VARCHAR, IN nouveau_camping ECamping, IN nouveau_statut EStatutClient, IN nouvelle_taille FLOAT, IN nouveau_poids FLOAT, IN nouvelle_preference_contact EPreferenceContact) TO moniteurs_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE catamaran_idcatamaran_seq TO moniteurs_abeilles;
@@ -173,9 +175,7 @@ GRANT USAGE ON SEQUENCE standuppaddle_idstanduppaddle_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE voile_idvoile_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE paiement_idpaiement_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE forfait_idforfait_seq TO moniteurs_abeilles;
-GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE plancheavoile_idplanchevoile_seq TO moniteurs_abeilles;
-
 
 
 DROP USER IF EXISTS jbond;
@@ -210,6 +210,7 @@ GRANT SELECT, INSERT ON Pedalo TO garcons_de_plage_abeilles;
 GRANT SELECT, INSERT ON PiedDeMat TO garcons_de_plage_abeilles;
 GRANT SELECT, INSERT ON StandUpPaddle TO garcons_de_plage_abeilles;
 GRANT SELECT, INSERT ON Voile TO garcons_de_plage_abeilles;
+GRANT SELECT ON coursplanchevoile TO garcons_de_plage_abeilles;
 
 GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO garcons_de_plage_abeilles;
 

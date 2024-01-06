@@ -205,7 +205,7 @@
     function confirmerInscription() {
         const formulaire = document.formulaire;
         if(confirm("Voulez-vous inscrire ce client à un cours ?")) {
-            const url = 'inscription_client_cours_voile.php?idClient=' + formulaire.idpers.value;
+            const url = 'inscription_client_cours_voile.php?idClient=' + formulaire.idpers.value ;
             document.location = url;
         }
     }
