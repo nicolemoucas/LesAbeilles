@@ -24,7 +24,7 @@
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
 
             //pour la combobox des rôles des employés
-            $requete = "SELECT unnest(enum_range(NULL::ERoleEmploye)) AS ERole";
+            $requete = "SELECT unnest(enum_range(NULL::ETypeEmploye)) AS ERole";
             $listeRolesEmployes = pg_query($connexion, $requete);
             $employes_combobox_php = "";
             while ($row = pg_fetch_object($listeRolesEmployes)) {

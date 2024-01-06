@@ -95,7 +95,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 /* 7 - Retrouver un employé */
---SELECT enum_range(null::ERoleEmploye); -- "{Propriétaire,Moniteur,""Garçon de Plage""}"
+--SELECT enum_range(null::ETypeEmploye); -- "{Propriétaire,Moniteur,""Garçon de Plage""}"
 DROP FUNCTION IF EXISTS f_rechercher_employe;
 CREATE OR REPLACE FUNCTION f_rechercher_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR)
 RETURNS TABLE (idEmp INTEGER, nomUtilEmp VARCHAR, nomEmp VARCHAR, prenomEmp VARCHAR, mailEmp VARCHAR, numTelEmp VARCHAR) AS $$

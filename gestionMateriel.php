@@ -50,7 +50,6 @@
         <article class="corps">
             <div class="fonctionnalites">
                     <a href="inscriptionMateriel.php" class="button">Recevoir du matériel</a>
-                    <a href="changer_etat_materiel.php" class="button">Gestion de l'état du matériel</a>
             </div>
             <?php 
                 ini_set('display_errors', 1);

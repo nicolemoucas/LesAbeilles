@@ -20,18 +20,14 @@
         <div class="corps">
             <h2>Bienvenue au Club Nautique Les Abeilles, <?php echo $_SESSION["identifiant"]?></h2>
             <div class="fonctionnalites">
-                <a href="gestionMateriel.php" class="button">Consulter le stock de matériel</a>
                 <a href="inscriptionProprietaire.php" class="button">Créer un profil propriétaire</a>
                 <a href="inscriptionMoniteur.php" class="button">Créer un profil moniteur</a>
                 <a href="inscriptionGarcon.php" class="button">Créer un profil garçon de plage</a>
                 <a href="inscriptionClient.php" class="button">Créer un profil client</a>
                 <a href="rechercherClient.php" class="button">Rechercher un client</a>
-                <a href="cours_de_voile.php" class="button">Consulter les cours</a>
                 <a href="consulter_locations.php" class="button">Consulter les locations</a>
                 <a href="rechercherEmploye.php" class="button">Rechercher un employé</a>
                 <a href="Affiher_liste_employes.php" class="button">Afficher la liste des employés</a>
-                <a href="#" class="button">Rechercher un cours</a>
-                <a href="inscription_client_cours_voile.php" class="button">Inscription d'un client à un cours</a>
                 <a href="location_en_cours.php" class="button">Consulter les locations en cours</a>
 
             </div>

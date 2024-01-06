@@ -72,7 +72,7 @@ SELECT * FROM Location;
 --SELECT enum_range(null::ECamping);
 --SELECT enum_range(null::EStatutClient);
 --SELECT enum_range(null::EPreferenceContact);
---SELECT enum_range(null::ERoleEmploye);
+--SELECT enum_range(null::ETypeEmploye);
 
 -- Client OK
 INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Mail, Camping, Statut, Taille, Poids, PreferenceContact) VALUES
@@ -101,7 +101,7 @@ INSERT INTO Client (IdClient, Nom, Prenom, DateNaissance, Camping, Statut, Mail,
 --SELECT * FROM Client;
 
 -- Comptes Employé
---SELECT enum_range(null::ERoleEmploye); -- "{Propriétaire,Moniteur,""Garçon de Plage""}"
+--SELECT enum_range(null::ETypeEmploye); -- "{Propriétaire,Moniteur,""Garçon de Plage""}"
 -- Propriétaires OK
 INSERT INTO CompteEmploye (IdCompte, NomUtilisateur, MotDePasse, Nom, Prenom, DateNaissance, Mail, NumTelephone, TypeEmploye, IdPermis) VALUES
 	(DEFAULT, 'lfrottier', crypt('lfrottier', gen_salt('bf')), 'FROTTIER', 'Louis', '1980-11-15', 'lf15@lesabeilles.com', '0795847645', 'Propriétaire', 2),

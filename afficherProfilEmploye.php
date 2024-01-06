@@ -76,7 +76,7 @@
             }
 
             //pour la combobox des rôles des employés
-            $requete = "SELECT unnest(enum_range(NULL::ERoleEmploye)) AS ERole";
+            $requete = "SELECT unnest(enum_range(NULL::ETypeEmploye)) AS ERole";
             $listeRolesEmployes = pg_query($connexion, $requete);
             $employes_combobox_php = "";
             while ($row_emp = pg_fetch_object($listeRolesEmployes)) {
