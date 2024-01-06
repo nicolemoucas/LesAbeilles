@@ -59,7 +59,7 @@ $idForfaitValid = pg_fetch_object($queryForfait)->idforfait;
         <?php include('header.php') ?>
     </header>
 
-    <div class="container">
+    <div class="corps">
         <h1>Inscription à un cours</h1>
 
         <?php if ($showQuestionAndButtons): ?>
@@ -75,14 +75,14 @@ $idForfaitValid = pg_fetch_object($queryForfait)->idforfait;
         if (!$result) {
             echo "Erreur lors de l'exécution de la fonction.";
         } else {
-            echo "<table>
+            echo "<table border='1'>
                     <tr>
                         <th>ID Cours</th>
                         <th>Date et Heure</th>
                         <th>Niveau</th>
                         <th>Nom Moniteur</th>
                         <th>Nb Places Restantes</th>
-                        <th class='button-col'></th>
+                        <th class='button-col'>Action</th>
                     </tr>";
 
                     while ($row = pg_fetch_assoc($result)) {
@@ -98,7 +98,7 @@ $idForfaitValid = pg_fetch_object($queryForfait)->idforfait;
                                         <input type='hidden' name='idClient' value='$idClientFromURL'>
                                         <input type='hidden' name='idCours' value='" . $row['idcours'] . "'>
                                         <input type='hidden' name='idForfait' value='" . $idForfaitValid . "'>
-                                        <button type='submit' class='button' name='inscrireCours'>Inscrire à ce cours</button>
+                                        <button type='submit' class='button btnAnnulerConsulterCours' name='inscrireCours'>Inscrire à ce cours</button>
                                     </form>
                                 </td>
                               </tr>";

@@ -14,7 +14,7 @@
         <?php include('header.php'); ?>
     </header>
 
-    <div class="container">
+    <div class="corps">
         <h1>Inscription au cours</h1>
 
         <?php
