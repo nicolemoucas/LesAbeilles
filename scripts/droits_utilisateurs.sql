@@ -77,7 +77,7 @@ GRANT EXECUTE ON PROCEDURE supprimer_client(nom VARCHAR, prenom VARCHAR, dateNai
 GRANT EXECUTE ON PROCEDURE creer_cours(horaireCours TIMESTAMP, nivCours EStatutClient, idMoniteur INT) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE p_supprimer_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE modifier_employe(idEmp INT, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, telEmploye VARCHAR)  TO proprietaires_abeilles;
-GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement) TO proprietaires_abeilles;
+GRANT EXECUTE ON PROCEDURE changer_etat_materiel(IN materiel_id INT,IN type_materiel VARCHAR(30),IN nouvel_etat EStatutMateriel) TO proprietaires_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO proprietaires_abeilles;
 GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO proprietaires_abeilles;
@@ -154,6 +154,7 @@ GRANT EXECUTE ON FUNCTION creer_planche_voile(p_idFloteur INTEGER, p_idPiedMat I
 GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc TIMESTAMP, dureeLoc INTERVAL) TO moniteurs_abeilles;
 
 GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement) TO moniteurs_abeilles;
+GRANT EXECUTE ON PROCEDURE changer_etat_materiel(IN materiel_id INT,IN type_materiel VARCHAR(30),IN nouvel_etat EStatutMateriel) TO moniteurs_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE catamaran_idcatamaran_seq TO moniteurs_abeilles;
@@ -163,7 +164,7 @@ GRANT USAGE ON SEQUENCE pieddemat_idpieddemat_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE standuppaddle_idstanduppaddle_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE voile_idvoile_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE paiement_idpaiement_seq TO moniteurs_abeilles;
-GRANT USAGE ON SEQUENCE  forfait_idforfait_seq TO moniteurs_abeilles;
+GRANT USAGE ON SEQUENCE forfait_idforfait_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE coursplanchevoile_idcours_seq TO moniteurs_abeilles;
 GRANT USAGE ON SEQUENCE plancheavoile_idplanchevoile_seq TO moniteurs_abeilles;
 

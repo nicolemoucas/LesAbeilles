@@ -14,7 +14,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- pour jQuery -->
         <script>
             function redirectionProprietaire() {
-                // window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
+                 window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
             }
 
             function redirectionMoniteur() {
@@ -177,15 +177,33 @@
                 alert("Vous n'avez pas le droit de modifier cet équipement.");
             }
             else {
-                //var data=IdMateriel+""+TypeMateriel+""+EtatMateriel;
-                //alert(data);
-                // redirection to modifier matériel
+                               
                 window.location.href= '';
-                const url = 'http://localhost/LesAbeilles/changer_etat_materiel.php?IdMateriel=' + IdMateriel + '&TypeMateriel=' + TypeMateriel + '&EtatMateriel=' + EtatMateriel;
+                const url = 'http://localhost/LesAbeilles/changer_etat_materiel.php?IdMateriel=' + IdMateriel + '&TypeMateriel=' + repairTypeMateriel(TypeMateriel) + '&EtatMateriel=' + EtatMateriel;
                 document.location = url;
             }
             
         });
     });
+
+    function repairTypeMateriel(typeMateriel){
+        switch (typeMateriel) {
+            case "Pied de mat":
+                return "PiedDeMat";
+                break;
+            case "Pédalo":
+                return "Pedalo";
+                break;
+            case "Planche à voile":
+                return "PlancheAVoile";
+                break;
+            case "Stand Up Paddle": 
+                return "StandUpPaddle";
+                break;
+            default : 
+                return typeMateriel;
+                break;
+        }
+    }
 </script>
 </html>

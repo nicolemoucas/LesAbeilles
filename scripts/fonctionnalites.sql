@@ -444,11 +444,11 @@ BEGIN
         WHEN 'PlancheAVoile' THEN
             UPDATE PlancheAVoile SET Statut = nouvel_etat WHERE IdPlancheVoile = materiel_id;
         WHEN 'Voile' THEN
-            UPDATE Voile SET Statut = nouvel_etat WHERE IdPlancheVoile = materiel_id;
+            UPDATE Voile SET Statut = nouvel_etat WHERE idVoile = materiel_id;
         WHEN 'Flotteur' THEN
-            UPDATE Flotteur SET Statut = nouvel_etat WHERE IdPlancheVoile = materiel_id;
+            UPDATE Flotteur SET Statut = nouvel_etat WHERE idFlotteur = materiel_id;
         WHEN 'PiedDeMat' THEN
-            UPDATE PiedDeMat SET Statut = nouvel_etat WHERE IdPlancheVoile = materiel_id;
+            UPDATE PiedDeMat SET Statut = nouvel_etat WHERE idPiedDeMat = materiel_id;
         ELSE
             RAISE EXCEPTION 'type de matériel non pris en charge : %', type_materiel;
     END CASE;

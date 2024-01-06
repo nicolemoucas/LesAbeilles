@@ -11,12 +11,34 @@
     <link rel="stylesheet" href="css/styles.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+<script>
+    function redirectionProprietaire() {
+                 window.location.href= 'http://localhost/LesAbeilles/AccueilProprietaire.php';
+            }
+
+            function redirectionMoniteur() {
+                window.location.href= 'http://localhost/LesAbeilles/AccueilMoniteur.php';
+            }
+
+            function redirection(role) {
+                alert("L'état du matériel a été changé avec succès.");
+                switch (role) {
+                    case 'Propriétaire':
+                        redirectionProprietaire();
+                        break;
+                    case 'Moniteur':
+                        redirectionMoniteur();
+                        break;
+                
+                }
+            }
+</script>
 <body>
     <?php
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
 
-        $conn = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($conn));
+        $conn = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=" .$_SESSION["identifiant"]." password=" . $_SESSION["motdepasse"]) or die("Impossible de se connecter : " . pg_result_error($connexion));
         $current_url = 'gestionMateriel.php';
 
         $idMateriel = $_GET["IdMateriel"];
@@ -69,7 +91,9 @@
                 $result = pg_execute($conn, "changer_etat_materiel", array($materiel_id, $type_materiel, $nouvel_etat));
 
                 if ($result) {
-                    echo "L'état du matériel a été changé avec succès.";
+                    echo '<script type="text/javascript"> redirection('. $_SESSION["role"] .'); </script>';
+
+
                 } else {
                     echo "Erreur lors du changement d'état du matériel : " . pg_last_error($conn);
                 }
