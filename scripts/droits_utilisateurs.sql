@@ -83,7 +83,7 @@ GRANT EXECUTE ON PROCEDURE creer_cours(horaireCours TIMESTAMP, nivCours EStatutC
 GRANT EXECUTE ON PROCEDURE p_supprimer_employe(roleEmploye VARCHAR, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, numTelEmploye VARCHAR) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE modifier_employe(idEmp INT, nomEmploye VARCHAR, prenomEmploye VARCHAR, dateNaissanceEmploye DATE, mailEmploye VARCHAR, telEmploye VARCHAR)  TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE changer_etat_materiel(IN materiel_id INT,IN type_materiel VARCHAR(30),IN nouvel_etat EStatutMateriel) TO proprietaires_abeilles;
-GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement, montantForfait FLOAT) TO proprietaires_abeilles;
+GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE ajouter_location( p_IdClient INT, p_IdMatos INT, p_TypeMatos VARCHAR(30), p_DateHeureLocation TIMESTAMP, p_Duree INTERVAL, p_PrixHeure FLOAT, p_PrixHeureSupp FLOAT, p_EtatLocation EEtatLocation, p_MoyenPaiement EMoyenPaiement) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE p_creer_diplome(dateObtention DATE, LienDocumentPDF VARCHAR, IdMoniteur int) TO proprietaires_abeilles;
 GRANT EXECUTE ON PROCEDURE p_creer_permis(dateObtention DATE, LienDocumentPDF VARCHAR, IdProprietaire int) TO proprietaires_abeilles;

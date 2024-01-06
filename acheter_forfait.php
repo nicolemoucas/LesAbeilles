@@ -59,7 +59,6 @@
             $requete = "SELECT possede_remise($idClient)";
             $query = pg_query($connexion, $requete);
             $remise = pg_fetch_object($query)->possede_remise;
-            echo $remise;
             
             //pour la combobox ddes forfaits
             $requete = "SELECT * FROM typeforfait";
@@ -110,11 +109,10 @@
     </body>
 </html>
 <script>
-
     const formulaire = document.formulaire;
     formulaire.addEventListener("submit", (event) => {
         let isValid = true;
-        if(!confirm("Valider l'encaissement de " + + "?")) {
+        if(!confirm("Valider l'encaissement ?")) {
             event.preventDefault();
         }
     });

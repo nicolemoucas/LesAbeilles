@@ -665,9 +665,7 @@ $BODY$ LANGUAGE PlpgSQL;
 
 
 DROP PROCEDURE IF EXISTS acheter_forfait;
-
-
-CREATE OR REPLACE PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement, montantForfait FLOAT) AS $BODY$
+CREATE OR REPLACE PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement) AS $BODY$
 DECLARE
 	now timestamp;
 	idPaie INTEGER;
@@ -675,10 +673,16 @@ DECLARE
 	enfant BOOLEAN;
 	nbseancesForfait INTEGER;
 	dateFinForfait DATE;
+	montantForfait FLOAT;
 BEGIN
 	now := NOW();
-
+	
 	SELECT INTO montantForfait prix FROM typeforfait WHERE idtypeforfait = idForfait;
+	IF(possede_remise(idClientFor)) THEN 
+		montantForfait := montantForfait * 0.9;
+	END IF;
+	
+
 	SELECT INTO nbseancesForfait nbseances FROM typeforfait WHERE idtypeforfait = idForfait;
 	SELECT INTO enfant EXISTS (SELECT * FROM CLIENT WHERE idClient = idClientFor AND idcertificat IS NOT NULL);
 	SELECT INTO annee date_part('year', CURRENT_DATE);
@@ -703,39 +707,6 @@ DROP FUNCTION IF EXISTS possede_remise;
 CREATE OR REPLACE FUNCTION possede_remise(idPers INTEGER) RETURNS BOOLEAN AS $BODY$
 BEGIN
     RETURN (SELECT EXISTS(SELECT * FROM client WHERE idCLient = idPers AND camping IS NOT NULL AND camping != 'Autre'));
-END;
-$BODY$ LANGUAGE PlpgSQL;
-
-
-DROP PROCEDURE IF EXISTS acheter_forfait;
-
-
-CREATE OR REPLACE PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement, montantForfait FLOAT) AS $BODY$
-DECLARE
-	now timestamp;
-	idPaie INTEGER;
-	annee INTEGER;
-	enfant BOOLEAN;
-	nbseancesForfait INTEGER;
-	dateFinForfait DATE;
-BEGIN
-	now := NOW();
-
-	SELECT INTO montantForfait prix FROM typeforfait WHERE idtypeforfait = idForfait;
-	SELECT INTO nbseancesForfait nbseances FROM typeforfait WHERE idtypeforfait = idForfait;
-	SELECT INTO enfant EXISTS (SELECT * FROM CLIENT WHERE idClient = idClientFor AND idcertificat IS NOT NULL);
-	SELECT INTO annee date_part('year', CURRENT_DATE);
-	SELECT INTO dateFinForfait to_date(CONCAT(annee, '/10/10'), 'YYYY/MM/DD');
-
-	INSERT INTO paiement (dateheure, montant, moyenpaiement)
-	VALUES (now, montantForfait, typePaiement);
-
-	SELECT INTO idPaie idpaiement FROM paiement
-	WHERE dateheure = now AND montant = montantForfait AND moyenpaiement = typePaiement;
-
-
-	INSERT INTO forfait (datefin, nbseancesrestantes, forfaitenfant, idclient, idtypeforfait, idpaiement)
-	VALUES(dateFinForfait, nbseancesForfait, enfant, idClientFor, idForfait, idPaie);
 END;
 $BODY$ LANGUAGE PlpgSQL;
 
