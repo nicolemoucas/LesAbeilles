@@ -33,16 +33,6 @@ END;
 $BODY$
 LANGUAGE PlpgSQL;
 
-/* 4 - Retrouver un moniteur */
-DROP FUNCTION IF EXISTS recherche_moniteur;
-CREATE OR REPLACE FUNCTION recherche_moniteur(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE)
-RETURNS TABLE (idpers INTEGER, nomMo VARCHAR, prenomMo VARCHAR, dateNaissanceMo DATE, mailMo VARCHAR, numTelephoneMo VARCHAR) AS $$
-
-BEGIN
-    RETURN QUERY SELECT * FROM moniteur WHERE lower(Nom) = lower($1) AND lower(Prenom) = lower($2) AND DateNaissance = $3;
-END;
-$$ Language PlpgSQL;
-
 /* 5 - Consulter la liste des employés */
 CREATE OR REPLACE FUNCTION ConsulterListeEmploye()
 RETURNS TABLE (
@@ -473,10 +463,9 @@ END;
 $$;
 
 /* 20- Inscription d'un client à un cours de planche à voile */
-DROP FUNCTION IF EXISTS inscrireclientaucours(INT, INT);
-
+DROP FUNCTION IF EXISTS inscrireclientaucours;
 -- Créer la nouvelle fonction
-CREATE OR REPLACE FUNCTION inscrireclientaucours(p_idcours INT, p_idclient INT)
+CREATE OR REPLACE FUNCTION inscrireclientaucours(p_idcours INT, p_idclient INT, p_idForfait INT)
 RETURNS VOID
 AS $$
 BEGIN
@@ -485,7 +474,10 @@ BEGIN
         -- Insérer l'inscription
         INSERT INTO participation(idcours, idclient)
         VALUES (p_idclient,p_idcours);
+        
+        UPDATE forfait SET nbseancesrestantes = (nbseancesrestantes - 1) WHERE idforfait = p_idForfait;
     END IF;
+    
 END;
 $$ LANGUAGE plpgsql;
 
@@ -645,7 +637,7 @@ LANGUAGE PlpgSQL;
 							);
 END;
 $$ Language PlpgSQL;
-
+-- jjusqu'ici
 
 DROP FUNCTION IF EXISTS f_rechercher_standuppaddle(dateLoc TIMESTAMP, dureeLoc INTERVAL);
 
@@ -1064,7 +1056,7 @@ BEGIN
     RETURNING IdPaiement INTO v_IdPaiement;
 
     CASE p_TypeMatos
-        WHEN 'StandUpPaddle' THEN
+        WHEN 'Stand Up Paddle' THEN
             v_IdStandUpPaddle := p_IdMatos;
         WHEN 'PlancheAVoile' THEN
             v_IdPlancheVoile := p_IdMatos;

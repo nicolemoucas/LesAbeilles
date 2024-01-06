@@ -13,6 +13,7 @@
         <title> Création d'un profil client </title>
     </head>
     <body>
+        <?php $index_url = ''; $current_url = 'inscriptionClient.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>

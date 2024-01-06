@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
-        <?php $current_url = 'cours_de_voile.php'; ?>
+        <?php $index_url = ''; $current_url = 'organiser_cours_voile.php'; ?>
         <header>
             <?php include('header.php') ?>
         </header>
@@ -40,8 +40,8 @@
 
         ?>
       
-        <h1>Organiser un cours de planche à voile : </h1>
         <div class="corps">
+            <h1>Organiser un cours de planche à voile : </h1>
             <form method="post" name="formulaire" novalidate="" class="form" action="creationCours.php">
                 
                 <label for="HoraireCours" class="label">Horaire :</label><br>

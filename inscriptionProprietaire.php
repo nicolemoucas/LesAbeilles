@@ -10,6 +10,7 @@
         <title> Création d'un profil propriétaire</title>
     </head>
     <body>
+        <?php $index_url = ''; $current_url = 'inscriptionProprietaire.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>

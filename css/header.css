@@ -1,64 +1,60 @@
 /* top right bottom left */
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300&display=swap');
 
-header {
+.header {
   background-color: rgba(2, 21, 90, 1);
-  height: 20em;
-  padding: 10px;
+  /* height: 20em; */
+  padding: 20px 10px;
   /* max-width: 1200px; */
-  text-align: center;
+  overflow-x: hidden;
   color: #fff;
-  position: relative;
-  width: 100vw;
+  /* position: relative; */
+  /* width: 100vw; */
 }
 
   /* Style the header with a background and some padding */
-.header {
+.header-right {
   display: flex;
   overflow: hidden;
   padding: 20px 30px; /* vert hor */
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.header li {
+/* .header-right li {
   display: inline;
   float: left;
-  padding: 70px 10px 10px 2px; /* top right left bottom */
-}
+  padding: 70px 10px 10px 2px; // top right left bottom
+} */
 
   /* Style the header links */
-li a {
+.header a {
   /* position: absolute; */
   /* background-color: rgba(246, 232, 213, 0.258); */
+  border-radius: 4px;
   color: rgb(229, 230, 250);
   display: block;
-  text-align: center;
-  padding: 12px;
-  text-decoration: none;
+  float: left;
   font-size: 18px;
   line-height: 25px;
-  border-radius: 4px;
+  text-align: center;
+  padding: 12px;
+  text-align: center;
+  text-decoration: none;
 }
 
-  /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
+  /* Style the logo link (set the same value of line-height and font-size to prevent the header to increase when the font gets bigger) */
 .header a.logo {
   font-size: 25px;
   font-weight: bold;
 }
 
   /* Change the background color on mouse-over */
-.header a:hover {
+.header-right a:hover {
   background-color: rgba(246, 232, 213, 1);
   color: rgba(121, 71, 13, 0.8);
 }
 
   /* Style the active/current link*/
-.header a.active {
+.header-right a.active {
   background-color: rgba(121, 71, 13, 1);
   color: white;
 }

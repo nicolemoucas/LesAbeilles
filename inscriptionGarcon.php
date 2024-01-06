@@ -14,6 +14,7 @@
         <title> Création d'un profil Garçon de plage</title>
     </head>
     <body>
+        <?php $index_url = ''; $current_url = 'inscriptionGarcon.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>

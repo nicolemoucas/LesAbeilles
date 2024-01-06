@@ -14,6 +14,7 @@
     </head>
     
     <body>
+        <?php $index_url = ''; $current_url = 'rechercherClient.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>

@@ -11,11 +11,12 @@
 </head>
 
 <body>
+    <?php $index_url = ''; $current_url = 'location_action.php'; ?>
     <header>
         <?php include('header.php'); ?>
     </header>
 
-    <div class="container">
+    <div class="container corps">
         <h1>Location du matériel</h1>
 
         <?php

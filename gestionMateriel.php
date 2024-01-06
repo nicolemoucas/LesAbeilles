@@ -42,7 +42,7 @@
         </script>
     </head>
     <section>
-        <?php $current_url = 'gestionMateriel.php'; ?>
+        <?php $index_url = ''; $current_url = 'gestionMateriel.php'; ?>
         <header>
             <?php include('header.php') ?>
         </header>

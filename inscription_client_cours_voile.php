@@ -49,11 +49,12 @@ $result = pg_query($connexion, 'SELECT * FROM consulter_cours_voile_pour_inscrip
 </head>
 
 <body>
+    <?php $index_url = ''; $current_url = 'inscription_client_cours_voile.php'; ?>
     <header>
         <?php include('header.php') ?>
     </header>
 
-    <div class="container">
+    <div class="corps">
         <h1>Inscription à un cours</h1>
 
         <?php if ($showQuestionAndButtons): ?>
@@ -69,14 +70,14 @@ $result = pg_query($connexion, 'SELECT * FROM consulter_cours_voile_pour_inscrip
         if (!$result) {
             echo "Erreur lors de l'exécution de la fonction.";
         } else {
-            echo "<table>
+            echo "<table border='1'>
                     <tr>
                         <th>ID Cours</th>
                         <th>Date et Heure</th>
                         <th>Niveau</th>
                         <th>Nom Moniteur</th>
                         <th>Nb Places Restantes</th>
-                        <th class='button-col'></th>
+                        <th class='button-col'>Action</th>
                     </tr>";
 
                     while ($row = pg_fetch_assoc($result)) {

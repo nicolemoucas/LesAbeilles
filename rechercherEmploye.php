@@ -13,6 +13,7 @@
     </head>
     
     <body>
+        <?php $index_url = ''; $current_url = 'rechercherEmploye.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>

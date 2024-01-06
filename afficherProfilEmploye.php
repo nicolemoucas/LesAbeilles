@@ -47,6 +47,7 @@
         </script>
     </head>
     <body>
+        <?php $index_url = ''; $current_url = 'afficherProfilEmploye.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>

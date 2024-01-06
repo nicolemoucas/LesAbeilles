@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-    <?php $current_url = 'consulter_liste_participants.php'; ?>
+    <?php $index_url = ''; $current_url = 'consulter_liste_participants.php'; ?>
 
     <header>
         <?php include('header.php') ?>

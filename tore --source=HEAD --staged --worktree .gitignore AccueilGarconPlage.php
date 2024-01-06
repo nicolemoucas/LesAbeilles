@@ -38,8 +38,8 @@
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></head>[m
      </head>[m
      <body>[m
-[31m-        <?php $current_url = 'index.php'; ?>[m
-[32m+[m[32m        <?php $current_url = 'AccueilMoniteur.php'; ?>[m
+[31m-        <?php $index_url = ''; $current_url = 'index.php'; ?>[m
+[32m+[m[32m        <?php $index_url = ''; $current_url = 'AccueilMoniteur.php'; ?>[m
          <header>[m
              <?php include('header.php')?>[m
          </header>[m
@@ -89,7 +89,7 @@
                  <a href="rechercherClient.php" class="button">Rechercher un client</a>[m
 [32m+[m[32m                <a href="cours_de_voile.php" class="button">Consulter les cours</a>[m
                  <a href="rechercherEmploye.php" class="button">Rechercher un employé</a>[m
-[31m-                <a href="Affiher_liste_employes.php" class="button">Afficher la liste des employés</a>[m
+[31m-                <a href="afficher_liste_employes.php" class="button">Afficher la liste des employés</a>[m
 [31m-                <a href="#" class="button">Rechercher un cours</a>[m
 [31m-                <a href="inscription_client_cours_voile.php" class="button">Inscription d'un client à un cours</a>[m
              </div>[m
@@ -104,10 +104,10 @@
  [m
          <footer>[m
              <?php include('footer.php')?>[m
-[1mdiff --git a/Affiher_liste_employes.php b/Affiher_liste_employes.php[m
+[1mdiff --git a/afficher_liste_employes.php b/afficher_liste_employes.php[m
 [1mdeleted file mode 100644[m
 [1mindex ff13a9d..0000000[m
-[1m--- a/Affiher_liste_employes.php[m
+[1m--- a/afficher_liste_employes.php[m
 [1m+++ /dev/null[m
 [36m@@ -1,76 +0,0 @@[m
 [31m-<!DOCTYPE html>[m
@@ -133,7 +133,7 @@
 [31m-    </style>[m
 [31m-</head>[m
 [31m-<body>[m
-[31m-    <?php $current_url = 'Afficher_liste_employes.php'; ?>[m
+[31m-    <?php $index_url = ''; $current_url = 'Afficher_liste_employes.php'; ?>[m
 [31m-[m
 [31m-    <header>[m
 [31m-        <?php include('header.php') ?>[m

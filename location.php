@@ -29,6 +29,7 @@
         </script>
     </head>
     <body>
+        <?php $index_url = ''; $current_url = 'location.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>

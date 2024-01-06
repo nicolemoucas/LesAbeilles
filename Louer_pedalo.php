@@ -15,6 +15,11 @@ session_start();
 
 <body>
 
+    <?php $index_url = ''; $current_url = 'louer_pedalo.php'; ?> 
+    <header>
+        <?php include('header.php') ?>
+    </header>
+
     <?php
     // Include the database connection
     $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));

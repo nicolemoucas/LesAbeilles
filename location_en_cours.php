@@ -47,7 +47,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <?php $current_url = 'location_en_cours.php'; ?>
+    <?php $index_url = ''; $current_url = 'location_en_cours.php'; ?>
     <header>
         <?php include('header.php') ?>
     </header>

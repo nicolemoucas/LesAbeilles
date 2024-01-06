@@ -21,6 +21,10 @@
     </style>
 </head>
 <body>
+    <?php $index_url = ''; $current_url = 'planning_location.php'; ?>
+    <header>
+        <?php include('header.php') ?>
+    </header>
     <?php 
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);

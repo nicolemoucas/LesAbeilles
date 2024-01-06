@@ -44,6 +44,7 @@
         </script>
     </head>
     <body>
+        <?php $index_url = ''; $current_url = 'afficherProfilClient.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>

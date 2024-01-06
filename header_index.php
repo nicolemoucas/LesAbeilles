@@ -37,27 +37,11 @@
                 }
             }
     </script>
-    <body class="header">
+    <body>
+        <img id="logo_les_abeilles" src="images/les_abeilles_logo.png" alt="Logo du Club Nautique Les Abeilles">
         <h1>Club Nautique Les Abeilles</h1>
-        <a href="javascript:redirection('<?php echo $_SESSION["role"]?>')" class="logo">
-            <img id="logo_les_abeilles" src="images/les_abeilles_logo.png" alt="Logo du Club Nautique Les Abeilles">
-        </a>
-        <div class="header-right">
-            <a <?php if($current_url == 'AccueilProprietaire.php' || $current_url == 'AccueilMoniteur.php'  || $current_url == 'AccueilGarconPlage.php' ){ echo 'class="current"'; }?>
-                href="javascript:redirection('<?php echo $_SESSION["role"]?>')" class="logo-home"><i class="fa fa-home"></i>&nbsp; Les Abeilles
-            </a>
-
-            <a <?php if($current_url == 'menu_cours_de_voile.php' || $current_url == 'cours_de_voile.php'){ echo 'class="current"'; }?>
-                href="menu_cours_voile.php">Cours de Voile
-            </a>
-
-            <a <?php if($current_url == 'gestionMateriel.php'){ echo 'class="current"'; }?>
-                href="gestionMateriel.php">Gestion du Matériel
-            </a>
-            
-            <a href="index.php"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp; Déconnexion</a>
-            
-            </nav>
+        <div class="header">
+            <br><br><br><br>
         </div>
     </body>
 <html>

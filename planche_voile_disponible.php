@@ -84,6 +84,7 @@ $idClient = isset($_GET['idClient']) ? $_GET['idClient'] : null;
 </head>
 
 <body>
+    <?php $index_url = ''; $current_url = 'planche_voile_disponible.php'; ?>
     <header>
         <?php include('header.php') ?>
     </header>

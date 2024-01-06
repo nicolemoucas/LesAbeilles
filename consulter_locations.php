@@ -13,7 +13,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- pour jQuery -->
     </head>
     <body>
-        <?php $current_url = 'consulter_locations.php'; ?>
+        <?php $index_url = ''; $current_url = 'consulter_locations.php'; ?>
         <header>
             <?php include('header.php') ?>
         </header>

@@ -8,8 +8,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></head>
     </head>
     <body>
+        <?php $current_url = 'index.php'; ?>
         <header>
-            <?php include('header.php')?>
+            <?php include('header_index.php')?>
         </header>
         <div class="corps">
                 <h1>Connexion</h1>

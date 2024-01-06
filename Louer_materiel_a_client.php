@@ -12,9 +12,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></head>
     </head>
     <body>
-        <?php $current_url = 'index.php'; ?>
-        
-
+        <?php $index_url = ''; $current_url = 'Louer_materiel_a_client.php'; ?>
+        <header>
+            <?php include('header.php')?>
+        </header> 
         <div class="corps">
             <h2>Location d'un matériel</h2>
             <div class="fonctionnalites">
@@ -22,8 +23,6 @@
                 <a href="Louer_catamaran.php" class="button">Louer un catamaran</a>
                 <a href="Louer_stand_up_paddle.php" class="button">Louer un stand up paddle</a>
                 <a href="Louer_pedalo.php" class="button">Louer un pédalo</a>
-            
-
             </div>
 
             <br><br>

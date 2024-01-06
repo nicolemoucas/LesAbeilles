@@ -17,12 +17,13 @@
         ini_set('display_startup_errors', 1);
 
         $conn = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($conn));
-        $current_url = 'gestionMateriel.php';
+        $current_url = 'changer_etat_materiel.php';
 
         $idMateriel = $_GET["IdMateriel"];
         $typeMateriel = $_GET["TypeMateriel"];
         $etatMateriel = $_GET["EtatMateriel"];
     ?>
+    <?php $index_url = ''; $current_url = 'changer_etat_materiel.php'; ?>
     <header>
         <?php include('header.php') ?>
     </header>

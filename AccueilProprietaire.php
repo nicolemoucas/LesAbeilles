@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></head>
     </head>
     <body>
-        <?php $current_url = 'index.php'; ?>
+        <?php $index_url = ''; $current_url = 'AccueilProprietaire.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>
@@ -27,7 +27,7 @@
                 <a href="rechercherClient.php" class="button">Rechercher un client</a>
                 <a href="consulter_locations.php" class="button">Consulter les locations</a>
                 <a href="rechercherEmploye.php" class="button">Rechercher un employé</a>
-                <a href="Affiher_liste_employes.php" class="button">Afficher la liste des employés</a>
+                <a href="afficher_liste_employes.php" class="button">Afficher la liste des employés</a>
                 <a href="location_en_cours.php" class="button">Consulter les locations en cours</a>
 
             </div>

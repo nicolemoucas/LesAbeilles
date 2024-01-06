@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
-        <?php $current_url = 'cours_de_voile.php'; ?>
+        <?php $index_url = ''; $current_url = 'menu_cours_de_voile.php'; ?>
         <header>
             <?php include('header.php') ?>
         </header>

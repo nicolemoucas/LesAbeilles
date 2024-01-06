@@ -143,8 +143,6 @@ GRANT USAGE ON TYPE ECapaciteFlotteur TO moniteurs_abeilles;
 
 GRANT EXECUTE ON FUNCTION recherche_client(nomClient VARCHAR, prenomClient VARCHAR, dateNaissanceClient DATE) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION consulter_cours_voile() TO moniteurs_abeilles;
-GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
-camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_catamaran(dateLoc timestamp, dureeLoc interval) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc timestamp, dureeLoc interval) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_standuppaddle(dateLoc timestamp, dureeLoc interval) TO moniteurs_abeilles;
@@ -153,6 +151,8 @@ GRANT EXECUTE ON FUNCTION possede_remise(idPers INTEGER) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION creer_planche_voile(p_idFloteur INTEGER, p_idPiedMat INTEGER, p_idDeVoile INTEGER) TO moniteurs_abeilles;
 GRANT EXECUTE ON FUNCTION f_rechercher_pedalo(dateLoc TIMESTAMP, dureeLoc INTERVAL) TO moniteurs_abeilles;
 
+GRANT EXECUTE ON PROCEDURE creer_client(nom VARCHAR, prenom VARCHAR, dateNaissance DATE, mail VARCHAR, numTelephone VARCHAR,
+camping ECamping, statut EStatutClient, poids FLOAT, taille FLOAT, preferenceContact EPreferenceContact) TO moniteurs_abeilles;
 GRANT EXECUTE ON PROCEDURE acheter_forfait(idClientFor INTEGER, idForfait INTEGER, typePaiement EMoyenPaiement) TO moniteurs_abeilles;
 
 GRANT USAGE ON SEQUENCE client_idclient_seq TO moniteurs_abeilles;

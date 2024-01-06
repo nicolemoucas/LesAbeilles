@@ -21,13 +21,13 @@
     </style>
 </head>
 <body>
-    <?php $current_url = 'Afficher_liste_employes.php'; ?>
+    <?php $index_url = ''; $current_url = 'afficher_liste_employes.php'; ?>
 
     <header>
         <?php include('header.php') ?>
     </header>
 
-    <div class="container">
+    <div class="corps">
         <h2>Liste des Employés</h2>
 
         <?php

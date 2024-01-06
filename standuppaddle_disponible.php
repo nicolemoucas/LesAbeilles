@@ -79,11 +79,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
+    <?php $index_url = ''; $current_url = 'standuppaddle_disponible.php'; ?>
     <header>
         <?php include('header.php') ?>
     </header>
 
-    <div class="container">
+    <div class="corps">
         <h1>Stand Up Paddle Disponible</h1>
         <form action="" method="post">
             <label for="dateLocation">Date de Location :</label>
@@ -93,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="time" id="heureLocation" name="heureLocation" required value="<?php echo $heureLocation; ?>"><br>
 
             <label for="dureeLocation">Durée de Location :</label>
-            <input type="number" id="dureeLocation" name="dureeLocation" required value="<?php echo $dureeLocation; ?>"> heures<br>
+            <input type="number" id="dureeLocation" name="dureeLocation" required min=1 value="<?php echo $dureeLocation; ?>"> heures<br>
 
             <label for="choixPaiement">Mode de paiement :</label>
             <select id="choixPaiement" name="choixPaiement" required>

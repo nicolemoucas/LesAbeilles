@@ -10,11 +10,12 @@
 </head>
 
 <body>
+    <?php $index_url = ''; $current_url = 'inscription_client_cours_action.php'; ?>
     <header>
         <?php include('header.php'); ?>
     </header>
 
-    <div class="container">
+    <div class="corps">
         <h1>Inscription au cours</h1>
 
         <?php

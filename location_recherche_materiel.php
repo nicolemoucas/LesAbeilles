@@ -45,6 +45,7 @@
         </script>
     </head>
     <body>
+        <?php $index_url = ''; $current_url = 'location_recherche_materiel.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>

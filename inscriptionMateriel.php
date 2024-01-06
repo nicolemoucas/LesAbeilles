@@ -14,6 +14,7 @@
         <title>Inscription de matériel</title>
     </head>
     <body>
+        <?php $index_url = ''; $current_url = 'inscriptionMateriel.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>

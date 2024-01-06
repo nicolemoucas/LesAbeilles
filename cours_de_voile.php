@@ -21,7 +21,7 @@
         </script>
     </head>
     <body>
-        <?php $current_url = 'cours_de_voile.php'; ?>
+        <?php $index_url = ''; $current_url = 'cours_de_voile.php'; ?>
         <header>
             <?php include('header.php') ?>
         </header>

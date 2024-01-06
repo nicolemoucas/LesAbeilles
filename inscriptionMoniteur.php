@@ -14,6 +14,7 @@
         <title> Création d'un profil moniteur</title>
     </head>
     <body>
+        <?php $index_url = ''; $current_url = 'inscriptionMateriel.php'; ?>
         <header>
             <?php include('header.php')?>
         </header>
