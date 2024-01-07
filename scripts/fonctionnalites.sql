@@ -331,6 +331,7 @@ BEGIN
 END;
 $BODY$ LANGUAGE PlpgSQL;
 
+DROP FUNCTION IF EXISTS listeInscritsCoursVoile();
 /* 14 Consulter la liste des inscrits à un cours*/
 CREATE OR REPLACE FUNCTION listeInscritsCoursVoile(DateCours timestamp) RETURNS TABLE ( idClient integer, NomClient varchar(30),
                                                                                                                     PrenomClient varchar(30)) AS $$
@@ -351,6 +352,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP FUNCTION IF EXISTS consulter_cours_voile();
 /* 15 - Consulter le planning des cours de voile */
 CREATE OR REPLACE FUNCTION consulter_cours_voile() RETURNS TABLE ( IdCours int, DateHeure timestamp,
                                                                                           Niveau EStatutclient,
@@ -372,7 +374,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 /* 16 - Modifier le profil d'un client */
-DROP PROCEDURE IF EXISTS modifier_profil_client;
+DROP PROCEDURE IF EXISTS changer_etat_materiel();
 
 /* 18- Changer l'état d'un matériel */
 CREATE OR REPLACE PROCEDURE changer_etat_materiel(IN materiel_id INT,IN type_materiel VARCHAR(30),IN nouvel_etat EStatutMateriel) LANGUAGE plpgsql AS $$
@@ -400,6 +402,7 @@ BEGIN
 END;
 $$;
 
+DROP PROCEDURE IF EXISTS ArchiverLocations();
 /* 19- Archiver une location */
 CREATE OR REPLACE PROCEDURE ArchiverLocations() LANGUAGE plpgsql AS $$
 BEGIN
@@ -734,7 +737,7 @@ END;
 $BODY$ LANGUAGE PlpgSQL;
 
 /* 24 - Ajout d'une location */ 
-DROP PROCEDURE ajouter_location;
+DROP PROCEDURE IF EXISTS ajouter_location();
 CREATE OR REPLACE PROCEDURE ajouter_location( p_IdClient INT, p_IdMatos INT, p_TypeMatos VARCHAR(30), p_DateHeureLocation TIMESTAMP, p_Duree INTERVAL, p_PrixHeure FLOAT, p_PrixHeureSupp FLOAT, p_EtatLocation EEtatLocation, p_MoyenPaiement EMoyenPaiement) AS $$
 DECLARE
     v_IdPaiement INT;
@@ -783,8 +786,6 @@ $$ LANGUAGE plpgsql;
 --Rechercher catamaran disponible
 
 DROP FUNCTION IF EXISTS f_rechercher_catamaran;
-
-
 CREATE OR REPLACE FUNCTION f_rechercher_catamaran(dateLoc TIMESTAMP, dureeLoc INTERVAL) RETURNS TABLE ( idMatos INTEGER, nomMateriel VARCHAR(30),
                                                                                                                                      idPrixMatos INTEGER, prixHeure FLOAT, prixHeureSupp FLOAT, prixDemiHeure FLOAT, statut EStatutMateriel) AS $$
 DECLARE
