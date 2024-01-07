@@ -27,7 +27,6 @@ $dateLocation = $heureLocation = $dureeLocation = $timestampLocation = $timestam
 $result = null;
 
 $idClient = isset($_GET['idClient']) ? $_GET['idClient'] : null;
-
     $requete="SELECT unnest(enum_range(NULL::ECapaciteFlotteur)) AS Ecap";
             $listeCapacite = pg_query($connexion, $requete);
             $capacite_combobox_php= "";
