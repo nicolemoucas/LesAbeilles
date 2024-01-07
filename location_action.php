@@ -29,6 +29,7 @@
                 $idMatos = $_GET['idMatos'];
                 $nomMatos = $_GET['nomMatos'];
                 $prixHeure = $_GET['prixHeure'];
+                $prixHeureSupp = $_GET['prixHeureSupp'];
                 $idClient = $_GET['idClient'];
                 $choixPaiement = $_GET['choixPaiement'];
                 $timestampLocation = $_GET['timestampLocation'];
@@ -36,7 +37,7 @@
 
                 $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
                 
-                $query = "CALL ajouter_location($idClient, $idMatos, '$nomMatos', timestamp '$timestampLocation', INTERVAL '$dureeLocation HOUR', $prixHeure, null, 'En cours', '$choixPaiement')"; 
+                $query = "CALL ajouter_location($idClient, $idMatos, '$nomMatos', timestamp '$timestampLocation', INTERVAL '$dureeLocation HOUR', $prixHeure, $prixHeureSupp, 'En cours', '$choixPaiement')"; 
                 $result = pg_query($connexion, $query);
                     
 

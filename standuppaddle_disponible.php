@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <td>" . $row['idmatos'] . "</td>
                         <td>" . $row['nommateriel'] . "</td>
                         <td>" . $row['statut'] . "</td>
-                        <td><button class='louer-button' onclick='louerConfirmation(" . $row['idmatos'] . ", \"" . $row['nommateriel'] . "\", " . $row['prixheure'] . ", " . $idClient . ")'>Louer</button></td>
+                        <td><button class='louer-button' onclick='louerConfirmation(" . $row['idmatos'] . ", \"" . $row['nommateriel'] . "\", " . $row['prixheure'] . ", ". $row['prixHeureSupp'] ." ," . $idClient . ")'>Louer</button></td>
                       </tr>";
             }
 
@@ -140,12 +140,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </footer>
 
     <script>
-        function louerConfirmation(idMatos, nomMatos, prixHeure, idClient) {
+        function louerConfirmation(idMatos, nomMatos, prixHeure, prixHeureSupp, idClient) {
             var choixPaiement = document.getElementById("choixPaiement").value;
+            nomMatos="StandUpPaddle";
 
             if (confirm("Confirmez-vous la location de " + nomMatos + " pour " + prixHeure + " € par heure avec un paiement par " + choixPaiement + " ?")) {
                 // Ajout des informations de location à la requête URL
-                window.location.href = "location_action.php?idMatos=" + idMatos + "&nomMatos=" + nomMatos + "&prixHeure=" + prixHeure + "&idClient=" + idClient + "&choixPaiement=" + choixPaiement + "&timestampLocation=" + "<?php echo $timestampLocationFormatted; ?>"  + "&dureeLocation=" + <?php echo $dureeLocation; ?>;
+                window.location.href = "location_action.php?idMatos=" + idMatos + "&nomMatos=" + nomMatos + "&prixHeure=" + prixHeure +"&prixHeureSupp=" + prixHeureSupp+ "&idClient=" + idClient + "&choixPaiement=" + choixPaiement + "&timestampLocation=" + "<?php echo $timestampLocationFormatted; ?>"  + "&dureeLocation=" + <?php echo $dureeLocation; ?>;
             }
         }
     </script>

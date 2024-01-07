@@ -734,6 +734,7 @@ END;
 $BODY$ LANGUAGE PlpgSQL;
 
 /* 24 - Ajout d'une location */ 
+DROP PROCEDURE ajouter_location;
 CREATE OR REPLACE PROCEDURE ajouter_location( p_IdClient INT, p_IdMatos INT, p_TypeMatos VARCHAR(30), p_DateHeureLocation TIMESTAMP, p_Duree INTERVAL, p_PrixHeure FLOAT, p_PrixHeureSupp FLOAT, p_EtatLocation EEtatLocation, p_MoyenPaiement EMoyenPaiement) AS $$
 DECLARE
     v_IdPaiement INT;
@@ -746,7 +747,11 @@ BEGIN
     IF p_Duree = '1 hour' THEN
         v_MontantTotal := p_PrixHeure;
     ELSE
-        v_MontantTotal := p_PrixHeure + (EXTRACT(HOUR FROM p_Duree) - 1) * p_PrixHeureSupp;
+        IF p_TypeMatos = 'Pedalo' THEN 
+            v_MontantTotal := p_PrixHeure + (EXTRACT(HOUR FROM p_Duree) - 1) * 2 * p_PrixHeureSupp;
+        ELSE
+            v_MontantTotal := p_PrixHeure + (EXTRACT(HOUR FROM p_Duree) - 1) * p_PrixHeureSupp;
+        END IF;
     END IF;
 
     INSERT INTO Paiement (DateHeure, Montant, MoyenPaiement)
