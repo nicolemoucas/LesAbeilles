@@ -31,8 +31,8 @@
         <h2>Liste des Employés</h2>
 
         <?php
-            ini_set('display_errors', 1);
-            ini_set('display_startup_errors', 1);
+            ini_set('display_errors', 0);
+            ini_set('display_startup_errors', 0);
             session_start();
 
             // Connexion à la base de données

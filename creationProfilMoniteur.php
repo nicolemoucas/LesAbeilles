@@ -27,8 +27,8 @@
         <h1>Formulaire de création du profil moniteur :</h1>
     </div>
         <?php
-            ini_set('display_errors', 1);
-            ini_set('display_startup_errors', 1);
+            ini_set('display_errors', 0);
+            ini_set('display_startup_errors', 0);
             
             $connexion = pg_connect("host=plg-broker.ad.univ-lorraine.fr port=5432 dbname=m1_circuit_nnsh user=m1user1_14 password=m1user1_14") or die("Impossible de se connecter : " . pg_result_error($connexion));
     
