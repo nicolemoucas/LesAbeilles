@@ -3,11 +3,12 @@
 
 .header {
   background-color: rgba(2, 21, 90, 1);
-  height: 20em;
-  padding: 20px 10px;
-  /* max-width: 1200px; */
-  overflow-x: hidden;
   color: #fff;
+  height: 15em;
+  /* justify-content: center; */
+  overflow-x: hidden;
+  /* padding: 20px 0px; */
+  /* max-width: 1200px; */
   /* position: relative; */
   /* width: 100vw; */
 }
@@ -16,7 +17,7 @@
 .header-right {
   display: flex;
   overflow: hidden;
-  padding: 20px 30px; /* vert hor */
+  padding: 20px 50px; /* vert hor */
 }
 
 /* .header-right li {

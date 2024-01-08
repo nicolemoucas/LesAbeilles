@@ -10,16 +10,27 @@ html, body {
 body {
   background-color: #f0f8ff;
   color: #333;
+  display: flex;
+  flex-direction: column;
   font-family: 'Barlow', sans-serif;
+  height: 100vh;
   position: relative;
-  width: 100%;
+  width: 100vw;
+}
+
+header, footer {
+  flex-basis: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* or space-around */
 }
 
 .corps {
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
+  flex: 1;
   height: auto;
-  min-height: 50em;
+  min-height: 55em;
   /* max-width: 1200px; */
   margin: 0px; /* vert hor */
   overflow: hidden;
@@ -28,8 +39,35 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.corps #photoSurf {
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+}
+
+#photoSurf{
+  /* display: block; */
+  height: auto;
+  /* margin-left: auto;
+  margin-right: auto;
+  margin-top: auto; */
+  max-width: 800px;
+  padding: 5em 5em;
+  width: 100%;
+}
+
 .fonctionnalites {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+/* Media query for smaller screens */
+@media screen and (max-width: 850px) {
+  .fonctionnalites {
+    flex-direction: column; /* Change to column layout on smaller screens */
+  }
+  .button {
+    border-radius: 5px;
+  }
 }
 
 .button {
@@ -47,17 +85,6 @@ body {
 
 .button:hover {
   background-color: #004080;
-}
-
-#photoSurf{
-  display: block;
-  height: auto;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  max-width: 800px;
-  padding: 5em 5em;
-  width: 100%;
 }
 
 input {

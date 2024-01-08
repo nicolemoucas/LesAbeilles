@@ -39,7 +39,7 @@
             }
     </script>
     <body class="header">
-        <h1>Club Nautique Les Abeilles</h1>
+        <!-- <h1>Club Nautique Les Abeilles</h1> -->
         <a href="javascript:redirection('<?php echo $_SESSION["role"]?>')" class="logo">
             <img id="logo_les_abeilles" src="images/les_abeilles_logo.png" alt="Logo du Club Nautique Les Abeilles">
         </a>
@@ -57,8 +57,6 @@
             </a>
             
             <a href="index.php"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp; Déconnexion</a>
-            
-            </nav>
         </div>
     </body>
 <html>

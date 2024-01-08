@@ -16,6 +16,7 @@
             </ul>
             <br><br><br>
             <p>&copy; 2024 Club Nautique</p>
+            <br><br>
         </div>
     </body>
 </html> 

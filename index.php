@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Les Abeilles</title>
         <link rel="stylesheet" href="css/connexion.css"/>
+        <link rel="stylesheet" href="css/styles.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></head>
     </head>
     <body>
@@ -14,21 +15,25 @@
         </header>
         <div class="corps">
                 <h1>Connexion</h1>
-                <form method="post" name="formulaire" novalidate="" class="form" action="verifConnexion.php">
+                <div>
+                    <form method="post" name="formulaire" novalidate="" class="form" action="verifConnexion.php">
 
-                    <label for="identifiant" class="label">Identifiant</label><br>
-                    <input type="text" id="identifiant" name="identifiant"  required/>
-                    <div id="idError" class="error"></div><br>
-                    
-                    <label for="mdp" class="label">Mot de passe</label><br>
-                    <input type="password" id="mdp" name="mdp"  required/>
-                    <div id="mdpError" class="error"></div><br>
+                        <label for="identifiant" class="label">Identifiant</label><br>
+                        <input type="text" id="identifiant" name="identifiant"  required/>
+                        <div id="idError" class="error"></div><br>
+                        
+                        <label for="mdp" class="label">Mot de passe</label><br>
+                        <input type="password" id="mdp" name="mdp"  required/>
+                        <div id="mdpError" class="error"></div><br>
 
-                    <div>
-                        <button class = "button">Connexion</button>
-                    </div>
-                </form>
-                <img id="photoSurf" src="images/surf.jpg" alt="Personne qui fait du surf">
+                        <div>
+                            <button class = "button">Connexion</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="image-div">
+                    <img id="photoSurf" src="images/surf.jpg" alt="Personne qui fait du surf">
+                </div>
         </div>
         
         <footer>
