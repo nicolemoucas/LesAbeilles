@@ -40,8 +40,8 @@
 
         ?>
       
-        <h1>Organiser un cours de planche à voile : </h1>
         <div class="corps">
+            <h1>Organiser un cours de planche à voile : </h1>
             <form method="post" name="formulaire" novalidate="" class="form" action="creationCours.php">
                 
                 <label for="HoraireCours" class="label">Horaire :</label><br>
@@ -55,7 +55,7 @@
                 </select>
                 <div id="niveauError" class="error"></div><br>
 
-                <label for="Moniteur">Niveau :</label><br>
+                <label for="Moniteur">Moniteur :</label><br>
                 <select name="Moniteur" class="form-control" id="Moniteur" required >
                         <option disabled selected value> -- Sélectionnez une option -- </option>
                         <?php echo $moniteurs_combobox_php; ?>

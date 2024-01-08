@@ -9,7 +9,7 @@
     </head>
     <body>
         <header>
-            <?php include('header.php')?>
+            <?php include('header_index.php')?>
         </header>
         <div class="corps">
                 <h1>Connexion</h1>

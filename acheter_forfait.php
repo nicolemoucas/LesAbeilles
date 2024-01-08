@@ -79,33 +79,35 @@
                 $paiement_combobox_php .= '<option value="' . $paiement->epaiement . '">' . $paiement-> epaiement . '</option>';
             }
         ?>
-    <div>
-        <h1>Ajouter un forfait au client</h1>
-    </div>
-        <div class="corps">
-            <form method="post" name="formulaire" novalidate="" class="form" action="acheter_forfait_action.php">
-                <input type="hidden" id="client" name="client" value="<?php echo $idClient; ?>" />
-                <div>
-                    <label for="forfait">Forfait</label><br>
-                    <select name="forfait" class="form-control" id="forfait" required>
-                        <?php echo $forfait_combobox_php; ?>
-                    </select>
-                </div>
-                <div>
-                    <label for="paiement">Moyen de Payement</label><br>
-                    <select name="paiement" class="form-control" id="paiement" required>
-                        <?php echo $paiement_combobox_php; ?>
-                    </select>
-                </div>
-                <div>
-                    <button class = "button">Valider l'encaissement</button>
-                </div>
-            </form>
+    <div class="corps">
+        <div>
+            <h1>Ajouter un forfait au client</h1>
         </div>
+        <form method="post" name="formulaire" novalidate="" class="form" action="acheter_forfait_action.php">
+            <input type="hidden" id="client" name="client" value="<?php echo $idClient; ?>" />
+            <div>
+                <label for="forfait">Forfait</label><br>
+                <select name="forfait" class="form-control" id="forfait" required>
+                    <?php echo $forfait_combobox_php; ?>
+                </select>
+            </div>
+            <br>
+            <div>
+                <label for="paiement">Moyen de Payement</label><br>
+                <select name="paiement" class="form-control" id="paiement" required>
+                    <?php echo $paiement_combobox_php; ?>
+                </select>
+            </div>
+            <br>
+            <div>
+                <button class = "button">Valider l'encaissement</button>
+            </div>
+        </form>
+    </div>
 
-        <footer>
-            <?php include('footer.php')?>
-        </footer>
+    <footer>
+        <?php include('footer.php')?>
+    </footer>
     </body>
 </html>
 <script>
